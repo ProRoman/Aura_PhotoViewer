@@ -1,0 +1,14 @@
+﻿<aura:ResizeableWindow x:Class="AuraPhotoViewer.Shell"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:aura="clr-namespace:AuraPhotoViewer"
+        Style="{StaticResource AuraWindowStyle}" Title="Aura Photo Viewer" WindowStyle="None" Height="350" Width="525">
+    <aura:ResizeableWindow.CommandBindings>
+        <CommandBinding Command="{x:Static SystemCommands.CloseWindowCommand}" Executed="CloseWindowExecuted"/>
+        <CommandBinding Command="{x:Static SystemCommands.MaximizeWindowCommand}" Executed="MaximizeWindowExecuted"/>
+        <CommandBinding Command="{x:Static SystemCommands.MinimizeWindowCommand}" Executed="MinimizeWindowExecuted"/>
+    </aura:ResizeableWindow.CommandBindings>
+    <Grid>
+        
+    </Grid>
+</aura:ResizeableWindow>
