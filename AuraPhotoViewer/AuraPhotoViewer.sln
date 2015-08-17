@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuraPhotoViewer", "AuraPhotoViewer\AuraPhotoViewer.csproj", "{5594BD4E-65FE-47C2-A71E-5CB3FE6F9BED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuraPhotoViewer.Styles", "AuraPhotoViewer.Styles\AuraPhotoViewer.Styles.csproj", "{444F2F71-0C05-44A1-8B3E-61C65154E22C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuraPhotoViewer.Styles", "Styles\AuraPhotoViewer.Styles.csproj", "{444F2F71-0C05-44A1-8B3E-61C65154E22C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

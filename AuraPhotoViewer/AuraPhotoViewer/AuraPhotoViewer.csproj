@@ -141,7 +141,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AuraPhotoViewer.Styles\AuraPhotoViewer.Styles.csproj">
+    <ProjectReference Include="..\Styles\AuraPhotoViewer.Styles.csproj">
       <Project>{444f2f71-0c05-44a1-8b3e-61c65154e22c}</Project>
       <Name>AuraPhotoViewer.Styles</Name>
     </ProjectReference>
