@@ -1,4 +1,7 @@
 ﻿using System.Windows;
+using AuraPhotoViewer.Modules.Common.Events;
+using Microsoft.Practices.Prism.PubSubEvents;
+using Microsoft.Practices.Unity;
 
 namespace AuraPhotoViewer
 {
@@ -13,6 +16,11 @@ namespace AuraPhotoViewer
             // Start Bootstrapper
             var bootstrapper = new AuraBootstrapper();
             bootstrapper.Run();
+            // On start up publish opened image
+            if (e.Args.Length >= 1)
+            {
+                bootstrapper.Container.Resolve<IEventAggregator>().GetEvent<OpenedImageEvent>().Publish(e.Args[0]);
+            }
         }
     }
 }
