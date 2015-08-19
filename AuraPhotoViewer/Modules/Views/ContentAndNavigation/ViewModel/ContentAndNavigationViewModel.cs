@@ -14,12 +14,16 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 
         #endregion
 
+        #region Initialization
+
         [InjectionMethod]
         public void Initialize(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<OpenedImageEvent>().Subscribe(UpdateImage, ThreadOption.UIThread);
         }
+
+        #endregion
 
         #region Presentation properties
 
@@ -43,7 +47,6 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
         }
 
         #endregion
-
 
     }
 }
