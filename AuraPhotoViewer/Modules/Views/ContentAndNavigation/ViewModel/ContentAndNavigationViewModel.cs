@@ -2,6 +2,10 @@
 using AuraPhotoViewer.Modules.Common.ViewModel;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Unity;
+using System;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 {
@@ -9,7 +13,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
     {
         #region Private fields
 
-        private string _imageUri;
+        private ImageSource _imageUri;
         private IEventAggregator _eventAggregator;
 
         #endregion
@@ -27,7 +31,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 
         #region Presentation properties
 
-        public string ImageUri
+        public ImageSource ImageUri
         {
             get { return _imageUri; }
             set
@@ -41,9 +45,19 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 
         #region Private methods
 
-        private void UpdateImage(string imageUri)
+        private async void UpdateImage(string imageUri)
         {
-            ImageUri = imageUri;
+            var bmp = await System.Threading.Tasks.Task.Run(() =>
+                {
+                    BitmapImage img = new BitmapImage();
+                    img.BeginInit();
+                    img.CacheOption = BitmapCacheOption.OnLoad;
+                    img.UriSource = new Uri(imageUri, UriKind.Absolute);
+                    img.EndInit();
+                    return img;
+                }
+            );
+            Application.Current.Dispatcher.BeginInvoke(() => { ImageUri = new BitmapImage(bmp); }); 
         }
 
         #endregion
