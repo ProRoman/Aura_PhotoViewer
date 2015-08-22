@@ -54,6 +54,7 @@
     <Compile Include="Converters\RightMarginConverter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\UriToBitmapConverter .cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

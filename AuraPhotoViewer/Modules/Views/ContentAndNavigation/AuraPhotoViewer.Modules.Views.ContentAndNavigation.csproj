@@ -75,12 +75,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\ContentAndNavigationViewModel.cs" />
     <Compile Include="ViewModel\IContentAndNavigationViewModel.cs" />
+    <Compile Include="ViewModel\Thumbnail.cs" />
     <Compile Include="View\ContentAndNavigationView.xaml.cs">
       <DependentUpon>ContentAndNavigationView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Styles\AuraPhotoViewer.Styles.csproj">
+      <Project>{444f2f71-0c05-44a1-8b3e-61c65154e22c}</Project>
+      <Name>AuraPhotoViewer.Styles</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\AuraPhotoViewer.Modules.Common.csproj">
       <Project>{7E0F2F7A-4265-45CB-A070-BE2490C55D90}</Project>
       <Name>AuraPhotoViewer.Modules.Common</Name>

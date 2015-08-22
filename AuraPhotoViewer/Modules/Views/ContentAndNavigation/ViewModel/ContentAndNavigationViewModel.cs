@@ -1,4 +1,7 @@
-﻿using AuraPhotoViewer.Modules.Common.Events;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using AuraPhotoViewer.Modules.Common.Events;
 using AuraPhotoViewer.Modules.Common.ViewModel;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Unity;
@@ -8,8 +11,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
     public class ContentAndNavigationViewModel : ViewModelBase, IContentAndNavigationViewModel
     {
         #region Private fields
-
-        private string _imageUri;
+        
         private IEventAggregator _eventAggregator;
 
         #endregion
@@ -19,31 +21,37 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
         [InjectionMethod]
         public void Initialize(IEventAggregator eventAggregator)
         {
+            ThumbnailCollection = new ObservableCollection<Thumbnail>();
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<OpenedImageEvent>().Subscribe(UpdateImage, ThreadOption.UIThread);
+            _eventAggregator.GetEvent<OpenedImageEvent>().Subscribe(LoadImages, ThreadOption.UIThread);
         }
 
         #endregion
 
         #region Presentation properties
 
-        public string ImageUri
-        {
-            get { return _imageUri; }
-            set
-            {
-                _imageUri = value;
-                OnPropertyChanged();
-            }
-        }
+        public ObservableCollection<Thumbnail> ThumbnailCollection { get; set; }
 
         #endregion
 
         #region Private methods
 
-        private void UpdateImage(string imageUri)
+        private void LoadImages(string sourceDirectory)
         {
-            ImageUri = imageUri;
+            // TODO extract sourceDirectory from image path
+            try
+            {
+                var images = Directory.EnumerateFiles(sourceDirectory, "*.jpg");
+                foreach (string image in images)
+                {
+                    ThumbnailCollection.Add(new Thumbnail { ImageUri = image });
+                }
+
+            }
+            catch (Exception e)
+            {
+                // TODO add log
+            }
         }
 
         #endregion
