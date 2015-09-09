@@ -59,7 +59,11 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
             {
                 List<string> extensions = new List<string> { ".jpg", ".png", ".bmp", ".tiff", ".gif", ".ico" };
                 var images = Directory.EnumerateFiles(sourceDirectory, "*.*")
-                    .Where(image => extensions.Any(ext => ext == Path.GetExtension(image)));
+                    .Where(image => extensions.Any(ext =>
+                    {
+                        string extension = Path.GetExtension(image);
+                        return extension != null && ext == extension.ToLower();
+                    }));
                 foreach (string image in images)
                 {
                     ThumbnailCollection.Add(new Thumbnail { ImageUri = image });
