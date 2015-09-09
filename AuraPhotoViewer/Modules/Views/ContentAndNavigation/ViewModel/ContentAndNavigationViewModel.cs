@@ -13,6 +13,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
         #region Private fields
         
         private IEventAggregator _eventAggregator;
+        private Thumbnail _selectedImage;
 
         #endregion
 
@@ -32,6 +33,19 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 
         public ObservableCollection<Thumbnail> ThumbnailCollection { get; set; }
 
+        public Thumbnail SelectedImage
+        {
+            get
+            {
+                return _selectedImage;
+            }
+            set
+            {
+                _selectedImage = value;
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
         #region Private methods
@@ -46,7 +60,6 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
                 {
                     ThumbnailCollection.Add(new Thumbnail { ImageUri = image });
                 }
-
             }
             catch (Exception e)
             {

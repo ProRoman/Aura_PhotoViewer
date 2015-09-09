@@ -188,12 +188,13 @@
     <Style x:Key="ThumbnailListView"  TargetType="ListView">
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden" />
         <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True" />
         <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling" />
+        <Setter Property="SelectionMode" Value="Single" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListView">
@@ -216,6 +217,9 @@
                                 </Setter.Value>
                             </Setter>
                         </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -234,10 +238,17 @@
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="ListBoxItem">
-                    <Border x:Name="Border" Padding="2" SnapsToDevicePixels="true" Background="Transparent">
-                        <Image Source="{Binding ImageUri, Converter={StaticResource UriToBitmapConverter}}" />
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border x:Name="Border" Padding="2" SnapsToDevicePixels="true" Background="Transparent" Width="150" 
+                            Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ScrollViewer}}}">
+                        <Image Source="{Binding ImageUri, Converter={StaticResource UriToBitmapConverter}}" 
+                               Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Border"  Property="Background" Value="Red"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -262,7 +273,7 @@
                                     CanContentScroll="True"
                                     CanHorizontallyScroll="False"
                                     CanVerticallyScroll="False"
-                                    Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                                    Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" />
                         
                         <ScrollBar Name="PART_HorizontalScrollBar"
                                    Orientation="Horizontal"
@@ -294,7 +305,6 @@
                 <ControlTemplate TargetType="{x:Type RepeatButton}">
                     <Border x:Name="Border"
 							Margin="1"
-							CornerRadius="2"
                             BorderThickness="1">
                         <Border.BorderBrush>
                             <SolidColorBrush Color="{DynamicResource DisabledBorderLightColor}" />
@@ -348,8 +358,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
-                    <Border CornerRadius="2"
-				Background="{TemplateBinding Background}"
+                    <Border Background="{TemplateBinding Background}"
 				BorderBrush="{TemplateBinding BorderBrush}"
 				BorderThickness="1" />
                 </ControlTemplate>
