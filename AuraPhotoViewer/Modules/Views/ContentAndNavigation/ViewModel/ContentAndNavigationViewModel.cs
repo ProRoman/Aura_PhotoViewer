@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.IO;
-using AuraPhotoViewer.Modules.Common.Events;
+﻿using AuraPhotoViewer.Modules.Common.Events;
 using AuraPhotoViewer.Modules.Common.ViewModel;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Unity;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 
 namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 {
@@ -55,7 +57,9 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
             // TODO extract sourceDirectory from image path
             try
             {
-                var images = Directory.EnumerateFiles(sourceDirectory, "*.jpg");
+                List<string> extensions = new List<string> { ".jpg", ".png", ".bmp", ".tiff", ".gif", ".ico" };
+                var images = Directory.EnumerateFiles(sourceDirectory, "*.*")
+                    .Where(image => extensions.Any(ext => ext == Path.GetExtension(image)));
                 foreach (string image in images)
                 {
                     ThumbnailCollection.Add(new Thumbnail { ImageUri = image });
