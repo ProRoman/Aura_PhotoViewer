@@ -21,6 +21,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.View
         {
             _contentAndNavigationViewModel = contentAndNavigationViewModel;
             DataContext = _contentAndNavigationViewModel;
-        } 
+        }
+
     }
 }

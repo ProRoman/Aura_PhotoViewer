@@ -1,7 +1,9 @@
-﻿namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
+﻿using System.Collections.ObjectModel;
+
+namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 {
     public interface IContentAndNavigationViewModel
     {
-        string ImageUri { get; set; }
+        ObservableCollection<Thumbnail> ThumbnailCollection { get; set; }
     }
 }

@@ -2,15 +2,20 @@
 using AuraPhotoViewer.Modules.Common.ViewModel;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Unity;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 
 namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 {
     public class ContentAndNavigationViewModel : ViewModelBase, IContentAndNavigationViewModel
     {
         #region Private fields
-
-        private string _imageUri;
+        
         private IEventAggregator _eventAggregator;
+        private Thumbnail _selectedImage;
 
         #endregion
 
@@ -19,20 +24,26 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
         [InjectionMethod]
         public void Initialize(IEventAggregator eventAggregator)
         {
+            ThumbnailCollection = new ObservableCollection<Thumbnail>();
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<OpenedImageEvent>().Subscribe(UpdateImage, ThreadOption.UIThread);
+            _eventAggregator.GetEvent<OpenedImageEvent>().Subscribe(LoadImages, ThreadOption.UIThread);
         }
 
         #endregion
 
         #region Presentation properties
 
-        public string ImageUri
+        public ObservableCollection<Thumbnail> ThumbnailCollection { get; set; }
+
+        public Thumbnail SelectedImage
         {
-            get { return _imageUri; }
+            get
+            {
+                return _selectedImage;
+            }
             set
             {
-                _imageUri = value;
+                _selectedImage = value;
                 OnPropertyChanged();
             }
         }
@@ -41,9 +52,27 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 
         #region Private methods
 
-        private void UpdateImage(string imageUri)
+        private void LoadImages(string sourceDirectory)
         {
-            ImageUri = imageUri;
+            // TODO extract sourceDirectory from image path
+            try
+            {
+                List<string> extensions = new List<string> { ".jpg", ".png", ".bmp", ".tiff", ".gif", ".ico" };
+                var images = Directory.EnumerateFiles(sourceDirectory, "*.*")
+                    .Where(image => extensions.Any(ext =>
+                    {
+                        string extension = Path.GetExtension(image);
+                        return extension != null && ext == extension.ToLower();
+                    }));
+                foreach (string image in images)
+                {
+                    ThumbnailCollection.Add(new Thumbnail { ImageUri = image });
+                }
+            }
+            catch (Exception e)
+            {
+                // TODO add log
+            }
         }
 
         #endregion
