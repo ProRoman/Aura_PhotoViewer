@@ -1,7 +1,7 @@
-﻿using System.Windows;
-using AuraPhotoViewer.Modules.Common.Events;
-using Microsoft.Practices.Prism.PubSubEvents;
+﻿using AuraPhotoViewer.Modules.Common.Events;
 using Microsoft.Practices.Unity;
+using Prism.Events;
+using System.Windows;
 
 namespace AuraPhotoViewer
 {
