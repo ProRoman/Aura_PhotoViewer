@@ -6,13 +6,11 @@
     <converters:UriToBitmapConverter x:Key="UriToBitmapConverter" />
 
     <!--Control colors.-->
-    <Color x:Key="WindowColor">#bcc6e0</Color>
-
-    <!--Border colors-->
-    <Color x:Key="WindowBorderBrush">#969eb3</Color>
+    <Color x:Key="WindowColor">#D7D7D7</Color>
+    <Color x:Key="ControlBorderBrush">#A8A8A8</Color>
     
     <!--Control-specific resources.-->
-    
+    <Color x:Key="TextForeground">#666666</Color>
 
     <!--Window Style-->
     <Style x:Key="AuraWindowStyle" TargetType="{x:Type Window}">
@@ -26,7 +24,7 @@
                 <ControlTemplate TargetType="{x:Type Window}">
                     <Border BorderThickness="1" Margin="2">
                         <Border.BorderBrush>
-                            <SolidColorBrush Color="{StaticResource WindowBorderBrush}" />
+                            <SolidColorBrush Color="{StaticResource ControlBorderBrush}" />
                         </Border.BorderBrush>
                         <Grid>
                             <Grid.Background>
@@ -38,7 +36,11 @@
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left"
 											Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(WindowChrome.WindowChrome).ResizeBorderThickness}">
                                 <Image Source="{TemplateBinding Icon}" Width="{x:Static SystemParameters.SmallIconWidth}" WindowChrome.IsHitTestVisibleInChrome="True"/>
-                                <TextBlock Text="{TemplateBinding Title}" Foreground="#666666" FontWeight="DemiBold" Margin="5,0,0,0"/>
+                                <TextBlock Text="{TemplateBinding Title}" FontWeight="DemiBold" Margin="5,0,0,0">
+                                    <TextBlock.Foreground>
+                                        <SolidColorBrush Color="{StaticResource TextForeground}" />
+                                    </TextBlock.Foreground>
+                                </TextBlock>
                             </StackPanel>
                             <StackPanel  Orientation="Horizontal" FlowDirection="RightToLeft" VerticalAlignment="Top" HorizontalAlignment="Right"
 										 Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(WindowChrome.WindowChrome).ResizeBorderThickness, 
@@ -147,7 +149,7 @@
                             <SolidColorBrush Color="{StaticResource WindowColor}" />
                         </Border.Background>
                         <Border.BorderBrush>
-                            <SolidColorBrush Color="{StaticResource WindowBorderBrush}" />
+                            <SolidColorBrush Color="{StaticResource ControlBorderBrush}" />
                         </Border.BorderBrush>
                         <ScrollViewer Style="{DynamicResource ScrollViewerStyle}">
                             <ItemsPresenter />
@@ -248,17 +250,33 @@
 							Margin="1"
                             BorderThickness="1">
                         <Border.BorderBrush>
-                            <SolidColorBrush Color="{DynamicResource WindowBorderBrush}" />
+                            <SolidColorBrush Color="{DynamicResource ControlBorderBrush}" />
                         </Border.BorderBrush>
                         <Border.Background>
                             <SolidColorBrush Color="{DynamicResource WindowColor}" />
                         </Border.Background>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver" >
+                                    <Storyboard>
+                                        <ColorAnimation  Duration="0:0:0" To="#FF0000" Storyboard.TargetName="Border" Storyboard.TargetProperty="BorderBrush.Color" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                  
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                         <Path x:Name="Arrow"
                               HorizontalAlignment="Center"
                               VerticalAlignment="Center"
                               Data="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" >
                             <Path.Fill>
-                                <SolidColorBrush Color="{DynamicResource WindowBorderBrush}"/>
+                                <SolidColorBrush Color="{DynamicResource ControlBorderBrush}"/>
                             </Path.Fill>
                         </Path>
                     </Border>
@@ -334,7 +352,7 @@
                     <Thumb Style="{StaticResource ScrollBarThumb}"
 			   Margin="1,0,1,0">
                         <Thumb.BorderBrush>
-                            <SolidColorBrush Color="{DynamicResource WindowBorderBrush}" />
+                            <SolidColorBrush Color="{DynamicResource ControlBorderBrush}" />
                         </Thumb.BorderBrush>
                         <Thumb.Background>
                             <SolidColorBrush Color="{DynamicResource WindowColor}" />
@@ -382,7 +400,7 @@
 			   Margin="0,1,0,1">
 
                         <Thumb.BorderBrush>
-                            <SolidColorBrush Color="{DynamicResource WindowBorderBrush}" />
+                            <SolidColorBrush Color="{DynamicResource ControlBorderBrush}" />
                         </Thumb.BorderBrush>
                         <Thumb.Background>
                             <SolidColorBrush Color="{DynamicResource WindowColor}" />
