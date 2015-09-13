@@ -1,7 +1,7 @@
 ﻿using AuraPhotoViewer.Modules.Common.Events;
 using AuraPhotoViewer.Modules.Common.ViewModel;
-using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Unity;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

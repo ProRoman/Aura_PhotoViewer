@@ -1,9 +1,9 @@
 ﻿using AuraPhotoViewer.Modules.Common.Constants;
 using AuraPhotoViewer.Modules.Views.ContentAndNavigation.View;
 using AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel;
-using Microsoft.Practices.Prism.Modularity;
-using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
+using Prism.Modularity;
+using Prism.Regions;
 
 namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation
 {
