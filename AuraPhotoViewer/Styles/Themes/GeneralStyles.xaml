@@ -11,6 +11,10 @@
     
     <!--Control-specific resources.-->
     <Color x:Key="TextForeground">#666666</Color>
+    <Color x:Key="SelectedBackgroundColor">#5C90FF</Color>
+    <Color x:Key="SelectedUnfocusedColor">#87ADFF</Color>
+    <Color x:Key="WindowButtonBackgroundColor">#8B8B8B</Color>
+    <Color x:Key="WindowButtonMouseOverColor">#B5B5B5</Color>
 
     <!--Window Style-->
     <Style x:Key="AuraWindowStyle" TargetType="{x:Type Window}">
@@ -77,12 +81,20 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Grid x:Name="Close" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Background="Transparent">
-                        <Path x:Name="PartIcon" HorizontalAlignment="Center" Fill="#8B8B8B" Stretch="Uniform" Margin="0,3,0,3" Data="M0.50000498,0.5 L2.9380055,0.5511561 5.125006,3.0764948 7.312002,0.55116302 9.7500027,0.50000703 6.2863034,4.4174498 9.7500046,8.4170002 7.500008,8.4170002 5.1250075,5.7308758 2.7500032,8.4170049 0.5,8.4170049 3.9637094,4.4174479 z"/>
+                        <Path x:Name="PartIcon" HorizontalAlignment="Center" Stretch="Uniform" Margin="0,3,0,3" Data="M0.50000498,0.5 L2.9380055,0.5511561 5.125006,3.0764948 7.312002,0.55116302 9.7500027,0.50000703 6.2863034,4.4174498 9.7500046,8.4170002 7.500008,8.4170002 5.1250075,5.7308758 2.7500032,8.4170049 0.5,8.4170049 3.9637094,4.4174479 z">
+                            <Path.Fill>
+                                <SolidColorBrush Color="{StaticResource WindowButtonBackgroundColor}" />
+                            </Path.Fill>
+                        </Path>
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Close" Property="Background" Value="#B5B5B5"/>
+                            <Setter TargetName="Close" Property="Background" >
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{StaticResource WindowButtonMouseOverColor}" />
+                                </Setter.Value>
+                            </Setter>
                             <Setter TargetName="PartIcon" Property="Fill" Value="White"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -181,18 +193,40 @@
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="ListViewItem">
-                    <Border x:Name="Border" Padding="2" SnapsToDevicePixels="true" Background="Transparent" 
+                <ControlTemplate TargetType="ListViewItem">                    
+                    <Border x:Name="Border" SnapsToDevicePixels="true" Background="Transparent"
+                            Padding="3"
                             Width="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ScrollViewer}}}" 
                             Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ScrollContentPresenter}}}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver" />
+                                <VisualState x:Name="Disabled" />
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="SelectionStates">
+                                <VisualState x:Name="Unselected" />
+                                <VisualState x:Name="Selected">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource SelectedBackgroundColor}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="SelectedUnfocused">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource SelectedUnfocusedColor}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                         <Image Source="{Binding ImageUri, Converter={StaticResource UriToBitmapConverter}}" 
                                Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Border"  Property="Background" Value="Red"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
+                    </Border>                    
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -260,7 +294,10 @@
                                 <VisualState x:Name="Normal" />
                                 <VisualState x:Name="MouseOver" >
                                     <Storyboard>
-                                        <ColorAnimation  Duration="0:0:0" To="#FF0000" Storyboard.TargetName="Border" Storyboard.TargetProperty="BorderBrush.Color" />
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource SelectedBackgroundColor}" />
+                                        </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Pressed">
@@ -317,9 +354,27 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
-                    <Border Background="{TemplateBinding Background}"
-				BorderBrush="{TemplateBinding BorderBrush}"
-				BorderThickness="1" />
+                    <Border x:Name="Border" Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1" >
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource SelectedBackgroundColor}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">                                    
+                                </VisualState>
+                                <VisualState x:Name="Disabled">                                   
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
