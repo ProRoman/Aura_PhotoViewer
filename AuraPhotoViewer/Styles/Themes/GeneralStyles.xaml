@@ -6,15 +6,16 @@
     <converters:UriToBitmapConverter x:Key="UriToBitmapConverter" />
 
     <!--Control colors.-->
-    <Color x:Key="WindowColor">#D7D7D7</Color>
-    <Color x:Key="ControlBorderBrush">#A8A8A8</Color>
+    <Color x:Key="WindowColor">#ECECEC</Color>
+    <Color x:Key="ControlBorderBrush">#CCCCCC</Color>
     
     <!--Control-specific resources.-->
     <Color x:Key="TextForeground">#666666</Color>
     <Color x:Key="SelectedBackgroundColor">#5C90FF</Color>
     <Color x:Key="SelectedUnfocusedColor">#87ADFF</Color>
-    <Color x:Key="WindowButtonBackgroundColor">#8B8B8B</Color>
-    <Color x:Key="WindowButtonMouseOverColor">#B5B5B5</Color>
+    <Color x:Key="PathButtonFillColor">#8B8B8B</Color>
+    <Color x:Key="PathButtonFillMouseOverColor">#5C90FF</Color>
+    <Color x:Key="WindowButtonMouseOverColor">White</Color>
 
     <!--Window Style-->
     <Style x:Key="AuraWindowStyle" TargetType="{x:Type Window}">
@@ -83,7 +84,7 @@
                     <Grid x:Name="Close" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Background="Transparent">
                         <Path x:Name="PartIcon" HorizontalAlignment="Center" Stretch="Uniform" Margin="0,3,0,3" Data="M0.50000498,0.5 L2.9380055,0.5511561 5.125006,3.0764948 7.312002,0.55116302 9.7500027,0.50000703 6.2863034,4.4174498 9.7500046,8.4170002 7.500008,8.4170002 5.1250075,5.7308758 2.7500032,8.4170049 0.5,8.4170049 3.9637094,4.4174479 z">
                             <Path.Fill>
-                                <SolidColorBrush Color="{StaticResource WindowButtonBackgroundColor}" />
+                                <SolidColorBrush Color="{StaticResource PathButtonFillColor}" />
                             </Path.Fill>
                         </Path>
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
@@ -95,7 +96,11 @@
                                     <SolidColorBrush Color="{StaticResource WindowButtonMouseOverColor}" />
                                 </Setter.Value>
                             </Setter>
-                            <Setter TargetName="PartIcon" Property="Fill" Value="White"/>
+                            <Setter TargetName="PartIcon" Property="Fill" >
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{StaticResource PathButtonFillMouseOverColor}" />
+                                </Setter.Value>
+                            </Setter>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
