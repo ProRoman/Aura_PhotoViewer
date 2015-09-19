@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 {
@@ -44,7 +46,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
             set
             {
                 _selectedImage = value;
-                OnPropertyChanged();
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => OnPropertyChanged()));
             }
         }
 
