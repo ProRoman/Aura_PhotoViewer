@@ -5,77 +5,24 @@
     <converters:RightMarginConverter x:Key="RightMarginConverter" />
     <converters:UriToBitmapConverter x:Key="UriToBitmapConverter" />
 
-    <!--Control colors.-->
-    <Color x:Key="WindowColor">#FFE8EDF9</Color>
-    <Color x:Key="ContentAreaColorLight">#FFC5CBF9</Color>
-    <Color x:Key="ContentAreaColorDark">#FF7381F9</Color>
+    <!--Window colors.-->
+    <Color x:Key="WindowColor">#EAEAEA</Color>
+    <Color x:Key="ControlBorderBrush">#CCCCCC</Color>
+    
+    <!--Window control-specific resources.-->
+    <Color x:Key="TextForeground">#666666</Color>
+    <Color x:Key="PathButtonFillColor">Black</Color>
+    <Color x:Key="PathButtonFillMouseOverColor">#5C90FF</Color>
+    <Color x:Key="WindowButtonMouseOverColor">White</Color>
 
-    <Color x:Key="DisabledControlLightColor">#FFE8EDF9</Color>
-    <Color x:Key="DisabledControlDarkColor">#FFC5CBF9</Color>
-    <Color x:Key="DisabledForegroundColor">#FF888888</Color>
-
-    <Color x:Key="SelectedBackgroundColor">#FFC5CBF9</Color>
-    <Color x:Key="SelectedUnfocusedColor">#FFDDDDDD</Color>
-
-    <Color x:Key="ControlLightColor">White</Color>
-    <Color x:Key="ControlMediumColor">#FF7381F9</Color>
-    <Color x:Key="ControlDarkColor">#FF211AA9</Color>
-
-    <Color x:Key="ControlMouseOverColor">#FF3843C4</Color>
-    <Color x:Key="ControlPressedColor">#FF211AA9</Color>
-
-
-    <Color x:Key="GlyphColor">#FF444444</Color>
-    <Color x:Key="GlyphMouseOver">sc#1, 0.004391443, 0.002428215, 0.242281124</Color>
-
-    <!--Border colors-->
-    <Color x:Key="BorderLightColor">#FFCCCCCC</Color>
-    <Color x:Key="BorderMediumColor">#FF888888</Color>
-    <Color x:Key="BorderDarkColor">#FF444444</Color>
-
-    <Color x:Key="PressedBorderLightColor">#FF888888</Color>
-    <Color x:Key="PressedBorderDarkColor">#FF444444</Color>
-
-    <Color x:Key="DisabledBorderLightColor">#FFAAAAAA</Color>
-    <Color x:Key="DisabledBorderDarkColor">#FF888888</Color>
-
-    <Color x:Key="DefaultBorderBrushDarkColor">Black</Color>
-
-    <!--Control-specific resources.-->
-    <Color x:Key="HeaderTopColor">#FFC5CBF9</Color>
-    <Color x:Key="DatagridCurrentCellBorderColor">Black</Color>
-    <Color x:Key="SliderTrackDarkColor">#FFC5CBF9</Color>
-
-    <Color x:Key="NavButtonFrameColor">#FF3843C4</Color>
-
-    <LinearGradientBrush x:Key="MenuPopupBrush"
-					 EndPoint="0.5,1"
-					 StartPoint="0.5,0">
-        <GradientStop Color="{DynamicResource ControlLightColor}"
-				Offset="0" />
-        <GradientStop Color="{DynamicResource ControlMediumColor}"
-				Offset="0.5" />
-        <GradientStop Color="{DynamicResource ControlLightColor}"
-				Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="ProgressBarIndicatorAnimatedFill"
-					 StartPoint="0,0"
-					 EndPoint="1,0">
-        <LinearGradientBrush.GradientStops>
-            <GradientStopCollection>
-                <GradientStop Color="#000000FF"
-					Offset="0" />
-                <GradientStop Color="#600000FF"
-					Offset="0.4" />
-                <GradientStop Color="#600000FF"
-					Offset="0.6" />
-                <GradientStop Color="#000000FF"
-					Offset="1" />
-            </GradientStopCollection>
-        </LinearGradientBrush.GradientStops>
-    </LinearGradientBrush>
-
+    <!--ListView control-specific resources.-->
+    <Color x:Key="SelectedBackgroundColor">#5C90FF</Color>
+    <Color x:Key="SelectedUnfocusedColor">#87ADFF</Color>
+    <Color x:Key="ArrowFillColor">Gray</Color>
+    <Color x:Key="ArrowMouseOverColor">#5C90FF</Color>
+    <Color x:Key="ThumbFillColor">Gray</Color>
+    <Color x:Key="ThumbMouseOverColor">#5C90FF</Color>
+    
     <!--Window Style-->
     <Style x:Key="AuraWindowStyle" TargetType="{x:Type Window}">
         <Setter Property="WindowChrome.WindowChrome">
@@ -86,15 +33,25 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Window}">
-                    <Border BorderThickness="1" BorderBrush="#B5B5B5" Margin="2">
-                        <Grid Background="#E7E7E7">
-                            <Border Background="#E7E7E7" BorderThickness="0" Margin="{x:Static SystemParameters.WindowNonClientFrameThickness}">
+                    <Border BorderThickness="1" Margin="2">
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="{StaticResource ControlBorderBrush}" />
+                        </Border.BorderBrush>
+                        <Grid>
+                            <Grid.Background>
+                                <SolidColorBrush Color="{StaticResource WindowColor}" />
+                            </Grid.Background>
+                            <Border Background="Transparent" BorderThickness="0" Margin="{x:Static SystemParameters.WindowNonClientFrameThickness}">
                                 <ContentPresenter Content="{TemplateBinding Content}" />
                             </Border>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left"
 											Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(WindowChrome.WindowChrome).ResizeBorderThickness}">
                                 <Image Source="{TemplateBinding Icon}" Width="{x:Static SystemParameters.SmallIconWidth}" WindowChrome.IsHitTestVisibleInChrome="True"/>
-                                <TextBlock Text="{TemplateBinding Title}" Foreground="#666666" FontWeight="DemiBold" Margin="5,0,0,0"/>
+                                <TextBlock Text="{TemplateBinding Title}" FontWeight="DemiBold" Margin="5,0,0,0">
+                                    <TextBlock.Foreground>
+                                        <SolidColorBrush Color="{StaticResource TextForeground}" />
+                                    </TextBlock.Foreground>
+                                </TextBlock>
                             </StackPanel>
                             <StackPanel  Orientation="Horizontal" FlowDirection="RightToLeft" VerticalAlignment="Top" HorizontalAlignment="Right"
 										 Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(WindowChrome.WindowChrome).ResizeBorderThickness, 
@@ -131,13 +88,25 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Grid x:Name="Close" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Background="Transparent">
-                        <Path x:Name="PartIcon" HorizontalAlignment="Center" Fill="#8B8B8B" Stretch="Uniform" Margin="0,3,0,3" Data="M0.50000498,0.5 L2.9380055,0.5511561 5.125006,3.0764948 7.312002,0.55116302 9.7500027,0.50000703 6.2863034,4.4174498 9.7500046,8.4170002 7.500008,8.4170002 5.1250075,5.7308758 2.7500032,8.4170049 0.5,8.4170049 3.9637094,4.4174479 z"/>
+                        <Path x:Name="PartIcon" HorizontalAlignment="Center" Stretch="Uniform" Margin="0,3,0,3" Data="M0.50000498,0.5 L2.9380055,0.5511561 5.125006,3.0764948 7.312002,0.55116302 9.7500027,0.50000703 6.2863034,4.4174498 9.7500046,8.4170002 7.500008,8.4170002 5.1250075,5.7308758 2.7500032,8.4170049 0.5,8.4170049 3.9637094,4.4174479 z">
+                            <Path.Fill>
+                                <SolidColorBrush Color="{StaticResource PathButtonFillColor}" />
+                            </Path.Fill>
+                        </Path>
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Close" Property="Background" Value="#B5B5B5"/>
-                            <Setter TargetName="PartIcon" Property="Fill" Value="White"/>
+                            <Setter TargetName="Close" Property="Background" >
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{StaticResource WindowButtonMouseOverColor}" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="PartIcon" Property="Fill" >
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{StaticResource PathButtonFillMouseOverColor}" />
+                                </Setter.Value>
+                            </Setter>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -149,13 +118,25 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Grid x:Name="Maximize" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Background="Transparent">
-                        <Path x:Name="PartIcon" Margin="0,3,0,3" HorizontalAlignment="Center" Fill="Transparent" Stroke="#8B8B8B" Stretch="Uniform" Data="M1,1.0000002 L1,1.8750001 9.25,1.8750001 9.25,1.0000002 z M0.5,0.5 L9.75,0.5 9.75,8.4169999 0.5,8.4169999 z M1,1.0000002 L9.25,1.0000002 9.25,1.8750001 1,1.8750001 z"/>
+                        <Path x:Name="PartIcon" Margin="0,3,0,3" HorizontalAlignment="Center" Fill="Transparent" Stretch="Uniform" Data="M1,1.0000002 L1,1.8750001 9.25,1.8750001 9.25,1.0000002 z M0.5,0.5 L9.75,0.5 9.75,8.4169999 0.5,8.4169999 z M1,1.0000002 L9.25,1.0000002 9.25,1.8750001 1,1.8750001 z" >
+                            <Path.Stroke>
+                                <SolidColorBrush Color="{StaticResource PathButtonFillColor}" />
+                            </Path.Stroke>
+                        </Path>
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Maximize" Property="Background" Value="#B5B5B5"/>
-                            <Setter TargetName="PartIcon" Property="Stroke" Value="White"/>
+                            <Setter TargetName="Maximize" Property="Background" >
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{StaticResource WindowButtonMouseOverColor}" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="PartIcon" Property="Stroke" >
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{StaticResource PathButtonFillMouseOverColor}" />
+                                </Setter.Value>
+                            </Setter>
                         </Trigger>
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=WindowState}" Value="Maximized">
                             <Setter TargetName="PartIcon" Property="Data" Value="M0.5,0.5 L9.75,0.5 9.75,4.1750002 3.132,4.1750002 3.132,8.417 0.5,8.417 z M0.59999998,0.59999998 L9.6500004,0.59999998 L9.6500004,1.6 L0.59999998,1.6 z M3.632,4.6750002 L3.632,5.5500001 11.882,5.5500001 11.882,4.6750002 z M3.132,4.175 L12.382,4.175 12.382,12.092 3.132,12.092 z M3.632,4.6750002 L11.882,4.6750002 11.882,5.5500001 3.632,5.5500001 z"/>
@@ -170,13 +151,25 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Grid x:Name="Minimize" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Background="Transparent">
-                        <Path x:Name="PartIcon" Margin="12,9,12,3" HorizontalAlignment="Center" Fill="Transparent" Stroke="#8B8B8B" StrokeThickness="2" Stretch="Uniform" Data="M0.6,0.6 L9.65,0.6 L9.65,1.6 L0.6,1.6 z"/>
+                        <Path x:Name="PartIcon" Margin="14,10,14,3" HorizontalAlignment="Center" StrokeThickness="0" Stretch="UniformToFill"  Data="M0.6,0.6 L9.65,0.6 L9.65,1.6 L0.6,1.6 z">
+                            <Path.Fill>
+                                <SolidColorBrush Color="{StaticResource PathButtonFillColor}" />
+                            </Path.Fill>
+                        </Path>
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Minimize" Property="Background" Value="#B5B5B5"/>
-                            <Setter TargetName="PartIcon" Property="Stroke" Value="White"/>
+                            <Setter TargetName="Minimize" Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{StaticResource WindowButtonMouseOverColor}" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="PartIcon" Property="Fill" >
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{StaticResource PathButtonFillMouseOverColor}" />
+                                </Setter.Value>
+                            </Setter>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -200,10 +193,10 @@
                 <ControlTemplate TargetType="ListView">
                     <Border Name="Border" BorderThickness="1">
                         <Border.Background>
-                            <SolidColorBrush Color="{StaticResource ControlLightColor}" />
+                            <SolidColorBrush Color="{StaticResource WindowColor}" />
                         </Border.Background>
                         <Border.BorderBrush>
-                            <SolidColorBrush Color="{StaticResource BorderMediumColor}" />
+                            <SolidColorBrush Color="{StaticResource ControlBorderBrush}" />
                         </Border.BorderBrush>
                         <ScrollViewer Style="{DynamicResource ScrollViewerStyle}">
                             <ItemsPresenter />
@@ -213,7 +206,7 @@
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter TargetName="Border" Property="Background">
                                 <Setter.Value>
-                                    <SolidColorBrush Color="{DynamicResource DisabledBorderLightColor}" />
+                                    <SolidColorBrush Color="{DynamicResource WindowColor}" />
                                 </Setter.Value>
                             </Setter>
                         </Trigger>                        
@@ -235,18 +228,40 @@
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="ListViewItem">
-                    <Border x:Name="Border" Padding="2" SnapsToDevicePixels="true" Background="Transparent" 
+                <ControlTemplate TargetType="ListViewItem">                    
+                    <Border x:Name="Border" SnapsToDevicePixels="true" Background="Transparent"
+                            Padding="3"
                             Width="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ScrollViewer}}}" 
                             Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ScrollContentPresenter}}}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver" />
+                                <VisualState x:Name="Disabled" />
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="SelectionStates">
+                                <VisualState x:Name="Unselected" />
+                                <VisualState x:Name="Selected">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource SelectedBackgroundColor}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="SelectedUnfocused">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource SelectedUnfocusedColor}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                         <Image Source="{Binding ImageUri, Converter={StaticResource UriToBitmapConverter}}" 
                                Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Border"  Property="Background" Value="Red"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
+                    </Border>                    
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -302,19 +317,35 @@
                 <ControlTemplate TargetType="{x:Type RepeatButton}">
                     <Border x:Name="Border"
 							Margin="1"
-                            BorderThickness="1">
-                        <Border.BorderBrush>
-                            <SolidColorBrush Color="{DynamicResource DisabledBorderLightColor}" />
-                        </Border.BorderBrush>
-                        <Border.Background>
-                            <SolidColorBrush Color="{DynamicResource DisabledBorderLightColor}" />
-                        </Border.Background>
+                            BorderThickness="0" Background="Transparent">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver" >
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Arrow"
+                                                Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ArrowMouseOverColor}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed" >
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Arrow"
+                                                Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ArrowMouseOverColor}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                         <Path x:Name="Arrow"
                               HorizontalAlignment="Center"
                               VerticalAlignment="Center"
                               Data="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" >
                             <Path.Fill>
-                                <SolidColorBrush Color="{DynamicResource GlyphColor}"/>
+                                <SolidColorBrush Color="{DynamicResource ArrowFillColor}"/>
                             </Path.Fill>
                         </Path>
                     </Border>
@@ -355,9 +386,35 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
-                    <Border Background="{TemplateBinding Background}"
-				BorderBrush="{TemplateBinding BorderBrush}"
-				BorderThickness="1" />
+                    <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="0" >
+                        <Border.Background>
+                            <SolidColorBrush Color="{DynamicResource ThumbFillColor}" />
+                        </Border.Background>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ThumbMouseOverColor}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ThumbMouseOverColor}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">                                   
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -373,7 +430,7 @@
             </Grid.RowDefinitions>
             <Border Grid.RowSpan="3"
 			CornerRadius="2"
-			Background="#F0F0F0" />
+			Background="Transparent" />
             <RepeatButton Grid.Row="0"
 				  Style="{StaticResource ScrollBarLineButton}"
 				  Height="18"
@@ -390,10 +447,10 @@
                     <Thumb Style="{StaticResource ScrollBarThumb}"
 			   Margin="1,0,1,0">
                         <Thumb.BorderBrush>
-                            <SolidColorBrush Color="{DynamicResource DisabledBorderLightColor}" />
+                            <SolidColorBrush Color="{DynamicResource ControlBorderBrush}" />
                         </Thumb.BorderBrush>
                         <Thumb.Background>
-                            <SolidColorBrush Color="{DynamicResource DisabledBorderLightColor}" />
+                            <SolidColorBrush Color="{DynamicResource WindowColor}" />
                         </Thumb.Background>
                     </Thumb>
                 </Track.Thumb>
@@ -420,7 +477,7 @@
             </Grid.ColumnDefinitions>
             <Border Grid.ColumnSpan="3"
 			CornerRadius="2"
-			Background="#F0F0F0" />
+			Background="Transparent" />
             <RepeatButton Grid.Column="0"
 				  Style="{StaticResource ScrollBarLineButton}"
 				  Width="18"
@@ -438,10 +495,10 @@
 			   Margin="0,1,0,1">
 
                         <Thumb.BorderBrush>
-                            <SolidColorBrush Color="{DynamicResource DisabledBorderLightColor}" />
+                            <SolidColorBrush Color="{DynamicResource ControlBorderBrush}" />
                         </Thumb.BorderBrush>
                         <Thumb.Background>
-                            <SolidColorBrush Color="{DynamicResource DisabledBorderLightColor}" />
+                            <SolidColorBrush Color="{DynamicResource WindowColor}" />
                         </Thumb.Background>
                     </Thumb>
                 </Track.Thumb>
