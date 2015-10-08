@@ -17,7 +17,8 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
         #region Private fields
         
         private IEventAggregator _eventAggregator;
-        private Thumbnail _selectedImage;
+        private Thumbnail _selectedThumbnail;
+        private string _selectedImage;
 
         #endregion
 
@@ -37,7 +38,24 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 
         public ObservableCollection<Thumbnail> ThumbnailCollection { get; set; }
 
-        public Thumbnail SelectedImage
+        public Thumbnail SelectedThumbnail
+        {
+            get
+            {
+                return _selectedThumbnail;
+            }
+            set
+            {
+                _selectedThumbnail = value;
+                if(_selectedThumbnail != null)
+                {
+                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                        new Action(() => { SelectedImage = _selectedThumbnail.ImageUri; }));
+                }
+            }
+        }
+
+        public string SelectedImage
         {
             get
             {
@@ -46,7 +64,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
             set
             {
                 _selectedImage = value;
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => OnPropertyChanged()));
+                OnPropertyChanged();
             }
         }
 
@@ -70,6 +88,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
                 {
                     ThumbnailCollection.Add(new Thumbnail { ImageUri = image });
                 }
+                SelectedThumbnail = ThumbnailCollection.First();
             }
             catch (Exception e)
             {
