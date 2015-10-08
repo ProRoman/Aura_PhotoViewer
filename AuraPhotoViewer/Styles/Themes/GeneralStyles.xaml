@@ -44,20 +44,25 @@
 							<Border Background="Transparent" BorderThickness="0" Margin="{x:Static SystemParameters.WindowNonClientFrameThickness}">
 								<ContentPresenter Content="{TemplateBinding Content}" />
 							</Border>
-							<StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left"	Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(WindowChrome.WindowChrome).ResizeBorderThickness}">
-								<Image Source="{TemplateBinding Icon}" Width="{x:Static SystemParameters.SmallIconWidth}" WindowChrome.IsHitTestVisibleInChrome="True"/>
-								<TextBlock Text="{TemplateBinding Title}" FontWeight="DemiBold" Margin="5,0,0,0">
-									<TextBlock.Foreground>
-										<SolidColorBrush Color="{StaticResource TextForeground}" />
-									</TextBlock.Foreground>
-								</TextBlock>
-							</StackPanel>
-							<StackPanel  Orientation="Horizontal" FlowDirection="RightToLeft" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(WindowChrome.WindowChrome).ResizeBorderThickness, 	Converter={StaticResource RightMarginConverter}}">
-								<Button KeyboardNavigation.TabIndex="3" Width="40" Height="17"	Command="{x:Static SystemCommands.CloseWindowCommand}" 	Style="{DynamicResource CloseButton}" 	ToolTip="Close"	WindowChrome.IsHitTestVisibleInChrome="True"/>
-								<Button x:Name="MaximizeButton" KeyboardNavigation.TabIndex="4" Width="40" Height="17"	Command="{x:Static SystemCommands.MaximizeWindowCommand}" 	Style="{DynamicResource MaximizeButton}" 	ToolTip="Maximize"	WindowChrome.IsHitTestVisibleInChrome="True"/>
-								<Button x:Name="MinimizeButton" KeyboardNavigation.TabIndex="5" Width="40" Height="17"	Command="{x:Static SystemCommands.MinimizeWindowCommand}" 	Style="{DynamicResource MinimizeButton}" 	ToolTip="Minimize"	WindowChrome.IsHitTestVisibleInChrome="True"/>
-							</StackPanel>
-						</Grid>
+                            <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="{x:Static SystemParameters.CaptionHeight}">
+                                <Grid.Background>
+                                    <SolidColorBrush Color="{StaticResource ControlBorderBrush}" />
+                                </Grid.Background>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left"	Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(WindowChrome.WindowChrome).ResizeBorderThickness}">
+								    <Image Source="{TemplateBinding Icon}" Width="{x:Static SystemParameters.SmallIconWidth}" WindowChrome.IsHitTestVisibleInChrome="True"/>
+								    <TextBlock Text="{TemplateBinding Title}" FontWeight="DemiBold" Margin="5,0,0,0">
+									    <TextBlock.Foreground>
+										    <SolidColorBrush Color="{StaticResource TextForeground}" />
+									    </TextBlock.Foreground>
+								    </TextBlock>
+							    </StackPanel>
+                                <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(WindowChrome.WindowChrome).ResizeBorderThickness, Converter={StaticResource RightMarginConverter}}">
+                                    <Button KeyboardNavigation.TabIndex="3" Width="40" Height="17" Command="{x:Static SystemCommands.CloseWindowCommand}" Style="{DynamicResource CloseButton}" ToolTip="Close" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                                    <Button x:Name="MaximizeButton" KeyboardNavigation.TabIndex="4" Width="40" Height="17" Command="{x:Static SystemCommands.MaximizeWindowCommand}" Style="{DynamicResource MaximizeButton}" ToolTip="Maximize" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                                    <Button x:Name="MinimizeButton" KeyboardNavigation.TabIndex="5" Width="40" Height="17" Command="{x:Static SystemCommands.MinimizeWindowCommand}" Style="{DynamicResource MinimizeButton}" ToolTip="Minimize" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="WindowState" Value="Maximized">
