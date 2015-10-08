@@ -5,12 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:behaviors="clr-namespace:AuraPhotoViewer.Styles.Behaviors;assembly=AuraPhotoViewer.Styles"
+             xmlns:cc="clr-namespace:AuraPhotoViewer.Styles.CustomControls;assembly=AuraPhotoViewer.Styles"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/AuraPhotoViewer.Styles;component/Themes/GeneralStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/AuraPhotoViewer.Styles;component/Themes/GeneralStyles.xaml" />                
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -20,10 +21,14 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Image Source="{Binding SelectedImage, Mode=OneWay}" />
+        <DockPanel LastChildFill="False">
+            <cc:AuraCircleIconButton AuraIconType="ImageLeft" Width="60" DockPanel.Dock="Left" Command="{Binding ImageLeftCommand}"/>
+            <cc:AuraCircleIconButton AuraIconType="ImageRight" Width="60" DockPanel.Dock="Right" Command="{Binding ImageRightCommand}"/>
+        </DockPanel>
         <ListView Style="{StaticResource ThumbnailListView}" 
                   ItemContainerStyle="{StaticResource ThumbnailListViewItem}" 
-                  ItemsSource="{Binding ThumbnailCollection}"
-                  SelectedItem="{Binding SelectedThumbnail, Mode=TwoWay}"
+                  ItemsSource="{Binding ThumbnailCollection.View}"
+                  SelectedItem="{Binding SelectedThumbnail, Mode=OneWayToSource}"
                   Grid.Row="1" MaxHeight="200">
             <i:Interaction.Behaviors>
                 <behaviors:ThumbnailListViewScrollBehavior />
