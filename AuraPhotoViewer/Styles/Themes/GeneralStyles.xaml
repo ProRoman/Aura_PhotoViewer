@@ -2,7 +2,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="clr-namespace:AuraPhotoViewer.Styles.Converters">
-	<converters:RightMarginConverter x:Key="RightMarginConverter" />
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="..\Themes\AuraCircleIconButton.xaml" />        
+    </ResourceDictionary.MergedDictionaries>
+    <converters:RightMarginConverter x:Key="RightMarginConverter" />
 	<converters:UriToBitmapConverter x:Key="UriToBitmapConverter" />
     
 	<!--Window colors.-->

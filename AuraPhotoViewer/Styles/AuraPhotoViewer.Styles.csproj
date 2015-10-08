@@ -82,9 +82,15 @@
     </Page>
     <Compile Include="Behaviors\ThumbnailListViewScrollBehavior.cs" />
     <Compile Include="Converters\RightMarginConverter.cs" />
+    <Page Include="Themes\AuraCircleIconButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\UriToBitmapConverter .cs" />
+    <Compile Include="CustomControls\AuraCircleIconButton.cs" />
+    <Compile Include="CustomControls\AuraIconButtonType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

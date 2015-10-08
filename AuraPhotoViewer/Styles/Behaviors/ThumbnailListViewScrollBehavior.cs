@@ -1,8 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace AuraPhotoViewer.Styles.Behaviors
 {
@@ -12,6 +14,7 @@ namespace AuraPhotoViewer.Styles.Behaviors
         {
             base.OnAttached();
             AssociatedObject.PreviewMouseWheel += OnPreviewMouseWheel;
+            AssociatedObject.SelectionChanged += OnSelectionChanged;
 
         }
 
@@ -19,6 +22,7 @@ namespace AuraPhotoViewer.Styles.Behaviors
         {
             base.OnDetaching();
             AssociatedObject.PreviewMouseWheel -= OnPreviewMouseWheel;
+            AssociatedObject.SelectionChanged -= OnSelectionChanged;
         }
 
         private void OnPreviewMouseWheel(object sender, MouseWheelEventArgs mouseWheelEventArgs)
@@ -38,6 +42,19 @@ namespace AuraPhotoViewer.Styles.Behaviors
                 }
                 mouseWheelEventArgs.Handled = true;
             }
+        }
+
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListView lv = sender as ListView;
+            lv.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                    new Action(() =>
+                    {
+                        if (lv.SelectedItem != null)
+                        {
+                            lv.ScrollIntoView(lv.SelectedItem);
+                        }
+                    }));
         }
 
         private T FindVisualChild<T>(DependencyObject obj) where T : DependencyObject
