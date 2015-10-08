@@ -20,10 +20,14 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Image Source="{Binding SelectedImage, Mode=OneWay}" />
+        <DockPanel LastChildFill="False">
+            <Button DockPanel.Dock="Left" Background="Transparent" Width="30" Command="{Binding ImageLeftCommand}"/>
+            <Button DockPanel.Dock="Right" Background="Transparent" Width="30" Command="{Binding ImageRightCommand}"/>
+        </DockPanel>
         <ListView Style="{StaticResource ThumbnailListView}" 
                   ItemContainerStyle="{StaticResource ThumbnailListViewItem}" 
-                  ItemsSource="{Binding ThumbnailCollection}"
-                  SelectedItem="{Binding SelectedThumbnail, Mode=TwoWay}"
+                  ItemsSource="{Binding ThumbnailCollection.View}"
+                  SelectedItem="{Binding SelectedThumbnail, Mode=OneWayToSource}"
                   Grid.Row="1" MaxHeight="200">
             <i:Interaction.Behaviors>
                 <behaviors:ThumbnailListViewScrollBehavior />

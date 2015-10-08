@@ -1,6 +1,7 @@
 ﻿using AuraPhotoViewer.Modules.Common.Events;
 using AuraPhotoViewer.Modules.Common.ViewModel;
 using Microsoft.Practices.Unity;
+using Prism.Commands;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Threading;
 
 namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
@@ -15,9 +17,13 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
     public class ContentAndNavigationViewModel : ViewModelBase, IContentAndNavigationViewModel
     {
         #region Private fields
-        
+
+        private ObservableCollection<Thumbnail> _thumbnailCollection { get; set; }
+
         private IEventAggregator _eventAggregator;
+
         private Thumbnail _selectedThumbnail;
+
         private string _selectedImage;
 
         #endregion
@@ -26,17 +32,21 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 
         [InjectionMethod]
         public void Initialize(IEventAggregator eventAggregator)
-        {
-            ThumbnailCollection = new ObservableCollection<Thumbnail>();
+        {            
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<OpenedImageEvent>().Subscribe(LoadImages, ThreadOption.UIThread);
+            ThumbnailCollection = new CollectionViewSource();
+            _thumbnailCollection = new ObservableCollection<Thumbnail>();
+            ThumbnailCollection.Source = _thumbnailCollection;
+            ImageLeftCommand = new DelegateCommand(ImageLeftExecuted);
+            ImageRightCommand = new DelegateCommand(ImageRightExecuted);
         }
 
         #endregion
 
-        #region Presentation properties
+        #region Presentation properties        
 
-        public ObservableCollection<Thumbnail> ThumbnailCollection { get; set; }
+        public CollectionViewSource ThumbnailCollection { get; set; }
 
         public Thumbnail SelectedThumbnail
         {
@@ -68,6 +78,10 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
             }
         }
 
+        public DelegateCommand ImageLeftCommand { get; set; }
+
+        public DelegateCommand ImageRightCommand { get; set; }
+
         #endregion
 
         #region Private methods
@@ -86,14 +100,24 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
                     }));
                 foreach (string image in images)
                 {
-                    ThumbnailCollection.Add(new Thumbnail { ImageUri = image });
+                    _thumbnailCollection.Add(new Thumbnail { ImageUri = image });
                 }
-                SelectedThumbnail = ThumbnailCollection.First();
+                ThumbnailCollection.View.MoveCurrentToFirst();
             }
             catch (Exception e)
             {
                 // TODO add log
             }
+        }
+
+        private void ImageLeftExecuted()
+        {
+            ThumbnailCollection.View.MoveCurrentToPrevious();            
+        }
+
+        private void ImageRightExecuted()
+        {
+            ThumbnailCollection.View.MoveCurrentToNext();
         }
 
         #endregion
