@@ -18,7 +18,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
     {
         #region Private fields
 
-        private ObservableCollection<Thumbnail> _thumbnailCollection { get; set; }
+        private ObservableCollection<Thumbnail> _thumbnailCollection;
 
         private IEventAggregator _eventAggregator;
 
@@ -92,15 +92,18 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
             {
                 string sourceDirectory = Path.GetDirectoryName(imagePath);
                 List<string> extensions = new List<string> { ".jpg", ".png", ".bmp", ".tiff", ".gif", ".ico" };
-                var images = Directory.EnumerateFiles(sourceDirectory, "*.*")
-                    .Where(image => extensions.Any(ext =>
-                    {
-                        string extension = Path.GetExtension(image);                                         
-                        return extension != null && ext == extension.ToLower();
-                    }));
-                foreach (string image in images)
+                if (sourceDirectory != null)
                 {
-                    _thumbnailCollection.Add(new Thumbnail { ImageUri = image });
+                    var images = Directory.EnumerateFiles(sourceDirectory, "*.*")
+                        .Where(image => extensions.Any(ext =>
+                        {
+                            string extension = Path.GetExtension(image);                                         
+                            return extension != null && ext == extension.ToLower();
+                        }));
+                    foreach (string image in images)
+                    {
+                        _thumbnailCollection.Add(new Thumbnail { ImageUri = image });
+                    }
                 }
                 Thumbnail selectedThumbnail = _thumbnailCollection.First<Thumbnail>(thumbnail => thumbnail.ImageUri == imagePath);
                 ThumbnailCollection.View.MoveCurrentTo(selectedThumbnail);
