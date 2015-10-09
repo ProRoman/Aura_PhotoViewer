@@ -86,23 +86,24 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 
         #region Private methods
 
-        private void LoadImages(string sourceDirectory)
-        {
-            // TODO extract sourceDirectory from image path
+        private void LoadImages(string imagePath)
+        {            
             try
             {
+                string sourceDirectory = Path.GetDirectoryName(imagePath);
                 List<string> extensions = new List<string> { ".jpg", ".png", ".bmp", ".tiff", ".gif", ".ico" };
                 var images = Directory.EnumerateFiles(sourceDirectory, "*.*")
                     .Where(image => extensions.Any(ext =>
                     {
-                        string extension = Path.GetExtension(image);
+                        string extension = Path.GetExtension(image);                                         
                         return extension != null && ext == extension.ToLower();
                     }));
                 foreach (string image in images)
                 {
                     _thumbnailCollection.Add(new Thumbnail { ImageUri = image });
                 }
-                ThumbnailCollection.View.MoveCurrentToFirst();
+                Thumbnail selectedThumbnail = _thumbnailCollection.First<Thumbnail>(thumbnail => thumbnail.ImageUri == imagePath);
+                ThumbnailCollection.View.MoveCurrentTo(selectedThumbnail);
             }
             catch (Exception e)
             {
