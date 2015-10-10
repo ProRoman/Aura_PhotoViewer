@@ -63,7 +63,6 @@
     <Compile Include="ContentAndNavigationModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\ContentAndNavigationViewModel.cs" />
-    <Compile Include="ViewModel\IContentAndNavigationViewModel.cs" />
     <Compile Include="ViewModel\Thumbnail.cs" />
     <Compile Include="View\ContentAndNavigationView.xaml.cs">
       <DependentUpon>ContentAndNavigationView.xaml</DependentUpon>

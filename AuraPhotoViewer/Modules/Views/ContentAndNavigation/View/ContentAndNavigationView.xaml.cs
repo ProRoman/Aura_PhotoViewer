@@ -9,7 +9,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.View
     /// </summary>
     public partial class ContentAndNavigationView : UserControl
     {
-        private IContentAndNavigationViewModel _contentAndNavigationViewModel;
+        private ContentAndNavigationViewModel _contentAndNavigationViewModel;
 
         public ContentAndNavigationView()
         {
@@ -17,7 +17,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.View
         }
 
         [InjectionMethod]
-        public void Initialize(IContentAndNavigationViewModel contentAndNavigationViewModel)
+        public void Initialize(ContentAndNavigationViewModel contentAndNavigationViewModel)
         {
             _contentAndNavigationViewModel = contentAndNavigationViewModel;
             DataContext = _contentAndNavigationViewModel;
