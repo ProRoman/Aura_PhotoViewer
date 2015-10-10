@@ -14,7 +14,7 @@ using System.Windows.Threading;
 
 namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 {
-    public class ContentAndNavigationViewModel : ViewModelBase, IContentAndNavigationViewModel
+    public class ContentAndNavigationViewModel : ViewModelBase
     {
         #region Private fields
 

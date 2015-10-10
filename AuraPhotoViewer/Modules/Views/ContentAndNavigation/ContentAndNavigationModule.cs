@@ -22,8 +22,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation
 
         public void Initialize()
         {
-            _container.RegisterType<IContentAndNavigationViewModel, ContentAndNavigationViewModel>(
-                new ContainerControlledLifetimeManager());
+            _container.RegisterType<ContentAndNavigationViewModel>(new ContainerControlledLifetimeManager());
             IRegion region = _regionManager.Regions[RegionNames.ContentRegion];
 
             var windowInteractionView = _container.Resolve<ContentAndNavigationView>();
