@@ -28,7 +28,7 @@
         "Entry"
         {
         "MsmKey" = "8:_01E2C707DEBFDD9089F59BE0934FB313"
-        "OwnerKey" = "8:_BFC54DF15DA615437605791FFAC4E17A"
+        "OwnerKey" = "8:_3A1193A6B5AEAC2CD88A17DC41052493"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -285,6 +285,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_3A1193A6B5AEAC2CD88A17DC41052493"
+        "OwnerKey" = "8:_5AD10A462916473996347D1C3A4C70B1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3A1193A6B5AEAC2CD88A17DC41052493"
+        "OwnerKey" = "8:_5BD15671585F4BE78D373559DE78E1C8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_3B27BBCED2089B4DE0BCACE6D374B63D"
         "OwnerKey" = "8:_5AD10A462916473996347D1C3A4C70B1"
         "MsmSig" = "8:_UNDEFINED"
@@ -437,6 +449,18 @@
         {
         "MsmKey" = "8:_5BD15671585F4BE78D373559DE78E1C8"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5E6C58B72D82DD073F68575CCD386B25"
+        "OwnerKey" = "8:_5AD10A462916473996347D1C3A4C70B1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5E6C58B72D82DD073F68575CCD386B25"
+        "OwnerKey" = "8:_5BD15671585F4BE78D373559DE78E1C8"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -699,18 +723,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_AA873EDC957DC6217645910336D54A97"
-        "OwnerKey" = "8:_5AD10A462916473996347D1C3A4C70B1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_AA873EDC957DC6217645910336D54A97"
-        "OwnerKey" = "8:_5BD15671585F4BE78D373559DE78E1C8"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_AE7E8BC2177E1560AE6F4D1CF1613293"
         "OwnerKey" = "8:_5AD10A462916473996347D1C3A4C70B1"
         "MsmSig" = "8:_UNDEFINED"
@@ -783,18 +795,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_BFC54DF15DA615437605791FFAC4E17A"
-        "OwnerKey" = "8:_5AD10A462916473996347D1C3A4C70B1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_BFC54DF15DA615437605791FFAC4E17A"
-        "OwnerKey" = "8:_5BD15671585F4BE78D373559DE78E1C8"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_CEACE5B0497E4D1F05141A956936831E"
         "OwnerKey" = "8:_5AD10A462916473996347D1C3A4C70B1"
         "MsmSig" = "8:_UNDEFINED"
@@ -857,12 +857,6 @@
         {
         "MsmKey" = "8:_DA3FEF4600C94332C360EFA985867ADF"
         "OwnerKey" = "8:_5AD10A462916473996347D1C3A4C70B1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_DA3FEF4600C94332C360EFA985867ADF"
-        "OwnerKey" = "8:_AA873EDC957DC6217645910336D54A97"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -875,6 +869,12 @@
         {
         "MsmKey" = "8:_DA3FEF4600C94332C360EFA985867ADF"
         "OwnerKey" = "8:_9A83641E2EC7ACB197E87EFB0839B108"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DA3FEF4600C94332C360EFA985867ADF"
+        "OwnerKey" = "8:_5E6C58B72D82DD073F68575CCD386B25"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -952,31 +952,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_DA3FEF4600C94332C360EFA985867ADF"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_AA873EDC957DC6217645910336D54A97"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_BFC54DF15DA615437605791FFAC4E17A"
+        "OwnerKey" = "8:_5AD10A462916473996347D1C3A4C70B1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_5BD15671585F4BE78D373559DE78E1C8"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5AD10A462916473996347D1C3A4C70B1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1007,6 +989,18 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_BB70AEF7B2C2AC719E8232F0716315BF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5E6C58B72D82DD073F68575CCD386B25"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_3A1193A6B5AEAC2CD88A17DC41052493"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1307,6 +1301,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_00E396C20667E77D42C7F0D9CEFE229B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_DA3FEF4600C94332C360EFA985867ADF"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -1869,6 +1869,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3A1193A6B5AEAC2CD88A17DC41052493"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:AuraPhotoViewer.Modules.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_3A1193A6B5AEAC2CD88A17DC41052493"
+                    {
+                    "Name" = "8:AuraPhotoViewer.Modules.Common.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:AuraPhotoViewer.Modules.Common.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5192E1DEDA884566ADA2091A8F8565AB"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3B27BBCED2089B4DE0BCACE6D374B63D"
             {
             "AssemblyRegister" = "3:1"
@@ -2176,6 +2207,37 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5E6C58B72D82DD073F68575CCD386B25"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:AuraPhotoViewer.Styles, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_5E6C58B72D82DD073F68575CCD386B25"
+                    {
+                    "Name" = "8:AuraPhotoViewer.Styles.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:AuraPhotoViewer.Styles.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5192E1DEDA884566ADA2091A8F8565AB"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -2706,37 +2768,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_AA873EDC957DC6217645910336D54A97"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AuraPhotoViewer.Styles, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_AA873EDC957DC6217645910336D54A97"
-                    {
-                    "Name" = "8:AuraPhotoViewer.Styles.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:AuraPhotoViewer.Styles.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_5192E1DEDA884566ADA2091A8F8565AB"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_AE7E8BC2177E1560AE6F4D1CF1613293"
             {
             "AssemblyRegister" = "3:1"
@@ -2889,37 +2920,6 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BFC54DF15DA615437605791FFAC4E17A"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AuraPhotoViewer.Modules.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_BFC54DF15DA615437605791FFAC4E17A"
-                    {
-                    "Name" = "8:AuraPhotoViewer.Modules.Common.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:AuraPhotoViewer.Modules.Common.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_5192E1DEDA884566ADA2091A8F8565AB"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -3105,7 +3105,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:TRUE"
+            "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -3321,7 +3321,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Aura Photo Viewer"
         "ProductCode" = "8:{6764531A-961A-467F-A54D-D9E20938682E}"
-        "PackageCode" = "8:{48A3DD54-47EA-4EE8-8A3C-21A69BE2D12F}"
+        "PackageCode" = "8:{FA3035BC-D612-48B6-BB40-1DFB35BA2D22}"
         "UpgradeCode" = "8:{71E6456C-5D74-4556-8E8D-760C034B0F96}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -3329,7 +3329,7 @@
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:0.0.1"
-        "Manufacturer" = "8:Default Company Name"
+        "Manufacturer" = "8:ProRoman"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
         "Title" = "8:AuraPhotoViewer_Installer86"
@@ -3842,7 +3842,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_5AD10A462916473996347D1C3A4C70B1"
             {
-            "SourcePath" = "8:..\\AuraPhotoViewer\\obj\\Release\\AuraPhotoViewer.exe"
+            "SourcePath" = "8:..\\AuraPhotoViewer\\obj\\Debug\\AuraPhotoViewer.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5192E1DEDA884566ADA2091A8F8565AB"
@@ -3870,7 +3870,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_5BD15671585F4BE78D373559DE78E1C8"
             {
-            "SourcePath" = "8:..\\Modules\\Views\\ContentAndNavigation\\obj\\Release\\AuraPhotoViewer.Modules.Views.ContentAndNavigation.dll"
+            "SourcePath" = "8:..\\Modules\\Views\\ContentAndNavigation\\obj\\Debug\\AuraPhotoViewer.Modules.Views.ContentAndNavigation.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5192E1DEDA884566ADA2091A8F8565AB"
