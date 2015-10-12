@@ -21,7 +21,7 @@ namespace AuraPhotoViewer
     {
         protected override ILoggerFacade CreateLogger()
         {
-            return new Log4NetFacade();
+            return new Log4NetPrismFacade();
         }
 
         protected override IModuleCatalog CreateModuleCatalog()

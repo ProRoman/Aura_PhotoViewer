@@ -86,7 +86,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Log4NetFacade.cs" />
+    <Compile Include="Log4NetPrismFacade.cs" />
     <Compile Include="ResizeableWindow.cs" />
     <Page Include="Shell.xaml">
       <Generator>MSBuild:Compile</Generator>

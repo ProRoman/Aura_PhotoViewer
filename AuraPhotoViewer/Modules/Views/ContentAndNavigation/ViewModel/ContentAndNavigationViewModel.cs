@@ -1,9 +1,9 @@
 ﻿using AuraPhotoViewer.Modules.Common.Events;
 using AuraPhotoViewer.Modules.Common.ViewModel;
+using log4net;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Logging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,11 +17,15 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 {
     public class ContentAndNavigationViewModel : ViewModelBase
     {
+        #region Log4net
+
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        #endregion
+
         #region Private fields
 
         private IEventAggregator _eventAggregator;
-
-        private ILoggerFacade _logger;
 
         private ObservableCollection<Thumbnail> _thumbnailCollection;
                 
@@ -34,10 +38,9 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
         #region Initialization
 
         [InjectionMethod]
-        public void Initialize(IEventAggregator eventAggregator, ILoggerFacade logger)
+        public void Initialize(IEventAggregator eventAggregator)
         {            
             _eventAggregator = eventAggregator;
-            _logger = logger;
             _eventAggregator.GetEvent<OpenedImageEvent>().Subscribe(LoadImages, ThreadOption.UIThread);
             ThumbnailCollection = new CollectionViewSource();
             _thumbnailCollection = new ObservableCollection<Thumbnail>();
@@ -94,7 +97,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
         {            
             try
             {
-                _logger.Log("Images load", Category.Info, Priority.None);
+                Log.Info("Images load");
                 string sourceDirectory = Path.GetDirectoryName(imagePath);
                 List<string> extensions = new List<string> { ".jpg", ".png", ".bmp", ".tiff", ".gif", ".ico" };
                 if (sourceDirectory != null)
@@ -115,7 +118,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
             }
             catch (Exception e)
             {
-                _logger.Log(String.Format("Exception during images load: {0}{1}", Environment.NewLine, e), Category.Exception, Priority.None);
+                Log.Error("Exception during images load", e);
             }
         }
 
