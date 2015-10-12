@@ -1,5 +1,6 @@
 ﻿using AuraPhotoViewer.Modules.Common.Events;
 using AuraPhotoViewer.Modules.Common.ViewModel;
+using log4net;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -16,12 +17,18 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 {
     public class ContentAndNavigationViewModel : ViewModelBase
     {
-        #region Private fields
+        #region Log4net
 
-        private ObservableCollection<Thumbnail> _thumbnailCollection;
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        #endregion
+
+        #region Private fields
 
         private IEventAggregator _eventAggregator;
 
+        private ObservableCollection<Thumbnail> _thumbnailCollection;
+                
         private Thumbnail _selectedThumbnail;
 
         private string _selectedImage;
@@ -44,7 +51,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 
         #endregion
 
-        #region Presentation properties        
+        #region Presentation properties
 
         public CollectionViewSource ThumbnailCollection { get; set; }
 
@@ -90,6 +97,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
         {            
             try
             {
+                Log.Info("Images load");
                 string sourceDirectory = Path.GetDirectoryName(imagePath);
                 List<string> extensions = new List<string> { ".jpg", ".png", ".bmp", ".tiff", ".gif", ".ico" };
                 if (sourceDirectory != null)
@@ -110,7 +118,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
             }
             catch (Exception e)
             {
-                // TODO add log
+                Log.Error("Exception during images load", e);
             }
         }
 

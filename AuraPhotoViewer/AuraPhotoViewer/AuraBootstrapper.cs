@@ -1,4 +1,5 @@
 ﻿using Microsoft.Practices.Unity;
+using Prism.Logging;
 using Prism.Modularity;
 using Prism.Unity;
 using System.Windows;
@@ -18,9 +19,14 @@ namespace AuraPhotoViewer
     /// 
     class AuraBootstrapper : UnityBootstrapper
     {
+        protected override ILoggerFacade CreateLogger()
+        {
+            return new Log4NetPrismFacade();
+        }
+
         protected override IModuleCatalog CreateModuleCatalog()
         {
-            // Specify that the configuration file is the source for ModuleCatalog. 
+            // Specify that the configuration file is the source for ModuleCatalog.
             return new ConfigurationModuleCatalog();
         }
 
