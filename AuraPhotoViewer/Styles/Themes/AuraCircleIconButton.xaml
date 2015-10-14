@@ -41,7 +41,7 @@
                                  Margin="4"
                                  Stroke="{TemplateBinding BorderBrush}"
                                  StrokeThickness="{Binding RelativeSource={x:Static RelativeSource.TemplatedParent}, Path=BorderThickness.Left}" />
-                        <Path x:Name="PART_Icon" Stretch="Fill" Fill="{TemplateBinding BorderBrush}" StrokeThickness="0"/>
+                        <Path x:Name="PART_Icon" Stretch="Uniform" Fill="{TemplateBinding BorderBrush}" StrokeThickness="0"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed"

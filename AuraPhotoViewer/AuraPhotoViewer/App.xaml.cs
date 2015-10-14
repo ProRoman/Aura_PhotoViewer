@@ -35,7 +35,7 @@ namespace AuraPhotoViewer
 
         private void AppExitHandler(object sender, ExitEventArgs exitEventArgs)
         {
-            Log.Info("Bootstrapper shuts down");
+            Log.Info("App shuts down");
         }
     }
 }
