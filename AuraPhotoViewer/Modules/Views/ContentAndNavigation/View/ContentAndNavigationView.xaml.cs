@@ -1,6 +1,7 @@
 ﻿using System.Windows.Controls;
 using AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel;
 using Microsoft.Practices.Unity;
+using System.Windows.Media;
 
 namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.View
 {
@@ -21,6 +22,13 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.View
         {
             _contentAndNavigationViewModel = contentAndNavigationViewModel;
             DataContext = _contentAndNavigationViewModel;
+        }
+
+        private void Viewbox_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {            
+            double zoom = e.Delta > 0 ? .2 : -.2;
+            scaleTransform.ScaleX += zoom;
+            scaleTransform.ScaleY += zoom;
         }
 
     }

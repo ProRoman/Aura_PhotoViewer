@@ -20,7 +20,16 @@
             <RowDefinition Height="3*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Image Source="{Binding SelectedImage, Mode=OneWay}" />
+        <ScrollViewer>
+        <Viewbox MouseWheel="Viewbox_MouseWheel" RenderTransformOrigin="0.5,0.5">
+            <Viewbox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="scaleTransform"/>
+                </TransformGroup>
+            </Viewbox.RenderTransform>
+            <Image Source="{Binding SelectedImage, Mode=OneWay}" />
+        </Viewbox>
+        </ScrollViewer>
         <DockPanel LastChildFill="False">
             <cc:AuraCircleIconButton AuraIconType="ImageLeft" Width="60" DockPanel.Dock="Left" Command="{Binding ImageLeftCommand}"/>
             <cc:AuraCircleIconButton AuraIconType="ImageRight" Width="60" DockPanel.Dock="Right" Command="{Binding ImageRightCommand}"/>
