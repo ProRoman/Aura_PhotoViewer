@@ -27,6 +27,11 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.View
         private void Viewbox_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {            
             double zoom = e.Delta > 0 ? .2 : -.2;
+            if (zoom < 0 && scaleTransform.ScaleX <= 1 && scaleTransform.ScaleY <= 1)
+            {
+                e.Handled = true;
+                return;
+            }
             scaleTransform.ScaleX += zoom;
             scaleTransform.ScaleY += zoom;
         }
