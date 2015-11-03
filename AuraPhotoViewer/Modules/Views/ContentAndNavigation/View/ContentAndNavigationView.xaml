@@ -20,18 +20,18 @@
             <RowDefinition Height="3*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
-            <Grid>
-                <Viewbox MouseWheel="Viewbox_MouseWheel" Stretch="Fill" ClipToBounds="True" RenderTransformOrigin="0.5,0.5">
-                    <Viewbox.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform x:Name="scaleTransform"/>
-                        </TransformGroup>
-                    </Viewbox.RenderTransform>
-                    <Image Source="{Binding SelectedImage, Mode=OneWay}" />
-                </Viewbox>
-            </Grid>
-        </ScrollViewer>
+        <Border ClipToBounds="True">
+        <Viewbox MouseWheel="Viewbox_MouseWheel" MouseLeftButtonDown="vb_MouseLeftButtonDown"
+                 MouseLeftButtonUp="vb_MouseLeftButtonUp" MouseMove="vb_MouseMove" Name="vb" Stretch="Uniform" RenderTransformOrigin="0.5,0.5">
+            <Viewbox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="scaleTransform"/>
+                        <TranslateTransform x:Name="translateTransform"/>
+                    </TransformGroup>
+            </Viewbox.RenderTransform>
+            <Image Source="{Binding SelectedImage, Mode=OneWay}" />
+        </Viewbox>
+        </Border>
         <DockPanel LastChildFill="False">
             <cc:AuraCircleIconButton AuraIconType="ImageLeft" Width="60" DockPanel.Dock="Left" Command="{Binding ImageLeftCommand}"/>
             <cc:AuraCircleIconButton AuraIconType="ImageRight" Width="60" DockPanel.Dock="Right" Command="{Binding ImageRightCommand}"/>
