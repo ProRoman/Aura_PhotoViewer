@@ -35,9 +35,11 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.View
             {
                 return;
             }
-            var position = e.GetPosition(vb);
-            vb.RenderTransformOrigin = new Point(position.X / vb.ActualWidth, position.Y / vb.ActualHeight);
+            //var position = e.GetPosition(vb);
+           // vb.RenderTransformOrigin = new Point(position.X / vb.ActualWidth, position.Y / vb.ActualHeight);
 
+            translateTransform.X = 0;
+            translateTransform.Y = 0;
             scaleTransform.ScaleX += zoom;
             scaleTransform.ScaleY += zoom;
             //scaleTransform.CenterX += position.X / vb.ActualWidth;
@@ -73,9 +75,36 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.View
            // m.OffsetX = origin.X + (p.X - start.X);
             //m.OffsetY = origin.Y + (p.Y - start.Y);
 
-            translateTransform.X += p.X - start.X;
-            translateTransform.Y += p.Y - start.Y;
-            //vb.RenderTransformOrigin = new Point(p.X / vb.ActualWidth, p.Y / vb.ActualHeight);
+            // The following code gives you the bounds of the transformed Image control in coordinates relative to the Border control. 
+            // You could easily check if the bounds are located inside the Border control.
+            Rect rect = new Rect(new Size(image.ActualWidth, image.ActualHeight));
+            Rect bounds = image.TransformToAncestor(Border).TransformBounds(rect);
+            double offsetX = p.X - start.X;
+            double offsetY = p.Y - start.Y;
+            if (Border.ActualWidth < bounds.Width)
+            {
+                if (offsetX < 0 && bounds.Right > Border.ActualWidth) // move left
+                {
+                    translateTransform.X += offsetX;
+                }
+                if (offsetX > 0 && bounds.Left < 0) // move right
+                {
+                    translateTransform.X += offsetX;
+                }
+                //translateTransform.X += p.X - start.X;
+            }
+            if (Border.ActualHeight < bounds.Height)
+            {
+                if (offsetY < 0 && bounds.Bottom > Border.ActualHeight) // move up
+                {
+                    translateTransform.Y += offsetY;
+                }
+                if (offsetY > 0 && bounds.Top < 0) // move down
+                {
+                    translateTransform.Y += offsetY;
+                }
+                //translateTransform.Y += p.Y - start.Y;
+            }
             e.Handled = true;
         }
 

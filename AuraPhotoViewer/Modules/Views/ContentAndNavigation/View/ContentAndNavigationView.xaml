@@ -29,7 +29,7 @@
                         <TranslateTransform x:Name="translateTransform"/>
                     </TransformGroup>
             </Viewbox.RenderTransform>
-                <Image Source="{Binding SelectedImage, Mode=OneWay}" RenderOptions.BitmapScalingMode="HighQuality"/>
+                <Image Name="image" Source="{Binding SelectedImage, Mode=OneWay}" RenderOptions.BitmapScalingMode="HighQuality"/>
         </Viewbox>
         </Border>
         <DockPanel LastChildFill="False">
