@@ -3,6 +3,7 @@ using AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel;
 using Microsoft.Practices.Unity;
 using System.Windows.Media;
 using System.Windows;
+using System.Windows.Input;
 
 namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.View
 {
@@ -27,12 +28,11 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.View
             DataContext = _contentAndNavigationViewModel;
         }
 
-        private void Viewbox_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        private void Viewbox_MouseWheel(object sender, MouseWheelEventArgs e)
         {            
             double zoom = e.Delta > 0 ? .2 : -.2;
             if (zoom < 0 && scaleTransform.ScaleX <= 1 && scaleTransform.ScaleY <= 1)
             {
-                e.Handled = true;
                 return;
             }
             var position = e.GetPosition(vb);
@@ -40,34 +40,43 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.View
 
             scaleTransform.ScaleX += zoom;
             scaleTransform.ScaleY += zoom;
+            //scaleTransform.CenterX += position.X / vb.ActualWidth;
+            //scaleTransform.CenterY += position.Y / vb.ActualHeight;
+            e.Handled = true;
         }
 
-        private void vb_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void vb_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (vb.IsMouseCaptured) return;
-            vb.CaptureMouse();
+            var position = e.GetPosition(vb);
+           // vb.RenderTransformOrigin = new Point(position.X / vb.ActualWidth, position.Y / vb.ActualHeight);
+            if (Border.IsMouseCaptured) return;
 
             start = e.GetPosition(vb);
-            origin = vb.RenderTransformOrigin;
+            Border.CaptureMouse();
+            origin.X = translateTransform.X;
+            origin.Y = translateTransform.Y;
+            e.Handled = true;
         }
 
-        private void vb_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void vb_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            vb.ReleaseMouseCapture();
+            Border.ReleaseMouseCapture();
+            e.Handled = true;
         }
 
-        private void vb_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        private void vb_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!vb.IsMouseCaptured) return;
+            if (!Border.IsMouseCaptured) return;
             Point p = e.GetPosition(vb);
 
-            Matrix m = translateTransform.Value;
-            m.OffsetX = origin.X + (p.X - start.X);
-            m.OffsetY = origin.Y + (p.Y - start.Y);
+           // Matrix m = translateTransform.Value;
+           // m.OffsetX = origin.X + (p.X - start.X);
+            //m.OffsetY = origin.Y + (p.Y - start.Y);
 
-            translateTransform.X = m.OffsetX;
-            translateTransform.Y = m.OffsetY;
-            vb.RenderTransformOrigin = new Point(p.X, p.Y);
+            translateTransform.X += p.X - start.X;
+            translateTransform.Y += p.Y - start.Y;
+            //vb.RenderTransformOrigin = new Point(p.X / vb.ActualWidth, p.Y / vb.ActualHeight);
+            e.Handled = true;
         }
 
     }
