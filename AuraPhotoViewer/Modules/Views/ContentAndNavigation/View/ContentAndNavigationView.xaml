@@ -20,17 +20,19 @@
             <RowDefinition Height="3*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Border Name="Border" ClipToBounds="True" MouseWheel="Viewbox_MouseWheel" MouseLeftButtonDown="vb_MouseLeftButtonDown"
-                 MouseLeftButtonUp="vb_MouseLeftButtonUp" MouseMove="vb_MouseMove">
-        <Viewbox Name="vb" Stretch="Uniform" RenderTransformOrigin="0.5,0.5">
-            <Viewbox.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform x:Name="scaleTransform"/>
-                        <TranslateTransform x:Name="translateTransform"/>
+        <Border ClipToBounds="True">
+            <Viewbox Stretch="Uniform" RenderTransformOrigin="0.5,0.5">
+                <Viewbox.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform />
+                        <TranslateTransform />
                     </TransformGroup>
-            </Viewbox.RenderTransform>
-                <Image Name="image" Source="{Binding SelectedImage, Mode=OneWay}" RenderOptions.BitmapScalingMode="HighQuality"/>
-        </Viewbox>
+                </Viewbox.RenderTransform>
+                <Image Source="{Binding SelectedImage, Mode=OneWay}" RenderOptions.BitmapScalingMode="HighQuality"/>
+            </Viewbox>
+            <i:Interaction.Behaviors>
+                <behaviors:ZoomingPanningBorderBehavior />
+            </i:Interaction.Behaviors>
         </Border>
         <DockPanel LastChildFill="False">
             <cc:AuraCircleIconButton AuraIconType="ImageLeft" Width="60" DockPanel.Dock="Left" Command="{Binding ImageLeftCommand}"/>

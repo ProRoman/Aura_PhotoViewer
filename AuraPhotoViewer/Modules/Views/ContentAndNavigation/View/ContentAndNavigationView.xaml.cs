@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 using AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel;
 using Microsoft.Practices.Unity;
 using System.Windows.Media;
@@ -19,6 +20,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.View
         public ContentAndNavigationView()
         {
             InitializeComponent();
+            //Application.Current.MainWindow.StateChanged += MainWindowOnStateChanged;
         }
 
         [InjectionMethod]
@@ -27,6 +29,37 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.View
             _contentAndNavigationViewModel = contentAndNavigationViewModel;
             DataContext = _contentAndNavigationViewModel;
         }
+
+        /*private void MainWindowOnStateChanged(object sender, EventArgs e)
+        {
+            translateTransform.X = 0;
+            translateTransform.Y = 0;
+            /*Rect rect = new Rect(new Size(image.ActualWidth, image.ActualHeight));
+            Rect bounds = image.TransformToAncestor(Border).TransformBounds(rect);
+            if (Border.ActualWidth < bounds.Width)
+            {
+                if (bounds.Left > 0) // move left
+                {
+                    translateTransform.X += -bounds.Left;
+                }
+                if (bounds.Right < Border.ActualWidth) // move right
+                {
+                    translateTransform.X += Border.ActualWidth - bounds.Right;
+                }
+            }
+            if (Border.ActualHeight < bounds.Height)
+            {
+                if (bounds.Top > 0) // move up
+                {
+                    translateTransform.Y += -bounds.Top;
+                }
+                if (bounds.Bottom < Border.ActualHeight) // move down
+                {
+                    translateTransform.Y += Border.ActualHeight - bounds.Bottom;
+                }
+                //translateTransform.Y += p.Y - start.Y;
+            }*/
+        /*}
 
         private void Viewbox_MouseWheel(object sender, MouseWheelEventArgs e)
         {            
@@ -106,7 +139,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.View
                 //translateTransform.Y += p.Y - start.Y;
             }
             e.Handled = true;
-        }
+        }*/
 
     }
 }
