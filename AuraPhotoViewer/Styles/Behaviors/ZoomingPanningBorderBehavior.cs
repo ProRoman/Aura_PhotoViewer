@@ -28,82 +28,68 @@ namespace AuraPhotoViewer.Styles.Behaviors
             AssociatedObject.MouseMove -= OnMouseMove;
             AssociatedObject.MouseLeftButtonUp -= OnMouseLeftButtonUp;
         }
-        
+
         private void OnMouseWheel(object sender, MouseWheelEventArgs mouseWheelEventArgs)
         {
             double zoom = mouseWheelEventArgs.Delta > 0 ? .2 : -.2;
-            DependencyObject child = FindVisualChild<Viewbox>(AssociatedObject);
-            if (child != null)
+            ScaleTransform scale = (ScaleTransform)((TransformGroup)AssociatedObject.RenderTransform).Children[0];
+            TranslateTransform translate =
+                (TranslateTransform)((TransformGroup)AssociatedObject.RenderTransform).Children[1];
+            if (zoom < 0 && scale.ScaleX <= 1 && scale.ScaleY <= 1)
             {
-                Viewbox viewbox = (Viewbox) child;
-                ScaleTransform scale = (ScaleTransform) ((TransformGroup) viewbox.RenderTransform).Children[0];
-                TranslateTransform translate =
-                    (TranslateTransform) ((TransformGroup) viewbox.RenderTransform).Children[1];
-                if (zoom < 0 && scale.ScaleX <= 1 && scale.ScaleY <= 1)
-                {
-                    return;
-                }
                 translate.X = 0;
                 translate.Y = 0;
-                scale.ScaleX += zoom;
-                scale.ScaleY += zoom;
+                return;
             }
+            Point position = mouseWheelEventArgs.GetPosition(AssociatedObject);
+            AssociatedObject.RenderTransformOrigin = new Point(position.X / AssociatedObject.ActualWidth, position.Y / AssociatedObject.ActualHeight);
+            scale.ScaleX += zoom;
+            scale.ScaleY += zoom;
         }
 
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
             if (AssociatedObject.IsMouseCaptured) return;
-            DependencyObject child = FindVisualChild<Viewbox>(AssociatedObject);
-            if (child != null)
-            {
-                Viewbox viewbox = (Viewbox)child;
-                start = mouseButtonEventArgs.GetPosition(viewbox);
-                AssociatedObject.CaptureMouse();
-            }
+            start = mouseButtonEventArgs.GetPosition(AssociatedObject);
+            AssociatedObject.CaptureMouse();
         }
 
         private void OnMouseMove(object sender, MouseEventArgs mouseEventArgs)
         {
             if (!AssociatedObject.IsMouseCaptured) return;
-            DependencyObject child = FindVisualChild<Viewbox>(AssociatedObject);
+            TranslateTransform translate =
+                (TranslateTransform)((TransformGroup)AssociatedObject.RenderTransform).Children[1];
+            Point p = mouseEventArgs.GetPosition(AssociatedObject);
+            DependencyObject child = FindVisualChild<Image>(AssociatedObject);
             if (child != null)
             {
-                Viewbox viewbox = (Viewbox) child;
-                TranslateTransform translate =
-                    (TranslateTransform) ((TransformGroup) viewbox.RenderTransform).Children[1];
-                Point p = mouseEventArgs.GetPosition(viewbox);
-
-                child = FindVisualChild<Image>(AssociatedObject);
-                if (child != null)
+                Image image = (Image)child;
+                // The bounds of the transformed Image control in coordinates relative to the Border control. 
+                // Check if the bounds are located inside the Border control.
+                Rect rect = new Rect(new Size(image.ActualWidth, image.ActualHeight));
+                Rect bounds = image.TransformToAncestor(AssociatedObject).TransformBounds(rect);
+                double offsetX = p.X - start.X;
+                double offsetY = p.Y - start.Y;
+                if (AssociatedObject.ActualWidth < bounds.Width)
                 {
-                    Image image = (Image) child;
-                    // The bounds of the transformed Image control in coordinates relative to the Border control. 
-                    // Check if the bounds are located inside the Border control.
-                    Rect rect = new Rect(new Size(image.ActualWidth, image.ActualHeight));
-                    Rect bounds = image.TransformToAncestor(AssociatedObject).TransformBounds(rect);
-                    double offsetX = p.X - start.X;
-                    double offsetY = p.Y - start.Y;
-                    if (AssociatedObject.ActualWidth < bounds.Width)
+                    if (offsetX < 0 && bounds.Right > AssociatedObject.ActualWidth) // move left
                     {
-                        if (offsetX < 0 && bounds.Right > AssociatedObject.ActualWidth) // move left
-                        {
-                            translate.X += offsetX;
-                        }
-                        if (offsetX > 0 && bounds.Left < 0) // move right
-                        {
-                            translate.X += offsetX;
-                        }
+                        translate.X += offsetX;
                     }
-                    if (AssociatedObject.ActualHeight < bounds.Height)
+                    if (offsetX > 0 && bounds.Left < 0) // move right
                     {
-                        if (offsetY < 0 && bounds.Bottom > AssociatedObject.ActualHeight) // move up
-                        {
-                            translate.Y += offsetY;
-                        }
-                        if (offsetY > 0 && bounds.Top < 0) // move down
-                        {
-                            translate.Y += offsetY;
-                        }
+                        translate.X += offsetX;
+                    }
+                }
+                if (AssociatedObject.ActualHeight < bounds.Height)
+                {
+                    if (offsetY < 0 && bounds.Bottom > AssociatedObject.ActualHeight) // move up
+                    {
+                        translate.Y += offsetY;
+                    }
+                    if (offsetY > 0 && bounds.Top < 0) // move down
+                    {
+                        translate.Y += offsetY;
                     }
                 }
             }

@@ -21,18 +21,18 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Border ClipToBounds="True">
-            <Viewbox Stretch="Uniform" RenderTransformOrigin="0.5,0.5">
-                <Viewbox.RenderTransform>
+            <Border RenderTransformOrigin="0.5,0.5">
+                <Border.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform />
                         <TranslateTransform />
                     </TransformGroup>
-                </Viewbox.RenderTransform>
-                <Image Source="{Binding SelectedImage, Mode=OneWay}" RenderOptions.BitmapScalingMode="HighQuality"/>
-            </Viewbox>
-            <i:Interaction.Behaviors>
-                <behaviors:ZoomingPanningBorderBehavior />
-            </i:Interaction.Behaviors>
+                </Border.RenderTransform>
+                <Image Source="{Binding SelectedImage, Mode=OneWay}" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality"/>
+                <i:Interaction.Behaviors>
+                    <behaviors:ZoomingPanningBorderBehavior />
+                </i:Interaction.Behaviors>
+            </Border>
         </Border>
         <DockPanel LastChildFill="False">
             <cc:AuraCircleIconButton AuraIconType="ImageLeft" Width="60" DockPanel.Dock="Left" Command="{Binding ImageLeftCommand}"/>
