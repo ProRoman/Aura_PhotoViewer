@@ -11,10 +11,6 @@ namespace AuraPhotoViewer.Styles.Behaviors
     public class ZoomingPanningBorderBehavior : Behavior<Border>
     {
         private Point start;
-        private bool isRightSnap;
-        private bool isLeftSnap;
-        private bool isDownSnap;
-        private bool isTopSnap;
 
         protected override void OnAttached()
         {
@@ -46,7 +42,6 @@ namespace AuraPhotoViewer.Styles.Behaviors
             {
                 translate.X = 0;
                 translate.Y = 0;
-                isRightSnap = isLeftSnap = isDownSnap = isTopSnap = false;
                 return;
             }
             //Point position = mouseWheelEventArgs.GetPosition(AssociatedObject);
@@ -100,7 +95,6 @@ namespace AuraPhotoViewer.Styles.Behaviors
                     translate.Y += offsetY;
                 }
             }
-            isRightSnap = isLeftSnap = isDownSnap = isTopSnap = false;
             AutoCorrectAfterTranslate(translate, offsetX, offsetY);
         }
 
@@ -130,30 +124,26 @@ namespace AuraPhotoViewer.Styles.Behaviors
                 return;
             }
             Rect boundsValue = bounds.Value;
-            if (AssociatedObject.ActualWidth < boundsValue.Width)
+            if (AssociatedObject.ActualWidth <= boundsValue.Width)
             {
                 if (offsetX <= 0 && boundsValue.Right <= AssociatedObject.ActualWidth) // move left
                 {
                     translate.X += AssociatedObject.ActualWidth - boundsValue.Right; // move right
-                    isRightSnap = true;
                 }
                 if (offsetX >= 0 && boundsValue.Left >= 0) // move right
                 {
                     translate.X += -boundsValue.Left; // move left
-                    isLeftSnap = true;
                 }
             }
-            if (AssociatedObject.ActualHeight < boundsValue.Height)
+            if (AssociatedObject.ActualHeight <= boundsValue.Height)
             {
                 if (offsetY <= 0 && boundsValue.Bottom <= AssociatedObject.ActualHeight) // move up
                 {
                     translate.Y += AssociatedObject.ActualHeight - boundsValue.Bottom; // move down
-                    isDownSnap = true;
                 }
                 if (offsetY >= 0 && boundsValue.Top >= 0) // move down
                 {
                     translate.Y += -boundsValue.Top; // move up
-                    isTopSnap = true;
                 }
             }
         }
@@ -166,21 +156,27 @@ namespace AuraPhotoViewer.Styles.Behaviors
                 return;
             }
             Rect boundsValue = bounds.Value;
-            if (isRightSnap && boundsValue.Right < AssociatedObject.ActualWidth)
+            if (AssociatedObject.ActualWidth <= boundsValue.Width)
             {
-                translate.X += AssociatedObject.ActualWidth - boundsValue.Right; // move right
+                if (boundsValue.Right < AssociatedObject.ActualWidth)
+                {
+                    translate.X += AssociatedObject.ActualWidth - boundsValue.Right; // move right
+                }
+                if (boundsValue.Left > 0)
+                {
+                    translate.X += -boundsValue.Left; // move left
+                }
             }
-            if (isLeftSnap && boundsValue.Left > 0)
+            if (AssociatedObject.ActualHeight <= boundsValue.Height)
             {
-                translate.X += -boundsValue.Left; // move left
-            }
-            if (isDownSnap && boundsValue.Bottom < AssociatedObject.ActualHeight)
-            {
-                translate.Y += AssociatedObject.ActualHeight - boundsValue.Bottom; // move down
-            }
-            if (isTopSnap && boundsValue.Top > 0)
-            {
-                translate.Y += -boundsValue.Top; // move up
+                if (boundsValue.Bottom < AssociatedObject.ActualHeight)
+                {
+                    translate.Y += AssociatedObject.ActualHeight - boundsValue.Bottom; // move down
+                }
+                if (boundsValue.Top > 0)
+                {
+                    translate.Y += -boundsValue.Top; // move up
+                }
             }
         }
 
