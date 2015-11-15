@@ -82,6 +82,7 @@
     </Page>
     <Compile Include="Behaviors\ThumbnailListViewScrollBehavior.cs" />
     <Compile Include="Behaviors\ZoomingPanningBorderBehavior.cs" />
+    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\RightMarginConverter.cs" />
     <Page Include="Themes\AuraCircleIconButton.xaml">
       <Generator>MSBuild:Compile</Generator>

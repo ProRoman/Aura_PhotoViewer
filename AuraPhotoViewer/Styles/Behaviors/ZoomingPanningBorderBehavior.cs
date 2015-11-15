@@ -12,6 +12,19 @@ namespace AuraPhotoViewer.Styles.Behaviors
     {
         private Point start;
 
+        public static readonly DependencyProperty IsZoomingOrPanningProperty = DependencyProperty.Register(
+            "IsZoomingOrPanning",
+            typeof (bool),
+            typeof(ZoomingPanningBorderBehavior),
+            new FrameworkPropertyMetadata(false)
+            );
+
+        public bool IsZoomingOrPanning
+        {
+            get { return (bool)GetValue(IsZoomingOrPanningProperty); }
+            set { SetValue(IsZoomingOrPanningProperty, value); }
+        }
+
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -42,13 +55,19 @@ namespace AuraPhotoViewer.Styles.Behaviors
             {
                 translate.X = 0;
                 translate.Y = 0;
+                IsZoomingOrPanning = false;
                 return;
+            }
+            if (scale.ScaleX > 1 && (scale.ScaleX - 1) < .2)
+            {
+                zoom = zoom > 0 ? (scale.ScaleX - 1) : (1 - scale.ScaleX);
             }
             //Point position = mouseWheelEventArgs.GetPosition(AssociatedObject);
             //AssociatedObject.RenderTransformOrigin = new Point(position.X / AssociatedObject.ActualWidth, position.Y / AssociatedObject.ActualHeight);
             scale.ScaleX += zoom;
             scale.ScaleY += zoom;
             AutoCorrectAfterScale(translate);
+            IsZoomingOrPanning = true;
         }
 
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
