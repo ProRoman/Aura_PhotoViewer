@@ -82,10 +82,10 @@
                                  Value="False">
                             <Setter TargetName="ellipse"
                                     Property="Opacity"
-                                    Value="0" />
+                                    Value="0.7" />
                             <Setter TargetName="PART_Icon"
                                     Property="Opacity"
-                                    Value="0" />
+                                    Value="0.7" />
                         </Trigger>
                         <Trigger Property="IsEnabled"
                                  Value="false">

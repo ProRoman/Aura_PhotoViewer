@@ -438,4 +438,27 @@
 			</Trigger>
 		</Style.Triggers>
 	</Style>
+    <Style x:Key="NavigationButtonPanel" TargetType="{x:Type DockPanel}">        
+        <Setter Property="LastChildFill" Value="False" />
+        <Setter Property="Opacity" Value="0.2" />
+        <Setter Property="Background" Value="Transparent" />        
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"  Value="True">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard >
+                            <DoubleAnimation Duration="0:0:0:1" To="1" Storyboard.TargetProperty="Opacity"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard >
+                            <DoubleAnimation Duration="0:0:1" To="0.2" Storyboard.TargetProperty="Opacity"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.ExitActions>
+            </DataTrigger>            
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

@@ -45,17 +45,26 @@ namespace AuraPhotoViewer.Styles.Behaviors
             Application.Current.MainWindow.StateChanged -= MainWindowOnStateChanged;
         }
 
+        private bool CheckScaleLimit(double zoom, ScaleTransform scale, TranslateTransform translate)
+        {
+            if (zoom < 0 && scale.ScaleX <= 1 && scale.ScaleY <= 1)
+            {
+                translate.X = 0;
+                translate.Y = 0;
+                IsZoomingOrPanning = false;
+                return true;
+            }
+            return false;
+        }
+
         private void OnMouseWheel(object sender, MouseWheelEventArgs mouseWheelEventArgs)
         {
             double zoom = mouseWheelEventArgs.Delta > 0 ? .2 : -.2;
             ScaleTransform scale = (ScaleTransform) ((TransformGroup) AssociatedObject.RenderTransform).Children[0];
             TranslateTransform translate =
                 (TranslateTransform) ((TransformGroup) AssociatedObject.RenderTransform).Children[1];
-            if (zoom < 0 && scale.ScaleX <= 1 && scale.ScaleY <= 1)
-            {
-                translate.X = 0;
-                translate.Y = 0;
-                IsZoomingOrPanning = false;
+            if (CheckScaleLimit(zoom, scale, translate))
+            {                
                 return;
             }
             if (scale.ScaleX > 1 && (scale.ScaleX - 1) < .2)
@@ -68,6 +77,7 @@ namespace AuraPhotoViewer.Styles.Behaviors
             scale.ScaleY += zoom;
             AutoCorrectAfterScale(translate);
             IsZoomingOrPanning = true;
+            CheckScaleLimit(zoom, scale, translate);
         }
 
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
