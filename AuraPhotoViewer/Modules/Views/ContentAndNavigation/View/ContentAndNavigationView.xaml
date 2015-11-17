@@ -23,15 +23,7 @@
             <RowDefinition Height="3*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid>
-            <DockPanel Style="{StaticResource NavigationButtonPanel}">
-                <cc:AuraCircleIconButton AuraIconType="ImageLeft" Width="60" DockPanel.Dock="Left" Command="{Binding ImageLeftCommand}" 
-                                         Visibility="{Binding ElementName=ZoomingPanningBorderBehavior, Path=IsZoomingOrPanning, Mode=OneWay,
-                    Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource False}}"/>
-                <cc:AuraCircleIconButton AuraIconType="ImageRight" Width="60" DockPanel.Dock="Right" Command="{Binding ImageRightCommand}"
-                                         Visibility="{Binding ElementName=ZoomingPanningBorderBehavior, Path=IsZoomingOrPanning, Mode=OneWay,
-                    Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource False}}" />
-            </DockPanel>
+        <Grid>            
             <Border ClipToBounds="True">
                 <Border RenderTransformOrigin="0.5,0.5">
                     <Border.RenderTransform>
@@ -45,7 +37,15 @@
                         <behaviors:ZoomingPanningBorderBehavior x:Name="ZoomingPanningBorderBehavior" />
                     </i:Interaction.Behaviors>
                 </Border>
-            </Border>            
+            </Border>
+            <DockPanel Style="{StaticResource NavigationButtonPanel}">
+                <cc:AuraCircleIconButton AuraIconType="ImageLeft" Width="60" DockPanel.Dock="Left" Command="{Binding ImageLeftCommand}" 
+                                         Visibility="{Binding ElementName=ZoomingPanningBorderBehavior, Path=IsZoomingOrPanning, Mode=OneWay,
+                    Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource False}}"/>
+                <cc:AuraCircleIconButton AuraIconType="ImageRight" Width="60" DockPanel.Dock="Right" Command="{Binding ImageRightCommand}"
+                                         Visibility="{Binding ElementName=ZoomingPanningBorderBehavior, Path=IsZoomingOrPanning, Mode=OneWay,
+                    Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource False}}" />
+            </DockPanel>
         </Grid>
         <ListView Style="{StaticResource ThumbnailListView}" 
                   ItemContainerStyle="{StaticResource ThumbnailListViewItem}" 
