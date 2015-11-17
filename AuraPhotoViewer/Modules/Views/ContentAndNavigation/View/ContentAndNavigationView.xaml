@@ -18,11 +18,7 @@
             <s:Boolean x:Key="False">False</s:Boolean>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="3*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <Grid>        
         <Grid>            
             <Border ClipToBounds="True">
                 <Border RenderTransformOrigin="0.5,0.5">
@@ -47,14 +43,19 @@
                     Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource False}}" />
             </DockPanel>
         </Grid>
-        <ListView Style="{StaticResource ThumbnailListView}" 
+        <CheckBox Name="ThumbnailPanelCheckBox" HorizontalAlignment="Left" VerticalAlignment="Bottom" IsChecked="False" />
+        <Popup IsOpen="{Binding ElementName=ThumbnailPanelCheckBox, Path=IsChecked, Mode=OneWay}"
+               PlacementTarget="{Binding ElementName=ThumbnailPanelCheckBox}" Placement="Bottom"  AllowsTransparency="True"
+               PopupAnimation="Slide"  StaysOpen="False"
+               Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+            <ListView Style="{StaticResource ThumbnailListView}" 
                   ItemContainerStyle="{StaticResource ThumbnailListViewItem}" 
                   ItemsSource="{Binding ThumbnailCollection.View}"
-                  SelectedItem="{Binding SelectedThumbnail, Mode=OneWayToSource}"
-                  Grid.Row="1" MaxHeight="200">
-            <i:Interaction.Behaviors>
-                <behaviors:ThumbnailListViewScrollBehavior />
-            </i:Interaction.Behaviors>
-        </ListView>
+                  SelectedItem="{Binding SelectedThumbnail, Mode=OneWayToSource}">
+                <i:Interaction.Behaviors>
+                    <behaviors:ThumbnailListViewScrollBehavior />
+                </i:Interaction.Behaviors>
+            </ListView>
+        </Popup>
     </Grid>
 </UserControl>
