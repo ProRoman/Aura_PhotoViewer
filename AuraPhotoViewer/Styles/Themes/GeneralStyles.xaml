@@ -28,6 +28,7 @@
 	<Color x:Key="ThumbMouseOverColor">#5C90FF</Color>
 
     <!--Navigation arrow control-specific resources.-->
+    <Color x:Key="CheckBoxBorderBrush">#A5A5A5</Color>
     <Color x:Key="PressedFillColor">Gray</Color>
 
     <!--Window Style-->
@@ -464,9 +465,10 @@
             </DataTrigger>            
         </Style.Triggers>
     </Style>
-    <Style x:Key="{x:Type CheckBox}" TargetType="{x:Type CheckBox}">
+    <Style x:Key="ThumbnailCheckBox" TargetType="{x:Type CheckBox}">
         <Setter Property="SnapsToDevicePixels" Value="true" />
-        <Setter Property="OverridesDefaultStyle" Value="true" />        
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="ToolTip" Value="Thumbnail Panel" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CheckBox}">
@@ -474,7 +476,7 @@
                         <BulletDecorator.Bullet>
                             <Border x:Name="Border" Width="13" Height="13" CornerRadius="0" BorderThickness="1">
                                 <Border.BorderBrush>
-                                    <SolidColorBrush Color="{StaticResource ControlBorderBrush}" />
+                                    <SolidColorBrush Color="{StaticResource CheckBoxBorderBrush}" />
                                 </Border.BorderBrush>
                                 <Border.Background>
                                     <SolidColorBrush Color="{StaticResource WindowColor}" />
@@ -483,13 +485,13 @@
                                     <Path Width="7" Height="7" x:Name="CheckMark" RenderTransformOrigin="0.5,0.5" 
                                           Data="M31,1 L61,56 L0.99999987,56 z" Stretch="Uniform">                                        
                                         <Path.Fill>
-                                            <SolidColorBrush Color="{StaticResource ControlBorderBrush}" />
+                                            <SolidColorBrush Color="{StaticResource CheckBoxBorderBrush}" />
                                         </Path.Fill>
                                         <Path.RenderTransform>
                                             <TransformGroup>
                                                 <ScaleTransform/>
                                                 <SkewTransform/>
-                                                <RotateTransform/>
+                                                <RotateTransform Angle="180"/>
                                                 <TranslateTransform/>
                                             </TransformGroup>
                                         </Path.RenderTransform>
@@ -522,16 +524,16 @@
                                 <VisualState x:Name="Checked">
                                     <Storyboard>
                                         <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="CheckMark">
-                                            <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                                            <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="180"/>
+                                            <EasingDoubleKeyFrame KeyTime="0" Value="180"/>
+                                            <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
                                         </DoubleAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Unchecked">
                                     <Storyboard>
                                         <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="CheckMark">
-                                            <EasingDoubleKeyFrame KeyTime="0" Value="180"/>
-                                            <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
+                                            <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                                            <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="180"/>
                                         </DoubleAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>

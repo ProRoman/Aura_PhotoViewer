@@ -32,10 +32,13 @@ namespace AuraPhotoViewer.Styles.Behaviors
         {
             base.OnAttached();
             parentGrid = VisualTreeHelper.GetParent(AssociatedObject.Parent) as Grid;
-            parentGrid.MouseWheel += OnMouseWheel;
-            parentGrid.MouseLeftButtonDown += OnMouseLeftButtonDown;
-            parentGrid.MouseMove += OnMouseMove;
-            parentGrid.MouseLeftButtonUp += OnMouseLeftButtonUp;
+            if (parentGrid != null)
+            {
+                parentGrid.MouseWheel += OnMouseWheel;
+                parentGrid.MouseLeftButtonDown += OnMouseLeftButtonDown;
+                parentGrid.MouseMove += OnMouseMove;
+                parentGrid.MouseLeftButtonUp += OnMouseLeftButtonUp;
+            }
             Application.Current.MainWindow.StateChanged += MainWindowOnStateChanged;
             image = GetImage();
             if (image != null)
@@ -47,10 +50,13 @@ namespace AuraPhotoViewer.Styles.Behaviors
         protected override void OnDetaching()
         {
             base.OnDetaching();
-            parentGrid.MouseWheel -= OnMouseWheel;
-            parentGrid.MouseLeftButtonDown -= OnMouseLeftButtonDown;
-            parentGrid.MouseMove -= OnMouseMove;
-            parentGrid.MouseLeftButtonUp -= OnMouseLeftButtonUp;
+            if (parentGrid != null)
+            {
+                parentGrid.MouseWheel -= OnMouseWheel;
+                parentGrid.MouseLeftButtonDown -= OnMouseLeftButtonDown;
+                parentGrid.MouseMove -= OnMouseMove;
+                parentGrid.MouseLeftButtonUp -= OnMouseLeftButtonUp;
+            }
             Application.Current.MainWindow.StateChanged -= MainWindowOnStateChanged;
             image.TargetUpdated -= ResetTransforms;
         }
@@ -58,7 +64,7 @@ namespace AuraPhotoViewer.Styles.Behaviors
         private Image GetImage()
         {
             DependencyObject child = FindVisualChild<Image>(AssociatedObject);
-            return child as Image;
+            return (Image) child;
         }
 
         private void ResetTransforms(object sender, DataTransferEventArgs e)

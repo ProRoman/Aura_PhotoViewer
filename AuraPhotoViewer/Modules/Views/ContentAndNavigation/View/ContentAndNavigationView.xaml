@@ -43,10 +43,11 @@
                     Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource False}}" />
             </DockPanel>
         </Grid>
-        <CheckBox Name="ThumbnailPanelCheckBox" HorizontalAlignment="Left" VerticalAlignment="Bottom" IsChecked="False" />
+        <CheckBox Name="ThumbnailPanelCheckBox" HorizontalAlignment="Left" VerticalAlignment="Bottom" IsChecked="False" 
+                  Style="{StaticResource ThumbnailCheckBox}"/>
         <Popup IsOpen="{Binding ElementName=ThumbnailPanelCheckBox, Path=IsChecked, Mode=OneWay}"
-               PlacementTarget="{Binding ElementName=ThumbnailPanelCheckBox}" Placement="Bottom"  AllowsTransparency="True"
-               PopupAnimation="Slide"  StaysOpen="False"
+               PlacementTarget="{Binding ElementName=ThumbnailPanelCheckBox}" Placement="Top"  AllowsTransparency="True"
+               PopupAnimation="Slide"  StaysOpen="False" SnapsToDevicePixels="True"
                Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
             <ListView Style="{StaticResource ThumbnailListView}" 
                   ItemContainerStyle="{StaticResource ThumbnailListViewItem}" 
