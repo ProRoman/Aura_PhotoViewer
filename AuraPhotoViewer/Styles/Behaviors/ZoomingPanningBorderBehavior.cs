@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
@@ -11,6 +12,7 @@ namespace AuraPhotoViewer.Styles.Behaviors
     public class ZoomingPanningBorderBehavior : Behavior<Border>
     {
         private Point start;
+        private Image image;
 
         public static readonly DependencyProperty IsZoomingOrPanningProperty = DependencyProperty.Register(
             "IsZoomingOrPanning",
@@ -18,7 +20,7 @@ namespace AuraPhotoViewer.Styles.Behaviors
             typeof(ZoomingPanningBorderBehavior),
             new FrameworkPropertyMetadata(false)
             );
-
+        
         public bool IsZoomingOrPanning
         {
             get { return (bool)GetValue(IsZoomingOrPanningProperty); }
@@ -33,6 +35,11 @@ namespace AuraPhotoViewer.Styles.Behaviors
             AssociatedObject.MouseMove += OnMouseMove;
             AssociatedObject.MouseLeftButtonUp += OnMouseLeftButtonUp;
             Application.Current.MainWindow.StateChanged += MainWindowOnStateChanged;
+            image = GetImage();
+            if (image != null)
+            {
+                image.TargetUpdated += ResetTransforms;
+            }
         }
 
         protected override void OnDetaching()
@@ -43,6 +50,25 @@ namespace AuraPhotoViewer.Styles.Behaviors
             AssociatedObject.MouseMove -= OnMouseMove;
             AssociatedObject.MouseLeftButtonUp -= OnMouseLeftButtonUp;
             Application.Current.MainWindow.StateChanged -= MainWindowOnStateChanged;
+            image.TargetUpdated -= ResetTransforms;
+        }
+
+        private Image GetImage()
+        {
+            DependencyObject child = FindVisualChild<Image>(AssociatedObject);
+            return child as Image;
+        }
+
+        private void ResetTransforms(object sender, DataTransferEventArgs e)
+        {
+            ScaleTransform scale = (ScaleTransform)((TransformGroup)AssociatedObject.RenderTransform).Children[0];
+            TranslateTransform translate =
+                (TranslateTransform)((TransformGroup)AssociatedObject.RenderTransform).Children[1];
+            translate.X = 0;
+            translate.Y = 0;
+            scale.ScaleX = 1;
+            scale.ScaleY = 1;
+            IsZoomingOrPanning = false;
         }
 
         private bool CheckScaleLimit(double zoom, ScaleTransform scale, TranslateTransform translate)
@@ -131,18 +157,16 @@ namespace AuraPhotoViewer.Styles.Behaviors
         {
             AssociatedObject.ReleaseMouseCapture();
         }
-
+        
         private Rect? GetImageBoundsRelativeToBorder()
-        {
-            DependencyObject child = FindVisualChild<Image>(AssociatedObject);
-            if (child == null)
+        {            
+            if (image != null)
             {
-                return null;
+                // The bounds of the transformed Image control in coordinates relative to the Border control.
+                Rect rect = new Rect(new Size(image.ActualWidth, image.ActualHeight));
+                return image.TransformToAncestor((Border)AssociatedObject.Parent).TransformBounds(rect);
             }
-            Image image = (Image) child;
-            // The bounds of the transformed Image control in coordinates relative to the Border control.
-            Rect rect = new Rect(new Size(image.ActualWidth, image.ActualHeight));
-            return image.TransformToAncestor((Border) AssociatedObject.Parent).TransformBounds(rect);
+            return null;
         }
 
         private void AutoCorrectAfterTranslate(TranslateTransform translate, double offsetX, double offsetY)

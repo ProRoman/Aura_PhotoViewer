@@ -40,7 +40,7 @@
                             <TranslateTransform />
                         </TransformGroup>
                     </Border.RenderTransform>
-                    <Image Source="{Binding SelectedImage, Mode=OneWay}" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <Image Source="{Binding SelectedImage, Mode=OneWay, NotifyOnTargetUpdated=True}" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality"/>
                     <i:Interaction.Behaviors>
                         <behaviors:ZoomingPanningBorderBehavior x:Name="ZoomingPanningBorderBehavior" />
                     </i:Interaction.Behaviors>

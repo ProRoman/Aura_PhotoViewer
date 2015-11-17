@@ -88,9 +88,7 @@
                                     Value="0.7" />
                         </Trigger>
                         <Trigger Property="IsEnabled"
-                                 Value="false">
-                            <Setter Property="Foreground"
-                                    Value="{DynamicResource GrayBrush7}" />
+                                 Value="false">                            
                             <Setter TargetName="ellipse"
                                     Property="Opacity"
                                     Value="0.3" />
