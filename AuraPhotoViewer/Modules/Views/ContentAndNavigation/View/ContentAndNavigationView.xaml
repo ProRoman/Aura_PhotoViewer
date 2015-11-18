@@ -18,7 +18,11 @@
             <s:Boolean x:Key="False">False</s:Boolean>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>        
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
         <Grid>            
             <Border ClipToBounds="True">
                 <Border RenderTransformOrigin="0.5,0.5">
@@ -43,20 +47,15 @@
                     Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource False}}" />
             </DockPanel>
         </Grid>
-        <CheckBox Name="ThumbnailPanelCheckBox" HorizontalAlignment="Left" VerticalAlignment="Bottom" IsChecked="False" 
-                  Style="{StaticResource ThumbnailCheckBox}"/>
-        <Popup IsOpen="{Binding ElementName=ThumbnailPanelCheckBox, Path=IsChecked, Mode=OneWay}"
-               PlacementTarget="{Binding ElementName=ThumbnailPanelCheckBox}" Placement="Top"  AllowsTransparency="True"
-               PopupAnimation="Slide"  StaysOpen="False" SnapsToDevicePixels="True"
-               Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+        <Expander ExpandDirection="Up" Grid.Row="1" MaxHeight="150" Header="Thumbnail Panel" Padding="2" BorderBrush="LightBlue" BorderThickness="2">
             <ListView Style="{StaticResource ThumbnailListView}" 
-                  ItemContainerStyle="{StaticResource ThumbnailListViewItem}" 
-                  ItemsSource="{Binding ThumbnailCollection.View}"
-                  SelectedItem="{Binding SelectedThumbnail, Mode=OneWayToSource}">
+                      ItemContainerStyle="{StaticResource ThumbnailListViewItem}" 
+                      ItemsSource="{Binding ThumbnailCollection.View}"
+                      SelectedItem="{Binding SelectedThumbnail, Mode=OneWayToSource}">
                 <i:Interaction.Behaviors>
                     <behaviors:ThumbnailListViewScrollBehavior />
                 </i:Interaction.Behaviors>
             </ListView>
-        </Popup>
+        </Expander>
     </Grid>
 </UserControl>
