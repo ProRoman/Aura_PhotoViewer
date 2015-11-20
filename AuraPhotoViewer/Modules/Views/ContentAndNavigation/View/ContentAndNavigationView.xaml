@@ -47,7 +47,7 @@
                     Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource False}}" />
             </DockPanel>
         </Grid>
-        <Expander ExpandDirection="Up" Grid.Row="1" MaxHeight="150" Header="Thumbnail Panel">
+        <Expander ExpandDirection="Up" Grid.Row="1" Header="Thumbnail Panel" Margin="3">
             <ListView Style="{StaticResource ThumbnailListView}" 
                       ItemContainerStyle="{StaticResource ThumbnailListViewItem}" 
                       ItemsSource="{Binding ThumbnailCollection.View}"

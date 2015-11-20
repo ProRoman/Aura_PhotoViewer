@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="http://schemas.microsoft.com/winfx/2006/xaml/"
     xmlns:converters="clr-namespace:AuraPhotoViewer.Styles.Converters">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="..\Themes\AuraCircleIconButton.xaml" />        
@@ -27,8 +28,8 @@
 	<Color x:Key="ThumbFillColor">Gray</Color>
 	<Color x:Key="ThumbMouseOverColor">#5C90FF</Color>
 
-    <!--Navigation arrow control-specific resources.-->
-    <Color x:Key="CheckBoxBorderBrush">#A5A5A5</Color>
+    <!--Thumbnail Panel control-specific resources.-->
+    <Color x:Key="ExpanderToggleBorderBrush">#A5A5A5</Color>
     <Color x:Key="PressedFillColor">Gray</Color>
 
     <!--Window Style-->
@@ -465,6 +466,8 @@
             </DataTrigger>            
         </Style.Triggers>
     </Style>
+    
+    <!--
     <Style x:Key="ThumbnailCheckBox" TargetType="{x:Type CheckBox}">
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
@@ -548,6 +551,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    -->
     
     <ControlTemplate x:Key="ExpanderToggleButton" TargetType="{x:Type ToggleButton}">
         <Border x:Name="Border" BorderThickness="0,0,1,0">
@@ -555,7 +559,7 @@
                 <SolidColorBrush Color="{StaticResource WindowColor}" />
             </Border.Background>
             <Border.BorderBrush>
-                <SolidColorBrush Color="{StaticResource CheckBoxBorderBrush}" />
+                <SolidColorBrush Color="{StaticResource ExpanderToggleBorderBrush}" />
             </Border.BorderBrush>
             <VisualStateManager.VisualStateGroups>
                 <VisualStateGroup x:Name="CommonStates">
@@ -566,13 +570,19 @@
                                           Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
                                 <EasingColorKeyFrame KeyTime="0" Value="{StaticResource PressedFillColor}" />
                             </ColorAnimationUsingKeyFrames>
-                        </Storyboard>
+                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)">
+                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ArrowMouseOverColor}" />
+                            </ColorAnimationUsingKeyFrames>
+                        </Storyboard>                        
                     </VisualState>
                     <VisualState x:Name="Pressed">
                         <Storyboard>
                             <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
                                           Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
                                 <EasingColorKeyFrame KeyTime="0" Value="{StaticResource PressedFillColor}" />
+                            </ColorAnimationUsingKeyFrames>
+                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)">
+                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ArrowMouseOverColor}" />
                             </ColorAnimationUsingKeyFrames>
                         </Storyboard>
                     </VisualState>
@@ -581,27 +591,27 @@
                 <VisualStateGroup x:Name="CheckStates">
                     <VisualState x:Name="Checked">
                         <Storyboard>
-                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="CollapsedArrow">
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="Arrow">
                                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="-180"/>
+                                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="-180"/>
                             </DoubleAnimationUsingKeyFrames>
                         </Storyboard>
                     </VisualState>
                     <VisualState x:Name="Unchecked">
                         <Storyboard>
-                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="CollapsedArrow">
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="Arrow">
                                 <EasingDoubleKeyFrame KeyTime="0" Value="-180"/>
-                                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
+                                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0"/>
                             </DoubleAnimationUsingKeyFrames>
                         </Storyboard>
                     </VisualState>
                     <VisualState x:Name="Indeterminate" />
                 </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
-            <Path x:Name="CollapsedArrow" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z"
+            <Path x:Name="Arrow" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z"
                   RenderTransformOrigin="0.5,0.5">
                 <Path.Fill>
-                    <SolidColorBrush Color="{StaticResource CheckBoxBorderBrush}" />
+                    <SolidColorBrush Color="{StaticResource ArrowFillColor}" />
                 </Path.Fill>
                 <Path.RenderTransform>
                     <TransformGroup>
@@ -621,8 +631,8 @@
                 <ControlTemplate TargetType="{x:Type Expander}">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition x:Name="ContentRow" Height="0" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition x:Name="ContentRow" Height="Auto" />
                         </Grid.RowDefinitions>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
@@ -631,10 +641,22 @@
                                 <VisualState x:Name="Disabled">                                   
                                 </VisualState>
                             </VisualStateGroup>
+                            <VisualStateGroup x:Name="ExpansionStates">
+                                <VisualState x:Name="Expanded" >
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Content" Storyboard.TargetProperty="(Border.Height)" From="0" To="150" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Collapsed" >
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Content" Storyboard.TargetProperty="(Border.Height)" From="150" To="0" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <Border x:Name="Border" Grid.Row="0" BorderThickness="1">
                             <Border.BorderBrush>
-                                <SolidColorBrush Color="{StaticResource CheckBoxBorderBrush}" />
+                                <SolidColorBrush Color="{StaticResource ExpanderToggleBorderBrush}" />
                             </Border.BorderBrush>
                             <Border.Background>
                                 <SolidColorBrush Color="{StaticResource WindowColor}" />
@@ -653,21 +675,16 @@
                                 <ContentPresenter Grid.Column="1" Margin="4" ContentSource="Header" RecognizesAccessKey="True" />
                             </Grid>
                         </Border>
-                        <Border x:Name="Content" Grid.Row="1" BorderThickness="1,0,1,1">
+                        <Border x:Name="Content" Grid.Row="1" BorderThickness="1,0,1,1" Height="0">
                             <Border.BorderBrush>
-                                <SolidColorBrush Color="{StaticResource CheckBoxBorderBrush}" />
+                                <SolidColorBrush Color="{StaticResource ExpanderToggleBorderBrush}" />
                             </Border.BorderBrush>
                             <Border.Background>
-                                <SolidColorBrush Color="{DynamicResource ContentAreaColorDark}" />
+                                <SolidColorBrush Color="{DynamicResource WindowColor}" />
                             </Border.Background>
                             <ContentPresenter Margin="4" />
                         </Border>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsExpanded" Value="True">
-                            <Setter TargetName="ContentRow" Property="Height" Value="{Binding DesiredHeight, ElementName=Content}" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
+                    </Grid>                   
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
