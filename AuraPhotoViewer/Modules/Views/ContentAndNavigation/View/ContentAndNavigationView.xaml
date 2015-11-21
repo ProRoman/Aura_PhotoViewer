@@ -56,6 +56,14 @@
                     <behaviors:ThumbnailListViewScrollBehavior />
                 </i:Interaction.Behaviors>
             </ListView>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Expanded" >
+                    <i:InvokeCommandAction />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="Collapsed" >
+                    <i:InvokeCommandAction />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </Expander>
     </Grid>
 </UserControl>
