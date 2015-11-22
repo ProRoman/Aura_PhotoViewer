@@ -94,32 +94,39 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
         #region Private methods
 
         private void LoadImages(string imagePath)
-        {            
-            try
-            {
-                Log.Info("Images load");
-                string sourceDirectory = Path.GetDirectoryName(imagePath);
-                List<string> extensions = new List<string> { ".jpg", ".png", ".bmp", ".tiff", ".gif", ".ico" };
-                if (sourceDirectory != null)
+        {
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,
+                new Action(() =>
                 {
-                    var images = Directory.EnumerateFiles(sourceDirectory, "*.*")
-                        .Where(image => extensions.Any(ext =>
-                        {
-                            string extension = Path.GetExtension(image);                                         
-                            return extension != null && ext == extension.ToLower();
-                        }));
-                    foreach (string image in images)
+                    Log.Info("Images load");
+                    try
                     {
-                        _thumbnailCollection.Add(new Thumbnail { ImageUri = image });
+
+                        string sourceDirectory = Path.GetDirectoryName(imagePath);
+                        List<string> extensions = new List<string> {".jpg", ".png", ".bmp", ".tiff", ".gif", ".ico"};
+                        if (sourceDirectory != null)
+                        {
+                            var images = Directory.EnumerateFiles(sourceDirectory, "*.*")
+                                .Where(image => extensions.Any(ext =>
+                                {
+                                    string extension = Path.GetExtension(image);
+                                    return extension != null && ext == extension.ToLower();
+                                }));
+                            foreach (string image in images)
+                            {
+                                _thumbnailCollection.Add(new Thumbnail {ImageUri = image});
+                            }
+                        }
+                        Thumbnail selectedThumbnail =
+                            _thumbnailCollection.First<Thumbnail>(thumbnail => thumbnail.ImageUri == imagePath);
+                        ThumbnailCollection.View.MoveCurrentTo(selectedThumbnail);
+
                     }
-                }
-                Thumbnail selectedThumbnail = _thumbnailCollection.First<Thumbnail>(thumbnail => thumbnail.ImageUri == imagePath);
-                ThumbnailCollection.View.MoveCurrentTo(selectedThumbnail);
-            }
-            catch (Exception e)
-            {
-                Log.Error("Exception during images load", e);
-            }
+                    catch (Exception e)
+                    {
+                        Log.Error("Exception during images load", e);
+                    }
+                }));
         }
 
         private void ImageLeftExecuted()

@@ -7,6 +7,7 @@
     </ResourceDictionary.MergedDictionaries>
     <converters:RightMarginConverter x:Key="RightMarginConverter" />
 	<converters:UriToBitmapConverter x:Key="UriToBitmapConverter" />
+    <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     
 	<!--Window colors.-->
 	<Color x:Key="WindowColor">#EAEAEA</Color>
@@ -25,8 +26,12 @@
 	<Color x:Key="ArrowMouseOverColor">#5C90FF</Color>
 	<Color x:Key="ThumbFillColor">Gray</Color>
 	<Color x:Key="ThumbMouseOverColor">#5C90FF</Color>
-    
-	<!--Window Style-->
+
+    <!--Thumbnail Panel control-specific resources.-->
+    <Color x:Key="ExpanderToggleBorderBrush">#A5A5A5</Color>
+    <Color x:Key="PressedFillColor">Gray</Color>
+
+    <!--Window Style-->
 	<Style x:Key="AuraWindowStyle" TargetType="{x:Type Window}">
 		<Setter Property="WindowChrome.WindowChrome">
 			<Setter.Value>
@@ -437,4 +442,250 @@
 			</Trigger>
 		</Style.Triggers>
 	</Style>
+    <Style x:Key="NavigationButtonPanel" TargetType="{x:Type DockPanel}">        
+        <Setter Property="LastChildFill" Value="False" />
+        <Setter Property="Opacity" Value="0.2" />
+        <Setter Property="Background" Value="Transparent" />        
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"  Value="True">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard >
+                            <DoubleAnimation Duration="0:0:0:1" To="1" Storyboard.TargetProperty="Opacity"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard >
+                            <DoubleAnimation Duration="0:0:1" To="0.2" Storyboard.TargetProperty="Opacity"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.ExitActions>
+            </DataTrigger>            
+        </Style.Triggers>
+    </Style>
+    
+    <!--
+    <Style x:Key="ThumbnailCheckBox" TargetType="{x:Type CheckBox}">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="ToolTip" Value="Thumbnail Panel" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <BulletDecorator Background="Transparent">
+                        <BulletDecorator.Bullet>
+                            <Border x:Name="Border" Width="13" Height="13" CornerRadius="0" BorderThickness="1">
+                                <Border.BorderBrush>
+                                    <SolidColorBrush Color="{StaticResource CheckBoxBorderBrush}" />
+                                </Border.BorderBrush>
+                                <Border.Background>
+                                    <SolidColorBrush Color="{StaticResource WindowColor}" />
+                                </Border.Background>
+                                <Grid>
+                                    <Path Width="7" Height="7" x:Name="CheckMark" RenderTransformOrigin="0.5,0.5" 
+                                          Data="M31,1 L61,56 L0.99999987,56 z" Stretch="Uniform">                                        
+                                        <Path.Fill>
+                                            <SolidColorBrush Color="{StaticResource CheckBoxBorderBrush}" />
+                                        </Path.Fill>
+                                        <Path.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform/>
+                                                <SkewTransform/>
+                                                <RotateTransform Angle="180"/>
+                                                <TranslateTransform/>
+                                            </TransformGroup>
+                                        </Path.RenderTransform>
+                                    </Path>                                    
+                                </Grid>
+                            </Border>
+                        </BulletDecorator.Bullet>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                                      Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource PressedFillColor}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                                      Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource PressedFillColor}" />
+                                        </ColorAnimationUsingKeyFrames>                                                                              
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled" />
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="CheckMark">
+                                            <EasingDoubleKeyFrame KeyTime="0" Value="180"/>
+                                            <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked">
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="CheckMark">
+                                            <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                                            <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="180"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <ContentPresenter Margin="4,0,0,0"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            RecognizesAccessKey="True" />
+                    </BulletDecorator>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    -->
+    
+    <ControlTemplate x:Key="ExpanderToggleButton" TargetType="{x:Type ToggleButton}">
+        <Border x:Name="Border" BorderThickness="0,0,1,0">
+            <Border.Background>
+                <SolidColorBrush Color="{StaticResource WindowColor}" />
+            </Border.Background>
+            <Border.BorderBrush>
+                <SolidColorBrush Color="{StaticResource ExpanderToggleBorderBrush}" />
+            </Border.BorderBrush>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="MouseOver">
+                        <Storyboard>
+                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                          Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource PressedFillColor}" />
+                            </ColorAnimationUsingKeyFrames>
+                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)">
+                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ArrowMouseOverColor}" />
+                            </ColorAnimationUsingKeyFrames>
+                        </Storyboard>                        
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <Storyboard>
+                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                          Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource PressedFillColor}" />
+                            </ColorAnimationUsingKeyFrames>
+                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)">
+                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ArrowMouseOverColor}" />
+                            </ColorAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Disabled" />
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="CheckStates">
+                    <VisualState x:Name="Checked">
+                        <Storyboard>
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="Arrow">
+                                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="-180"/>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Unchecked">
+                        <Storyboard>
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="Arrow">
+                                <EasingDoubleKeyFrame KeyTime="0" Value="-180"/>
+                                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0"/>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Indeterminate" />
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <Path x:Name="Arrow" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z"
+                  RenderTransformOrigin="0.5,0.5">
+                <Path.Fill>
+                    <SolidColorBrush Color="{StaticResource ArrowFillColor}" />
+                </Path.Fill>
+                <Path.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Path.RenderTransform>
+            </Path>
+        </Border>
+    </ControlTemplate>
+
+    <Style x:Key="{x:Type Expander}"  TargetType="{x:Type Expander}">      
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Expander}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition x:Name="ContentRow" Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver" />
+                                <VisualState x:Name="Disabled">                                   
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="ExpansionStates">
+                                <VisualState x:Name="Expanded" >
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Content" Storyboard.TargetProperty="(Border.Height)" From="0" To="150" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Collapsed" >
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Content" Storyboard.TargetProperty="(Border.Height)" From="150" To="0" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border x:Name="Border" Grid.Row="0" BorderThickness="1">
+                            <Border.BorderBrush>
+                                <SolidColorBrush Color="{StaticResource ExpanderToggleBorderBrush}" />
+                            </Border.BorderBrush>
+                            <Border.Background>
+                                <SolidColorBrush Color="{StaticResource WindowColor}" />
+                            </Border.Background>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <ToggleButton OverridesDefaultStyle="True" Template="{StaticResource ExpanderToggleButton}"
+                                              IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <ToggleButton.Background>
+                                        <SolidColorBrush Color="{StaticResource WindowColor}" />
+                                    </ToggleButton.Background>
+                                </ToggleButton>
+                                <ContentPresenter Grid.Column="1" Margin="4" ContentSource="Header" RecognizesAccessKey="True" />
+                            </Grid>
+                        </Border>
+                        <Border x:Name="Content" Grid.Row="1" BorderThickness="1,0,1,1" Height="0">
+                            <Border.BorderBrush>
+                                <SolidColorBrush Color="{StaticResource ExpanderToggleBorderBrush}" />
+                            </Border.BorderBrush>
+                            <Border.Background>
+                                <SolidColorBrush Color="{DynamicResource WindowColor}" />
+                            </Border.Background>
+                            <ContentPresenter Margin="4" />
+                        </Border>
+                    </Grid>                   
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
