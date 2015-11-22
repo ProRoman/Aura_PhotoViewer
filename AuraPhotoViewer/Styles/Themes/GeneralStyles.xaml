@@ -643,12 +643,12 @@
                             <VisualStateGroup x:Name="ExpansionStates">
                                 <VisualState x:Name="Expanded" >
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="Content" Storyboard.TargetProperty="(Border.Height)" From="0" To="150" Duration="0:0:0.2"/>
+                                        <DoubleAnimation Storyboard.TargetName="Content" Storyboard.TargetProperty="(Border.Height)" From="0" To="160" Duration="0:0:0.2"/>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Collapsed" >
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="Content" Storyboard.TargetProperty="(Border.Height)" From="150" To="0" Duration="0:0:0.2"/>
+                                        <DoubleAnimation Storyboard.TargetName="Content" Storyboard.TargetProperty="(Border.Height)" From="160" To="0" Duration="0:0:0.2"/>
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>

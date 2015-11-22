@@ -48,10 +48,12 @@
             </DockPanel>
         </Grid>
         <Expander ExpandDirection="Up" Grid.Row="1" Header="Thumbnail Panel" Margin="3" IsExpanded="True">
+            <!--Set ListView height for Virtualization-->
             <ListView Style="{StaticResource ThumbnailListView}" 
                       ItemContainerStyle="{StaticResource ThumbnailListViewItem}" 
                       ItemsSource="{Binding ThumbnailCollection.View}"
-                      SelectedItem="{Binding SelectedThumbnail, Mode=OneWayToSource}">
+                      SelectedItem="{Binding SelectedThumbnail, Mode=OneWayToSource}"
+                      Height="150">
                 <i:Interaction.Behaviors>
                     <behaviors:ThumbnailListViewScrollBehavior />
                 </i:Interaction.Behaviors>
