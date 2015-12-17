@@ -1,13 +1,12 @@
 ﻿using AuraPhotoViewer.Modules.Common.Events;
 using AuraPhotoViewer.Modules.Common.ViewModel;
+using AuraPhotoViewer.Services.ImageProviders;
 using log4net;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
@@ -27,6 +26,8 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 
         private IEventAggregator _eventAggregator;
 
+        private IImageProvider _imageProvider;
+
         private ObservableCollection<Thumbnail> _thumbnailCollection;
                 
         private Thumbnail _selectedThumbnail;
@@ -38,9 +39,11 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
         #region Initialization
 
         [InjectionMethod]
-        public void Initialize(IEventAggregator eventAggregator)
-        {            
+        public void Initialize(IEventAggregator eventAggregator,
+            [Dependency("LocalImageProvider")] IImageProvider imageProvider)
+        {
             _eventAggregator = eventAggregator;
+            _imageProvider = imageProvider;
             _eventAggregator.GetEvent<OpenedImageEvent>().Subscribe(LoadImages, ThreadOption.UIThread);
             ThumbnailCollection = new CollectionViewSource();
             _thumbnailCollection = new ObservableCollection<Thumbnail>();
@@ -93,40 +96,26 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 
         #region Private methods
 
-        private void LoadImages(string imagePath)
+        private async void LoadImages(string imagePath)
         {
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,
-                new Action(() =>
-                {
-                    Log.Info("Images load");
-                    try
+            try
+            {
+                Log.Info("Images load");
+                await
+                    _imageProvider.LoadImagesAsync(imagePath,
+                        new Progress<string>(image => _thumbnailCollection.Add(new Thumbnail {ImageUri = image})));
+                Thumbnail selectedThumbnail =
+                    _thumbnailCollection.First<Thumbnail>(thumbnail => thumbnail.ImageUri == imagePath);
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,
+                    new Action(() =>
                     {
-
-                        string sourceDirectory = Path.GetDirectoryName(imagePath);
-                        List<string> extensions = new List<string> {".jpg", ".png", ".bmp", ".tiff", ".gif", ".ico"};
-                        if (sourceDirectory != null)
-                        {
-                            var images = Directory.EnumerateFiles(sourceDirectory, "*.*")
-                                .Where(image => extensions.Any(ext =>
-                                {
-                                    string extension = Path.GetExtension(image);
-                                    return extension != null && ext == extension.ToLower();
-                                }));
-                            foreach (string image in images)
-                            {
-                                _thumbnailCollection.Add(new Thumbnail {ImageUri = image});
-                            }
-                        }
-                        Thumbnail selectedThumbnail =
-                            _thumbnailCollection.First<Thumbnail>(thumbnail => thumbnail.ImageUri == imagePath);
                         ThumbnailCollection.View.MoveCurrentTo(selectedThumbnail);
-
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error("Exception during images load", e);
-                    }
-                }));
+                    }));
+            }
+            catch (Exception e)
+            {
+                Log.Error("Exception during images load", e);
+            }
         }
 
         private void ImageLeftExecuted()
