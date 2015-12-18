@@ -18,23 +18,23 @@ namespace AuraPhotoViewer.Services.ImageProviders
             ".ico"
         };
 
-        public async Task LoadImagesAsync(string path, IProgress<string> progress)
+        public async Task LoadImagesAsync(string sourceDirectory, IProgress<string> progress)
         {
             await Task.Factory.StartNew(() =>
             {
-                string sourceDirectory = Path.GetDirectoryName(path);
-                if (sourceDirectory != null)
+                if (sourceDirectory == null)
                 {
-                    var images = Directory.EnumerateFiles(sourceDirectory, "*.*")
-                        .Where(image => _supportedImageExtensions.Any(ext =>
-                        {
-                            string extension = Path.GetExtension(image);
-                            return extension != null && ext == extension.ToLower();
-                        }));
-                    foreach (string image in images)
+                    return;
+                }
+                var images = Directory.EnumerateFiles(sourceDirectory, "*.*")
+                    .Where(image => _supportedImageExtensions.Any(ext =>
                     {
-                        progress.Report(image);
-                    }
+                        string extension = Path.GetExtension(image);
+                        return extension != null && ext == extension.ToLower();
+                    }));
+                foreach (string image in images)
+                {
+                    progress.Report(image);
                 }
             });
         }

@@ -7,6 +7,7 @@ using Prism.Commands;
 using Prism.Events;
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
@@ -102,11 +103,11 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
             {
                 Log.Info("Images load");
                 await
-                    _imageProvider.LoadImagesAsync(imagePath,
+                    _imageProvider.LoadImagesAsync(Path.GetDirectoryName(imagePath),
                         new Progress<string>(image => _thumbnailCollection.Add(new Thumbnail {ImageUri = image})));
                 Thumbnail selectedThumbnail =
                     _thumbnailCollection.First<Thumbnail>(thumbnail => thumbnail.ImageUri == imagePath);
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
                     new Action(() =>
                     {
                         ThumbnailCollection.View.MoveCurrentTo(selectedThumbnail);
