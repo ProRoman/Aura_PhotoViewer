@@ -5,7 +5,7 @@
         xmlns:prism="clr-namespace:Prism.Regions;assembly=Prism.Wpf"
         xmlns:const="clr-namespace:AuraPhotoViewer.Modules.Common.Constants;assembly=AuraPhotoViewer.Modules.Common"               
         Style="{StaticResource AuraWindowStyle}" Icon="Aura_Icon.ico" Title="Aura Photo Viewer" WindowStyle="None" Height="550" 
-                       Width="750" MinHeight="350" MinWidth="400">
+                       Width="750" MinHeight="350" MinWidth="400" WindowState="Maximized">
     <aura:ResizeableWindow.CommandBindings>
         <CommandBinding Command="{x:Static SystemCommands.CloseWindowCommand}" Executed="CloseWindowExecuted"/>
         <CommandBinding Command="{x:Static SystemCommands.MaximizeWindowCommand}" Executed="MaximizeWindowExecuted"/>
