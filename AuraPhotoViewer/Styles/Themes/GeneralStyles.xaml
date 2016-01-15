@@ -6,7 +6,8 @@
         <ResourceDictionary Source="..\Themes\AuraCircleIconButton.xaml" />        
     </ResourceDictionary.MergedDictionaries>
     <converters:RightMarginConverter x:Key="RightMarginConverter" />
-	<converters:UriToBitmapConverter x:Key="UriToBitmapConverter" />
+    <converters:UriToBitmapThumbnailConverter x:Key="UriToBitmapThumbnailConverter" />
+    <converters:UriToBitmapOriginalSizeConverter x:Key="UriToBitmapOriginalSizeConverter" />
     <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     
 	<!--Window colors.-->
@@ -251,7 +252,7 @@
 								</VisualState>
 							</VisualStateGroup>
 						</VisualStateManager.VisualStateGroups>
-						<Image Source="{Binding ImageUri, Converter={StaticResource UriToBitmapConverter}}"  Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <Image Source="{Binding ImageUri, Converter={StaticResource UriToBitmapThumbnailConverter}}"  Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 					</Border>
 				</ControlTemplate>
 			</Setter.Value>

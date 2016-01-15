@@ -38,6 +38,7 @@ namespace AuraPhotoViewer.Styles.Behaviors
                 parentGrid.MouseLeftButtonDown += OnMouseLeftButtonDown;
                 parentGrid.MouseMove += OnMouseMove;
                 parentGrid.MouseLeftButtonUp += OnMouseLeftButtonUp;
+                parentGrid.AddHandler(Button.ClickEvent, new RoutedEventHandler(OnRotateClick));
             }
             Application.Current.MainWindow.StateChanged += MainWindowOnStateChanged;
             image = GetImage();
@@ -56,6 +57,7 @@ namespace AuraPhotoViewer.Styles.Behaviors
                 parentGrid.MouseLeftButtonDown -= OnMouseLeftButtonDown;
                 parentGrid.MouseMove -= OnMouseMove;
                 parentGrid.MouseLeftButtonUp -= OnMouseLeftButtonUp;
+                parentGrid.RemoveHandler(Button.ClickEvent, new RoutedEventHandler(OnRotateClick));
             }
             Application.Current.MainWindow.StateChanged -= MainWindowOnStateChanged;
             image.TargetUpdated -= ResetTransforms;
@@ -94,7 +96,7 @@ namespace AuraPhotoViewer.Styles.Behaviors
         private void OnMouseWheel(object sender, MouseWheelEventArgs mouseWheelEventArgs)
         {
             double zoom = mouseWheelEventArgs.Delta > 0 ? .2 : -.2;
-            ScaleTransform scale = (ScaleTransform) ((TransformGroup) AssociatedObject.RenderTransform).Children[0];
+            ScaleTransform scale = (ScaleTransform)((TransformGroup)AssociatedObject.RenderTransform).Children[0];
             TranslateTransform translate =
                 (TranslateTransform) ((TransformGroup) AssociatedObject.RenderTransform).Children[1];
             if (CheckScaleLimit(zoom, scale, translate))
@@ -240,6 +242,30 @@ namespace AuraPhotoViewer.Styles.Behaviors
                 {
                     translate.Y += -boundsValue.Top; // move up
                 }
+            }
+        }
+
+        private void OnRotateClick(object sender, RoutedEventArgs e)
+        {
+            Rect? bounds = GetImageBoundsRelativeToBorder();
+            if (!bounds.HasValue)
+            {
+                return;
+            }
+            Rect boundsValue = bounds.Value;
+            string tag = (string)((FrameworkElement)e.OriginalSource).Tag;
+            RotateTransform rotate = (RotateTransform)((TransformGroup)AssociatedObject.LayoutTransform).Children[0];
+            if (tag == "CounterClockwiseRotateButton")
+            {
+                //rotate.Angle = rotate.Angle - 90;
+                rotate = new RotateTransform(-90, 0.5, 0.5);
+                Point newPoint = rotate.Transform(new Point(boundsValue.Left, boundsValue.Top));
+            }
+            else if (tag == "ClockwiseRotateButton")
+            {
+                //rotate.Angle = rotate.Angle + 90;
+                rotate = new RotateTransform(90, 0.5, 0.5);
+                Point newPoint = rotate.Transform(new Point(boundsValue.Left, boundsValue.Top));
             }
         }
 

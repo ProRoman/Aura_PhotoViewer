@@ -7,6 +7,8 @@ using Prism.Commands;
 using Prism.Events;
 using System;
 using System.Collections.ObjectModel;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -51,6 +53,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
             ThumbnailCollection.Source = _thumbnailCollection;
             ImageLeftCommand = new DelegateCommand(ImageLeftExecuted);
             ImageRightCommand = new DelegateCommand(ImageRightExecuted);
+            ClockwiseRotateCommand = new DelegateCommand(ClockwiseRotateExecuted);
         }
 
         #endregion
@@ -93,6 +96,8 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 
         public DelegateCommand ImageRightCommand { get; set; }
 
+        public DelegateCommand ClockwiseRotateCommand { get; set; }
+
         #endregion
 
         #region Private methods
@@ -127,6 +132,25 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
         private void ImageRightExecuted()
         {
             ThumbnailCollection.View.MoveCurrentToNext();
+        }
+
+        private void ClockwiseRotateExecuted()
+        {
+            //int i = ThumbnailCollection.View.CurrentPosition;
+            //Thumbnail t = (Thumbnail)ThumbnailCollection.View.CurrentItem;
+            //_thumbnailCollection.RemoveAt(i);
+            //Bitmap img = (Bitmap)Bitmap.FromFile(t.ImageUri);
+            //ImageFormat imgfrmt = img.RawFormat;
+            //img.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            //if (File.Exists(t.ImageUri))
+            //{
+            //    File.Delete(t.ImageUri);
+            //}
+            //img.Save(t.ImageUri, imgfrmt);
+            //_thumbnailCollection.Insert(i, new Thumbnail { ImageUri = t.ImageUri });
+            //Thumbnail selectedThumbnail =
+            //        _thumbnailCollection.First<Thumbnail>(thumbnail => thumbnail.ImageUri == t.ImageUri);
+            //ThumbnailCollection.View.MoveCurrentTo(selectedThumbnail);
         }
 
         #endregion

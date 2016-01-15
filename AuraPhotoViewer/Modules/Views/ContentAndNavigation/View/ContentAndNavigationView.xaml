@@ -29,10 +29,15 @@
                     <Border.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform />
-                            <TranslateTransform />
+                            <TranslateTransform />                            
                         </TransformGroup>
                     </Border.RenderTransform>
-                    <Image Source="{Binding SelectedImage, Mode=OneWay, NotifyOnTargetUpdated=True}" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <Border.LayoutTransform>
+                        <TransformGroup>                            
+                            <RotateTransform />
+                        </TransformGroup>
+                    </Border.LayoutTransform>
+                    <Image Source="{Binding SelectedImage, Mode=OneWay, NotifyOnTargetUpdated=True, Converter={StaticResource UriToBitmapOriginalSizeConverter}}" Stretch="Uniform"/>
                     <i:Interaction.Behaviors>
                         <behaviors:ZoomingPanningBorderBehavior x:Name="ZoomingPanningBorderBehavior" />
                     </i:Interaction.Behaviors>
@@ -45,6 +50,18 @@
                 <cc:AuraCircleIconButton AuraIconType="ImageRight" Width="60" DockPanel.Dock="Right" Command="{Binding ImageRightCommand}"
                                          Visibility="{Binding ElementName=ZoomingPanningBorderBehavior, Path=IsZoomingOrPanning, Mode=OneWay,
                     Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource False}}" />
+                <Border DockPanel.Dock="Top" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <cc:AuraCircleIconButton Tag="CounterClockwiseRotateButton" AuraIconType="CounterClockwiseRotate" Width="60" HorizontalAlignment="Left" Command="{Binding ClockwiseRotateCommand}"
+                                                 Visibility="{Binding ElementName=ZoomingPanningBorderBehavior, 
+                            Path=IsZoomingOrPanning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, 
+                            ConverterParameter={StaticResource False}}" />
+                        <cc:AuraCircleIconButton Tag="ClockwiseRotateButton" AuraIconType="ClockwiseRotate" Width="60" HorizontalAlignment="Left" Command="{Binding ClockwiseRotateCommand}"
+                                                 Visibility="{Binding ElementName=ZoomingPanningBorderBehavior, 
+                            Path=IsZoomingOrPanning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, 
+                            ConverterParameter={StaticResource False}}" />                        
+                    </StackPanel>
+                </Border>
             </DockPanel>
         </Grid>
         <Expander ExpandDirection="Up" Grid.Row="1" Header="Thumbnail Panel" Margin="3" IsExpanded="True">
