@@ -74,10 +74,12 @@ namespace AuraPhotoViewer.Styles.Behaviors
             ScaleTransform scale = (ScaleTransform)((TransformGroup)AssociatedObject.RenderTransform).Children[0];
             TranslateTransform translate =
                 (TranslateTransform)((TransformGroup)AssociatedObject.RenderTransform).Children[1];
+            RotateTransform rotate = (RotateTransform)((TransformGroup)AssociatedObject.LayoutTransform).Children[0];
             translate.X = 0;
             translate.Y = 0;
             scale.ScaleX = 1;
             scale.ScaleY = 1;
+            rotate.Angle = 0;
             IsZoomingOrPanning = false;
         }
 
@@ -111,7 +113,7 @@ namespace AuraPhotoViewer.Styles.Behaviors
             //AssociatedObject.RenderTransformOrigin = new Point(position.X / AssociatedObject.ActualWidth, position.Y / AssociatedObject.ActualHeight);
             scale.ScaleX += zoom;
             scale.ScaleY += zoom;
-            AutoCorrectAfterScale(translate);
+            //AutoCorrectAfterScale(translate);
             IsZoomingOrPanning = true;
             CheckScaleLimit(zoom, scale, translate);
         }
@@ -136,8 +138,11 @@ namespace AuraPhotoViewer.Styles.Behaviors
                 return;
             }
             Rect boundsValue = bounds.Value;
-            double offsetX = p.X - start.X;
-            double offsetY = p.Y - start.Y;
+            RotateTransform rotate = (RotateTransform)((TransformGroup)AssociatedObject.LayoutTransform).Children[0];
+            Point newStartPoint = rotate.Transform(start);
+            Point newEndPoint = rotate.Transform(p);
+            double offsetX = newEndPoint.X - newStartPoint.X;
+            double offsetY = newEndPoint.Y - newStartPoint.Y;
             // Check if the bounds are located inside the Border control.
             if (AssociatedObject.ActualWidth < boundsValue.Width)
             {
@@ -247,25 +252,15 @@ namespace AuraPhotoViewer.Styles.Behaviors
 
         private void OnRotateClick(object sender, RoutedEventArgs e)
         {
-            Rect? bounds = GetImageBoundsRelativeToBorder();
-            if (!bounds.HasValue)
-            {
-                return;
-            }
-            Rect boundsValue = bounds.Value;
             string tag = (string)((FrameworkElement)e.OriginalSource).Tag;
             RotateTransform rotate = (RotateTransform)((TransformGroup)AssociatedObject.LayoutTransform).Children[0];
             if (tag == "CounterClockwiseRotateButton")
             {
-                //rotate.Angle = rotate.Angle - 90;
-                rotate = new RotateTransform(-90, 0.5, 0.5);
-                Point newPoint = rotate.Transform(new Point(boundsValue.Left, boundsValue.Top));
+                rotate.Angle = rotate.Angle - 90;
             }
             else if (tag == "ClockwiseRotateButton")
             {
-                //rotate.Angle = rotate.Angle + 90;
-                rotate = new RotateTransform(90, 0.5, 0.5);
-                Point newPoint = rotate.Transform(new Point(boundsValue.Left, boundsValue.Top));
+                rotate.Angle = rotate.Angle + 90;
             }
         }
 
