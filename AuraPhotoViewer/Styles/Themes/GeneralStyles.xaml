@@ -6,7 +6,8 @@
         <ResourceDictionary Source="..\Themes\AuraCircleIconButton.xaml" />        
     </ResourceDictionary.MergedDictionaries>
     <converters:RightMarginConverter x:Key="RightMarginConverter" />
-	<converters:UriToBitmapConverter x:Key="UriToBitmapConverter" />
+    <converters:UriToBitmapThumbnailConverter x:Key="UriToBitmapThumbnailConverter" />
+    <converters:UriToBitmapOriginalSizeConverter x:Key="UriToBitmapOriginalSizeConverter" />
     <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     
 	<!--Window colors.-->
@@ -30,6 +31,9 @@
     <!--Thumbnail Panel control-specific resources.-->
     <Color x:Key="ExpanderToggleBorderBrush">#A5A5A5</Color>
     <Color x:Key="PressedFillColor">Gray</Color>
+
+    <!--Control template resources.-->
+    <Color x:Key="BorderBrushColor">#5C90FF</Color>
 
     <!--Window Style-->
 	<Style x:Key="AuraWindowStyle" TargetType="{x:Type Window}">
@@ -251,7 +255,7 @@
 								</VisualState>
 							</VisualStateGroup>
 						</VisualStateManager.VisualStateGroups>
-						<Image Source="{Binding ImageUri, Converter={StaticResource UriToBitmapConverter}}"  Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <Image Source="{Binding ImageUri, Converter={StaticResource UriToBitmapThumbnailConverter}}"  Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 					</Border>
 				</ControlTemplate>
 			</Setter.Value>
@@ -684,6 +688,38 @@
                             <ContentPresenter Margin="4" />
                         </Border>
                     </Grid>                   
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SavingImageLabel" TargetType="Label">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="#5C90FF" />
+        <Setter Property="FontSize" Value="20" />        
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Label">
+                    <Border CornerRadius="2" BorderThickness="2" Padding="10,5">
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="{StaticResource BorderBrushColor}" />
+                        </Border.BorderBrush>
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"                                          
+                                          RecognizesAccessKey="True"  />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{DynamicResource BorderBrushColor}" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

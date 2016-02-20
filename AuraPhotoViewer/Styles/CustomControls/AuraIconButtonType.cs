@@ -9,6 +9,8 @@ namespace AuraPhotoViewer.Styles.CustomControls
     public enum AuraIconButtonType
     {
         ImageLeft,
-        ImageRight
+        ImageRight,
+        ClockwiseRotate,
+        CounterClockwiseRotate
     }
 }

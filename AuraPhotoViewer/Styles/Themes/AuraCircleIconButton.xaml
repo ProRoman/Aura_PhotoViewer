@@ -118,6 +118,64 @@
                             <Setter TargetName="PART_Icon" Property="Margin" Value="5,0,0,0"/>
                             <Setter Property="ToolTip" Value="Next"/>
                         </Trigger>
+                        <Trigger Property="AuraIconType" Value="ClockwiseRotate">
+                            <Setter TargetName="PART_Icon" Property="Data">
+                                <Setter.Value>
+                                    <PathGeometry>
+                                        <PathFigure IsFilled="False" StartPoint="0.5,0.5">
+                                            <BezierSegment IsSmoothJoin="True" Point3="29.217416667033,29.9792778321381" Point2="27.2054358654222,13.0736915994441" Point1="14.956693814927,0.5"/>
+                                            <BezierSegment Point3="8.4933832863668,67.664" Point2="22.3900491719678,62.9583970690941" Point1="31.2294012186383,46.8848659580998"/>
+                                        </PathFigure>
+                                        <PathFigure IsClosed="True" StartPoint="1.17901225171478,70.5247600243569">
+                                            <LineSegment Point="7.6082068771448,64.1689674502856"/>
+                                            <LineSegment Point="10.1897678058455,71.2575131341979"/>
+                                        </PathFigure>
+                                    </PathGeometry>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="PART_Icon" Property="Width" Value="30"/>
+                            <Setter TargetName="PART_Icon" Property="Height" Value="30"/>
+                            <Setter TargetName="ellipsebg" Property="Width" Value="50"/>
+                            <Setter TargetName="ellipsebg" Property="Height" Value="50"/>
+                            <Setter TargetName="ellipse" Property="Width" Value="50"/>
+                            <Setter TargetName="ellipse" Property="Height" Value="50"/>
+                            <Setter TargetName="PART_Icon" Property="Stroke">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{StaticResource BorderBrushColor}" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="PART_Icon" Property="StrokeThickness" Value="3"/>
+                            <Setter Property="ToolTip" Value="Rotate clockwise"/>
+                        </Trigger>
+                        <Trigger Property="AuraIconType" Value="CounterClockwiseRotate">
+                            <Setter TargetName="PART_Icon" Property="Data">
+                                <Setter.Value>
+                                    <PathGeometry>
+                                        <PathFigure IsFilled="False" StartPoint="21.5086169864771,67.6640000669909">
+                                            <BezierSegment IsSmoothJoin="True" Point3="0.784583260574452,29.9792759388706" Point2="-1.22739902550834,46.8848659580998" Point1="7.6119504831882,62.9583970690941"/>
+                                            <BezierSegment Point3="29.502,0.5" Point2="15.0453068860486,0.5" Point1="2.79656730446708,13.0736897061765"/>
+                                        </PathFigure>
+                                        <PathFigure IsClosed="True" StartPoint="29.4621751936534,70.1293875302377">
+                                            <LineSegment Point="20.5169386611011,71.4383513009248"/>
+                                            <LineSegment Point="22.6387110670722,64.1988748972913"/>
+                                        </PathFigure>
+                                    </PathGeometry>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="PART_Icon" Property="Width" Value="30"/>
+                            <Setter TargetName="PART_Icon" Property="Height" Value="30"/>
+                            <Setter TargetName="ellipsebg" Property="Width" Value="50"/>
+                            <Setter TargetName="ellipsebg" Property="Height" Value="50"/>
+                            <Setter TargetName="ellipse" Property="Width" Value="50"/>
+                            <Setter TargetName="ellipse" Property="Height" Value="50"/>
+                            <Setter TargetName="PART_Icon" Property="Stroke">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{StaticResource BorderBrushColor}" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="PART_Icon" Property="StrokeThickness" Value="3"/>
+                            <Setter Property="ToolTip" Value="Rotate clockwise"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

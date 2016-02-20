@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,6 +39,39 @@ namespace AuraPhotoViewer.Services.ImageProviders
                     progress.Report(image);
                 }
             });
+        }
+
+        public async Task SaveImageAsync(string uri, double angle)
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                Bitmap img = (Bitmap)Bitmap.FromFile(uri);
+                ImageFormat imgfrmt = img.RawFormat;
+                img.RotateFlip(GetImageRotate(angle));
+                if (File.Exists(uri))
+                {
+                    File.Delete(uri);
+                }
+                img.Save(uri, imgfrmt);
+            });
+        }
+
+        private RotateFlipType GetImageRotate(double angle)
+        {
+            switch ((int)angle)
+            {
+                case 90:
+                case -270:
+                    return RotateFlipType.Rotate90FlipNone;
+                case 180:
+                case -180:
+                    return RotateFlipType.Rotate180FlipNone;
+                case 270:
+                case -90:
+                    return RotateFlipType.Rotate270FlipNone;
+                default:
+                    throw new ArgumentException("The agle rotate is invalid");
+            }
         }
     }
 }

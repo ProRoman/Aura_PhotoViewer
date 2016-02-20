@@ -9,6 +9,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Threading;
@@ -33,7 +34,9 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
                 
         private Thumbnail _selectedThumbnail;
 
-        private string _selectedImage;
+        private Picture _selectedImage;
+
+        private bool _isImageSaving;
 
         #endregion
 
@@ -71,12 +74,12 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
                 if(_selectedThumbnail != null)
                 {
                     Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-                        new Action(() => { SelectedImage = _selectedThumbnail.ImageUri; }));
+                        new Action(() => { SelectedImage = new Picture { ImageUri = _selectedThumbnail.ImageUri }; }));
                 }
             }
         }
 
-        public string SelectedImage
+        public Picture SelectedImage
         {
             get
             {
@@ -85,6 +88,19 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
             set
             {
                 _selectedImage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsImageSaving
+        {
+            get
+            {
+                return _isImageSaving;
+            }
+            set
+            {
+                _isImageSaving = value;
                 OnPropertyChanged();
             }
         }
@@ -119,14 +135,35 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
             }
         }
 
-        private void ImageLeftExecuted()
+        private async void ImageLeftExecuted()
         {
-            ThumbnailCollection.View.MoveCurrentToPrevious();            
+            await SaveImage();
+            ThumbnailCollection.View.MoveCurrentToPrevious();
         }
 
-        private void ImageRightExecuted()
+        private async void ImageRightExecuted()
         {
+            await SaveImage();
             ThumbnailCollection.View.MoveCurrentToNext();
+        }
+
+        private async Task SaveImage()
+        {
+            if (SelectedImage.Angle != 0)
+            {
+                Picture img = new Picture {ImageUri = SelectedImage.ImageUri, Angle = SelectedImage.Angle};
+                int imgPos = ThumbnailCollection.View.CurrentPosition;
+                IsImageSaving = true;
+                await _imageProvider.SaveImageAsync(img.ImageUri, img.Angle);
+                IsImageSaving = false;
+                _thumbnailCollection.RemoveAt(imgPos);
+                // delay to reclaim the deleted image memory
+                await Task.Delay(1);
+                _thumbnailCollection.Insert(imgPos, new Thumbnail { ImageUri = img.ImageUri });
+                Thumbnail selectedThumbnail =
+                    _thumbnailCollection.First<Thumbnail>(thumbnail => thumbnail.ImageUri == img.ImageUri);
+                ThumbnailCollection.View.MoveCurrentTo(selectedThumbnail);
+            }
         }
 
         #endregion

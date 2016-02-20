@@ -14,10 +14,7 @@ namespace AuraPhotoViewer.Styles.Converters
             {
                 return boolValue ? Visibility.Visible : Visibility.Hidden;
             }
-            else
-            {
-                return boolValue ? Visibility.Hidden : Visibility.Visible;
-            }
+            return boolValue ? Visibility.Hidden : Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

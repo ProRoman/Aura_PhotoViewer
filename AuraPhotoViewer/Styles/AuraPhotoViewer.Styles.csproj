@@ -90,7 +90,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\UriToBitmapConverter .cs" />
+    <Compile Include="Converters\UriToBitmapThumbnailConverter .cs" />
+    <Compile Include="Converters\UriToBitmapOriginalSizeConverter.cs" />
     <Compile Include="CustomControls\AuraCircleIconButton.cs" />
     <Compile Include="CustomControls\AuraIconButtonType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
