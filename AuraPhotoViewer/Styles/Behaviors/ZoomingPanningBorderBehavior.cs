@@ -71,6 +71,10 @@ namespace AuraPhotoViewer.Styles.Behaviors
 
         private void ResetTransforms(object sender, DataTransferEventArgs e)
         {
+            if (e.Property.Name != "Source")
+            {
+                return;
+            }
             ScaleTransform scale = (ScaleTransform)((TransformGroup)AssociatedObject.RenderTransform).Children[0];
             TranslateTransform translate =
                 (TranslateTransform)((TransformGroup)AssociatedObject.RenderTransform).Children[1];

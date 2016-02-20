@@ -33,11 +33,11 @@
                         </TransformGroup>
                     </Border.RenderTransform>
                     <Border.LayoutTransform>
-                        <TransformGroup>                            
-                            <RotateTransform />
+                        <TransformGroup>
+                            <RotateTransform Angle="{Binding SelectedImage.Angle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         </TransformGroup>
                     </Border.LayoutTransform>
-                    <Image Source="{Binding SelectedImage, Mode=OneWay, NotifyOnTargetUpdated=True, Converter={StaticResource UriToBitmapOriginalSizeConverter}}" Stretch="Uniform"/>
+                    <Image Source="{Binding SelectedImage.ImageUri, Mode=OneWay, NotifyOnTargetUpdated=True, Converter={StaticResource UriToBitmapOriginalSizeConverter}}" Stretch="Uniform"/>
                     <i:Interaction.Behaviors>
                         <behaviors:ZoomingPanningBorderBehavior x:Name="ZoomingPanningBorderBehavior" />
                     </i:Interaction.Behaviors>
@@ -63,6 +63,8 @@
                     </StackPanel>
                 </Border>
             </DockPanel>
+            <Label Content="Saving..." Style="{StaticResource SavingImageLabel}" Visibility="{Binding IsImageSaving, Mode=OneWay,
+                    Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource True}}" />
         </Grid>
         <Expander ExpandDirection="Up" Grid.Row="1" Header="Thumbnail Panel" Margin="3" IsExpanded="True">
             <!--Set ListView height for Virtualization-->

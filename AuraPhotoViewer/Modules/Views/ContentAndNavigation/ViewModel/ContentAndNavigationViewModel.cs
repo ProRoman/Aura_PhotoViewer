@@ -7,10 +7,9 @@ using Prism.Commands;
 using Prism.Events;
 using System;
 using System.Collections.ObjectModel;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Threading;
@@ -35,7 +34,9 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
                 
         private Thumbnail _selectedThumbnail;
 
-        private string _selectedImage;
+        private Picture _selectedImage;
+
+        private bool _isImageSaving;
 
         #endregion
 
@@ -53,7 +54,6 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
             ThumbnailCollection.Source = _thumbnailCollection;
             ImageLeftCommand = new DelegateCommand(ImageLeftExecuted);
             ImageRightCommand = new DelegateCommand(ImageRightExecuted);
-            ClockwiseRotateCommand = new DelegateCommand(ClockwiseRotateExecuted);
         }
 
         #endregion
@@ -74,12 +74,12 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
                 if(_selectedThumbnail != null)
                 {
                     Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-                        new Action(() => { SelectedImage = _selectedThumbnail.ImageUri; }));
+                        new Action(() => { SelectedImage = new Picture { ImageUri = _selectedThumbnail.ImageUri }; }));
                 }
             }
         }
 
-        public string SelectedImage
+        public Picture SelectedImage
         {
             get
             {
@@ -92,11 +92,22 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
             }
         }
 
+        public bool IsImageSaving
+        {
+            get
+            {
+                return _isImageSaving;
+            }
+            set
+            {
+                _isImageSaving = value;
+                OnPropertyChanged();
+            }
+        }
+
         public DelegateCommand ImageLeftCommand { get; set; }
 
         public DelegateCommand ImageRightCommand { get; set; }
-
-        public DelegateCommand ClockwiseRotateCommand { get; set; }
 
         #endregion
 
@@ -124,33 +135,35 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
             }
         }
 
-        private void ImageLeftExecuted()
+        private async void ImageLeftExecuted()
         {
-            ThumbnailCollection.View.MoveCurrentToPrevious();            
+            await SaveImage();
+            ThumbnailCollection.View.MoveCurrentToPrevious();
         }
 
-        private void ImageRightExecuted()
+        private async void ImageRightExecuted()
         {
+            await SaveImage();
             ThumbnailCollection.View.MoveCurrentToNext();
         }
 
-        private void ClockwiseRotateExecuted()
+        private async Task SaveImage()
         {
-            //int i = ThumbnailCollection.View.CurrentPosition;
-            //Thumbnail t = (Thumbnail)ThumbnailCollection.View.CurrentItem;
-            //_thumbnailCollection.RemoveAt(i);
-            //Bitmap img = (Bitmap)Bitmap.FromFile(t.ImageUri);
-            //ImageFormat imgfrmt = img.RawFormat;
-            //img.RotateFlip(RotateFlipType.Rotate90FlipNone);
-            //if (File.Exists(t.ImageUri))
-            //{
-            //    File.Delete(t.ImageUri);
-            //}
-            //img.Save(t.ImageUri, imgfrmt);
-            //_thumbnailCollection.Insert(i, new Thumbnail { ImageUri = t.ImageUri });
-            //Thumbnail selectedThumbnail =
-            //        _thumbnailCollection.First<Thumbnail>(thumbnail => thumbnail.ImageUri == t.ImageUri);
-            //ThumbnailCollection.View.MoveCurrentTo(selectedThumbnail);
+            if (SelectedImage.Angle != 0)
+            {
+                Picture img = new Picture {ImageUri = SelectedImage.ImageUri, Angle = SelectedImage.Angle};
+                int imgPos = ThumbnailCollection.View.CurrentPosition;
+                IsImageSaving = true;
+                await _imageProvider.SaveImageAsync(img.ImageUri, img.Angle);
+                IsImageSaving = false;
+                _thumbnailCollection.RemoveAt(imgPos);
+                // delay to reclaim the deleted image memory
+                await Task.Delay(1);
+                _thumbnailCollection.Insert(imgPos, new Thumbnail { ImageUri = img.ImageUri });
+                Thumbnail selectedThumbnail =
+                    _thumbnailCollection.First<Thumbnail>(thumbnail => thumbnail.ImageUri == img.ImageUri);
+                ThumbnailCollection.View.MoveCurrentTo(selectedThumbnail);
+            }
         }
 
         #endregion
