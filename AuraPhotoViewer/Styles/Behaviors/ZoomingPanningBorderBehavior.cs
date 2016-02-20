@@ -9,7 +9,7 @@ using System.Windows.Threading;
 
 namespace AuraPhotoViewer.Styles.Behaviors
 {
-    public class ZoomingPanningBorderBehavior : Behavior<Border>
+    public class ZoomingPanningBorderBehavior : Behavior<Image>
     {
         private Point start;
         private Image image;
@@ -41,7 +41,7 @@ namespace AuraPhotoViewer.Styles.Behaviors
                 parentGrid.AddHandler(Button.ClickEvent, new RoutedEventHandler(OnRotateClick));
             }
             Application.Current.MainWindow.StateChanged += MainWindowOnStateChanged;
-            image = GetImage();
+            image = AssociatedObject;
             if (image != null)
             {
                 image.TargetUpdated += ResetTransforms;
@@ -145,6 +145,7 @@ namespace AuraPhotoViewer.Styles.Behaviors
             RotateTransform rotate = (RotateTransform)((TransformGroup)AssociatedObject.LayoutTransform).Children[0];
             Point newStartPoint = rotate.Transform(start);
             Point newEndPoint = rotate.Transform(p);
+            boundsValue = rotate.TransformBounds(boundsValue);
             double offsetX = newEndPoint.X - newStartPoint.X;
             double offsetY = newEndPoint.Y - newStartPoint.Y;
             // Check if the bounds are located inside the Border control.
@@ -170,7 +171,7 @@ namespace AuraPhotoViewer.Styles.Behaviors
                     translate.Y += offsetY;
                 }
             }
-            AutoCorrectAfterTranslate(translate, offsetX, offsetY);
+            //AutoCorrectAfterTranslate(translate, offsetX, offsetY);
         }
 
         private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
@@ -184,8 +185,11 @@ namespace AuraPhotoViewer.Styles.Behaviors
             if (image != null)
             {
                 // The bounds of the transformed Image control in coordinates relative to the Border control.
-                Rect rect = new Rect(new Size(image.ActualWidth, image.ActualHeight));
-                return image.TransformToAncestor((Border)AssociatedObject.Parent).TransformBounds(rect);
+                //Rect rect = new Rect(new Size(image.ActualWidth, image.ActualHeight));
+                //return image.TransformToAncestor((Border)AssociatedObject.Parent).TransformBounds(rect);
+                GeneralTransform transform = image.TransformToVisual((Border)AssociatedObject.Parent);
+
+                return transform.TransformBounds(new Rect(0, 0, image.ActualWidth, image.ActualHeight));
             }
             return null;
         }
