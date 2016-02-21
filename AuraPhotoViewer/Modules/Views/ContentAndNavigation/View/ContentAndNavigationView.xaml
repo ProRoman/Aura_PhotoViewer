@@ -23,8 +23,8 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <Grid>            
-            <Border ClipToBounds="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid>
+            <Border ClipToBounds="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5">
                 <Image VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5" Source="{Binding SelectedImage.ImageUri, Mode=OneWay, NotifyOnTargetUpdated=True, Converter={StaticResource UriToBitmapOriginalSizeConverter}}" Stretch="Uniform">
                     <Image.RenderTransform>
                         <TransformGroup>
