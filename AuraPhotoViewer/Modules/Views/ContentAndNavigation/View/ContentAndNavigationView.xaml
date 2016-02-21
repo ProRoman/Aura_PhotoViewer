@@ -23,25 +23,24 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <Grid>            
-            <Border ClipToBounds="True">
-                <Border RenderTransformOrigin="0.5,0.5">
-                    <Border.RenderTransform>
+        <Grid>
+            <Border ClipToBounds="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5">
+                <Image VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5" Source="{Binding SelectedImage.ImageUri, Mode=OneWay, NotifyOnTargetUpdated=True, Converter={StaticResource UriToBitmapOriginalSizeConverter}}" Stretch="Uniform">
+                    <Image.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform />
-                            <TranslateTransform />                            
+                            <TranslateTransform />
                         </TransformGroup>
-                    </Border.RenderTransform>
-                    <Border.LayoutTransform>
+                    </Image.RenderTransform>
+                    <Image.LayoutTransform>
                         <TransformGroup>
                             <RotateTransform Angle="{Binding SelectedImage.Angle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         </TransformGroup>
-                    </Border.LayoutTransform>
-                    <Image Source="{Binding SelectedImage.ImageUri, Mode=OneWay, NotifyOnTargetUpdated=True, Converter={StaticResource UriToBitmapOriginalSizeConverter}}" Stretch="Uniform"/>
+                    </Image.LayoutTransform>
                     <i:Interaction.Behaviors>
                         <behaviors:ZoomingPanningBorderBehavior x:Name="ZoomingPanningBorderBehavior" />
                     </i:Interaction.Behaviors>
-                </Border>
+                </Image>
             </Border>
             <DockPanel Style="{StaticResource NavigationButtonPanel}">
                 <cc:AuraCircleIconButton AuraIconType="ImageLeft" Width="60" DockPanel.Dock="Left" Command="{Binding ImageLeftCommand}" 

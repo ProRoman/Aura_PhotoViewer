@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interactivity;
@@ -9,64 +10,58 @@ using System.Windows.Threading;
 
 namespace AuraPhotoViewer.Styles.Behaviors
 {
-    public class ZoomingPanningBorderBehavior : Behavior<Border>
+    public class ZoomingPanningBorderBehavior : Behavior<Image>
     {
-        private Point start;
-        private Image image;
-        private Grid parentGrid;
+        private Point _start;
+        private Grid _parentGrid;
+        private Border _parentBorder;
 
         public static readonly DependencyProperty IsZoomingOrPanningProperty = DependencyProperty.Register(
             "IsZoomingOrPanning",
             typeof (bool),
-            typeof(ZoomingPanningBorderBehavior),
+            typeof (ZoomingPanningBorderBehavior),
             new FrameworkPropertyMetadata(false)
-            );        
-        
+            );
+
         public bool IsZoomingOrPanning
         {
-            get { return (bool)GetValue(IsZoomingOrPanningProperty); }
+            get { return (bool) GetValue(IsZoomingOrPanningProperty); }
             set { SetValue(IsZoomingOrPanningProperty, value); }
         }
 
         protected override void OnAttached()
         {
             base.OnAttached();
-            parentGrid = VisualTreeHelper.GetParent(AssociatedObject.Parent) as Grid;
-            if (parentGrid != null)
+            _parentBorder = AssociatedObject.Parent as Border;
+            if (_parentBorder != null)
             {
-                parentGrid.MouseWheel += OnMouseWheel;
-                parentGrid.MouseLeftButtonDown += OnMouseLeftButtonDown;
-                parentGrid.MouseMove += OnMouseMove;
-                parentGrid.MouseLeftButtonUp += OnMouseLeftButtonUp;
-                parentGrid.AddHandler(Button.ClickEvent, new RoutedEventHandler(OnRotateClick));
+                _parentGrid = VisualTreeHelper.GetParent(_parentBorder) as Grid;
+            }
+            if (_parentGrid != null)
+            {
+                _parentGrid.MouseWheel += OnMouseWheel;
+                _parentGrid.MouseLeftButtonDown += OnMouseLeftButtonDown;
+                _parentGrid.MouseMove += OnMouseMove;
+                _parentGrid.MouseLeftButtonUp += OnMouseLeftButtonUp;
+                _parentGrid.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(OnRotateClick));
             }
             Application.Current.MainWindow.StateChanged += MainWindowOnStateChanged;
-            image = GetImage();
-            if (image != null)
-            {
-                image.TargetUpdated += ResetTransforms;
-            }
+            AssociatedObject.TargetUpdated += ResetTransforms;
         }
 
         protected override void OnDetaching()
         {
             base.OnDetaching();
-            if (parentGrid != null)
+            if (_parentGrid != null)
             {
-                parentGrid.MouseWheel -= OnMouseWheel;
-                parentGrid.MouseLeftButtonDown -= OnMouseLeftButtonDown;
-                parentGrid.MouseMove -= OnMouseMove;
-                parentGrid.MouseLeftButtonUp -= OnMouseLeftButtonUp;
-                parentGrid.RemoveHandler(Button.ClickEvent, new RoutedEventHandler(OnRotateClick));
+                _parentGrid.MouseWheel -= OnMouseWheel;
+                _parentGrid.MouseLeftButtonDown -= OnMouseLeftButtonDown;
+                _parentGrid.MouseMove -= OnMouseMove;
+                _parentGrid.MouseLeftButtonUp -= OnMouseLeftButtonUp;
+                _parentGrid.RemoveHandler(ButtonBase.ClickEvent, new RoutedEventHandler(OnRotateClick));
             }
             Application.Current.MainWindow.StateChanged -= MainWindowOnStateChanged;
-            image.TargetUpdated -= ResetTransforms;
-        }
-
-        private Image GetImage()
-        {
-            DependencyObject child = FindVisualChild<Image>(AssociatedObject);
-            return (Image) child;
+            AssociatedObject.TargetUpdated -= ResetTransforms;
         }
 
         private void ResetTransforms(object sender, DataTransferEventArgs e)
@@ -75,10 +70,10 @@ namespace AuraPhotoViewer.Styles.Behaviors
             {
                 return;
             }
-            ScaleTransform scale = (ScaleTransform)((TransformGroup)AssociatedObject.RenderTransform).Children[0];
+            ScaleTransform scale = (ScaleTransform) ((TransformGroup) AssociatedObject.RenderTransform).Children[0];
             TranslateTransform translate =
-                (TranslateTransform)((TransformGroup)AssociatedObject.RenderTransform).Children[1];
-            RotateTransform rotate = (RotateTransform)((TransformGroup)AssociatedObject.LayoutTransform).Children[0];
+                (TranslateTransform) ((TransformGroup) AssociatedObject.RenderTransform).Children[1];
+            RotateTransform rotate = (RotateTransform) ((TransformGroup) AssociatedObject.LayoutTransform).Children[0];
             translate.X = 0;
             translate.Y = 0;
             scale.ScaleX = 1;
@@ -102,22 +97,20 @@ namespace AuraPhotoViewer.Styles.Behaviors
         private void OnMouseWheel(object sender, MouseWheelEventArgs mouseWheelEventArgs)
         {
             double zoom = mouseWheelEventArgs.Delta > 0 ? .2 : -.2;
-            ScaleTransform scale = (ScaleTransform)((TransformGroup)AssociatedObject.RenderTransform).Children[0];
+            ScaleTransform scale = (ScaleTransform) ((TransformGroup) AssociatedObject.RenderTransform).Children[0];
             TranslateTransform translate =
                 (TranslateTransform) ((TransformGroup) AssociatedObject.RenderTransform).Children[1];
             if (CheckScaleLimit(zoom, scale, translate))
-            {                
+            {
                 return;
             }
             if (scale.ScaleX > 1 && (scale.ScaleX - 1) < .2)
             {
                 zoom = zoom > 0 ? (scale.ScaleX - 1) : (1 - scale.ScaleX);
             }
-            //Point position = mouseWheelEventArgs.GetPosition(AssociatedObject);
-            //AssociatedObject.RenderTransformOrigin = new Point(position.X / AssociatedObject.ActualWidth, position.Y / AssociatedObject.ActualHeight);
             scale.ScaleX += zoom;
             scale.ScaleY += zoom;
-            //AutoCorrectAfterScale(translate);
+            AutoCorrectAfterScale(translate);
             IsZoomingOrPanning = true;
             CheckScaleLimit(zoom, scale, translate);
         }
@@ -125,7 +118,7 @@ namespace AuraPhotoViewer.Styles.Behaviors
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
             if (AssociatedObject.IsMouseCaptured) return;
-            start = mouseButtonEventArgs.GetPosition(AssociatedObject);
+            _start = mouseButtonEventArgs.GetPosition(AssociatedObject);
             AssociatedObject.CaptureMouse();
             Mouse.OverrideCursor = Cursors.ScrollAll;
         }
@@ -136,36 +129,31 @@ namespace AuraPhotoViewer.Styles.Behaviors
             TranslateTransform translate =
                 (TranslateTransform) ((TransformGroup) AssociatedObject.RenderTransform).Children[1];
             Point p = mouseEventArgs.GetPosition(AssociatedObject);
-            Rect? bounds = GetImageBoundsRelativeToBorder();
-            if (!bounds.HasValue)
-            {
-                return;
-            }
-            Rect boundsValue = bounds.Value;
-            RotateTransform rotate = (RotateTransform)((TransformGroup)AssociatedObject.LayoutTransform).Children[0];
-            Point newStartPoint = rotate.Transform(start);
+            Rect bounds = GetImageBoundsRelativeToBorder();
+            RotateTransform rotate = (RotateTransform) ((TransformGroup) AssociatedObject.LayoutTransform).Children[0];
+            Point newStartPoint = rotate.Transform(_start);
             Point newEndPoint = rotate.Transform(p);
             double offsetX = newEndPoint.X - newStartPoint.X;
             double offsetY = newEndPoint.Y - newStartPoint.Y;
             // Check if the bounds are located inside the Border control.
-            if (AssociatedObject.ActualWidth < boundsValue.Width)
+            if (_parentBorder.ActualWidth < bounds.Width)
             {
-                if (offsetX < 0 && boundsValue.Right > AssociatedObject.ActualWidth) // move left
+                if (offsetX < 0 && bounds.Right > _parentBorder.ActualWidth) // move left
                 {
                     translate.X += offsetX;
                 }
-                if (offsetX > 0 && boundsValue.Left < 0) // move right
+                if (offsetX > 0 && bounds.Left < 0) // move right
                 {
                     translate.X += offsetX;
                 }
             }
-            if (AssociatedObject.ActualHeight < boundsValue.Height)
+            if (_parentBorder.ActualHeight < bounds.Height)
             {
-                if (offsetY < 0 && boundsValue.Bottom > AssociatedObject.ActualHeight) // move up
+                if (offsetY < 0 && bounds.Bottom > _parentBorder.ActualHeight) // move up
                 {
                     translate.Y += offsetY;
                 }
-                if (offsetY > 0 && boundsValue.Top < 0) // move down
+                if (offsetY > 0 && bounds.Top < 0) // move down
                 {
                     translate.Y += offsetY;
                 }
@@ -178,86 +166,75 @@ namespace AuraPhotoViewer.Styles.Behaviors
             AssociatedObject.ReleaseMouseCapture();
             Mouse.OverrideCursor = null;
         }
-        
-        private Rect? GetImageBoundsRelativeToBorder()
-        {            
-            if (image != null)
-            {
-                // The bounds of the transformed Image control in coordinates relative to the Border control.
-                Rect rect = new Rect(new Size(image.ActualWidth, image.ActualHeight));
-                return image.TransformToAncestor((Border)AssociatedObject.Parent).TransformBounds(rect);
-            }
-            return null;
+
+        private Rect GetImageBoundsRelativeToBorder()
+        {
+            // The bounds of the transformed Image control in coordinates relative to the Border control.
+            //Rect rect = new Rect(new Size(image.ActualWidth, image.ActualHeight));
+            //return image.TransformToAncestor((Border)AssociatedObject.Parent).TransformBounds(rect);
+            GeneralTransform transform = AssociatedObject.TransformToVisual((Border) AssociatedObject.Parent);
+
+            return transform.TransformBounds(new Rect(0, 0, AssociatedObject.ActualWidth, AssociatedObject.ActualHeight));
         }
 
         private void AutoCorrectAfterTranslate(TranslateTransform translate, double offsetX, double offsetY)
         {
-            Rect? bounds = GetImageBoundsRelativeToBorder();
-            if (!bounds.HasValue)
+            Rect bounds = GetImageBoundsRelativeToBorder();
+            if (_parentBorder.ActualWidth < bounds.Width)
             {
-                return;
-            }
-            Rect boundsValue = bounds.Value;
-            if (AssociatedObject.ActualWidth <= boundsValue.Width)
-            {
-                if (offsetX <= 0 && boundsValue.Right <= AssociatedObject.ActualWidth) // move left
+                if (offsetX < 0 && bounds.Right < _parentBorder.ActualWidth) // move left
                 {
-                    translate.X += AssociatedObject.ActualWidth - boundsValue.Right; // move right
+                    translate.X += _parentBorder.ActualWidth - bounds.Right; // move right
                 }
-                if (offsetX >= 0 && boundsValue.Left >= 0) // move right
+                if (offsetX > 0 && bounds.Left > 0) // move right
                 {
-                    translate.X += -boundsValue.Left; // move left
+                    translate.X += -bounds.Left; // move left
                 }
             }
-            if (AssociatedObject.ActualHeight <= boundsValue.Height)
+            if (_parentBorder.ActualHeight < bounds.Height)
             {
-                if (offsetY <= 0 && boundsValue.Bottom <= AssociatedObject.ActualHeight) // move up
+                if (offsetY < 0 && bounds.Bottom < _parentBorder.ActualHeight) // move up
                 {
-                    translate.Y += AssociatedObject.ActualHeight - boundsValue.Bottom; // move down
+                    translate.Y += _parentBorder.ActualHeight - bounds.Bottom; // move down
                 }
-                if (offsetY >= 0 && boundsValue.Top >= 0) // move down
+                if (offsetY > 0 && bounds.Top > 0) // move down
                 {
-                    translate.Y += -boundsValue.Top; // move up
+                    translate.Y += -bounds.Top; // move up
                 }
             }
         }
 
         private void AutoCorrectAfterScale(TranslateTransform translate)
         {
-            Rect? bounds = GetImageBoundsRelativeToBorder();
-            if (!bounds.HasValue)
+            Rect bounds = GetImageBoundsRelativeToBorder();
+            if (_parentBorder.ActualWidth < bounds.Width)
             {
-                return;
-            }
-            Rect boundsValue = bounds.Value;
-            if (AssociatedObject.ActualWidth <= boundsValue.Width)
-            {
-                if (boundsValue.Right < AssociatedObject.ActualWidth)
+                if (bounds.Right < _parentBorder.ActualWidth)
                 {
-                    translate.X += AssociatedObject.ActualWidth - boundsValue.Right; // move right
+                    translate.X += _parentBorder.ActualWidth - bounds.Right; // move right
                 }
-                if (boundsValue.Left > 0)
+                if (bounds.Left > 0)
                 {
-                    translate.X += -boundsValue.Left; // move left
+                    translate.X += -bounds.Left; // move left
                 }
             }
-            if (AssociatedObject.ActualHeight <= boundsValue.Height)
+            if (_parentBorder.ActualHeight < bounds.Height)
             {
-                if (boundsValue.Bottom < AssociatedObject.ActualHeight)
+                if (bounds.Bottom < _parentBorder.ActualHeight)
                 {
-                    translate.Y += AssociatedObject.ActualHeight - boundsValue.Bottom; // move down
+                    translate.Y += _parentBorder.ActualHeight - bounds.Bottom; // move down
                 }
-                if (boundsValue.Top > 0)
+                if (bounds.Top > 0)
                 {
-                    translate.Y += -boundsValue.Top; // move up
+                    translate.Y += -bounds.Top; // move up
                 }
             }
         }
 
         private void OnRotateClick(object sender, RoutedEventArgs e)
         {
-            string tag = (string)((FrameworkElement)e.OriginalSource).Tag;
-            RotateTransform rotate = (RotateTransform)((TransformGroup)AssociatedObject.LayoutTransform).Children[0];
+            string tag = (string) ((FrameworkElement) e.OriginalSource).Tag;
+            RotateTransform rotate = (RotateTransform) ((TransformGroup) AssociatedObject.LayoutTransform).Children[0];
             if (tag == "CounterClockwiseRotateButton")
             {
                 rotate.Angle = rotate.Angle - 90;
