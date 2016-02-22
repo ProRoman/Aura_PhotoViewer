@@ -90,7 +90,7 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type Button}">
 					<Grid x:Name="Close" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Background="Transparent">
-						<Path x:Name="PartIcon" HorizontalAlignment="Center" Stretch="Uniform" Margin="0,3,0,3" Data="M0.50000498,0.5 L2.9380055,0.5511561 5.125006,3.0764948 7.312002,0.55116302 9.7500027,0.50000703 6.2863034,4.4174498 9.7500046,8.4170002 7.500008,8.4170002 5.1250075,5.7308758 2.7500032,8.4170049 0.5,8.4170049 3.9637094,4.4174479 z">
+                        <Path x:Name="PartIcon" HorizontalAlignment="Center" Stretch="Uniform" Margin="0,3,0,3" Data="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
 							<Path.Fill>
 								<SolidColorBrush Color="{StaticResource PathButtonFillColor}" />
 							</Path.Fill>
@@ -120,11 +120,11 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type Button}">
 					<Grid x:Name="Maximize" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Background="Transparent">
-						<Path x:Name="PartIcon" Margin="0,3,0,3" HorizontalAlignment="Center" Fill="Transparent" Stretch="Uniform" Data="M1,1.0000002 L1,1.8750001 9.25,1.8750001 9.25,1.0000002 z M0.5,0.5 L9.75,0.5 9.75,8.4169999 0.5,8.4169999 z M1,1.0000002 L9.25,1.0000002 9.25,1.8750001 1,1.8750001 z" >
-							<Path.Stroke>
-								<SolidColorBrush Color="{StaticResource PathButtonFillColor}" />
-							</Path.Stroke>
-						</Path>
+                        <Path x:Name="PartIcon" Margin="0,3,0,3" HorizontalAlignment="Center" Stretch="Uniform" Data="M19 4H5c-1.11 0-2 .9-2 2v12c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.89-2-2-2zm0 14H5V8h14v10z" >
+                            <Path.Fill>
+                                <SolidColorBrush Color="{StaticResource PathButtonFillColor}" />
+                            </Path.Fill>
+                        </Path>
 						<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
 					</Grid>
 					<ControlTemplate.Triggers>
@@ -134,14 +134,14 @@
 									<SolidColorBrush Color="{StaticResource WindowButtonMouseOverColor}" />
 								</Setter.Value>
 							</Setter>
-							<Setter TargetName="PartIcon" Property="Stroke" >
+							<Setter TargetName="PartIcon" Property="Fill" >
 								<Setter.Value>
 									<SolidColorBrush Color="{StaticResource PathButtonFillMouseOverColor}" />
 								</Setter.Value>
 							</Setter>
 						</Trigger>
 						<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=WindowState}" Value="Maximized">
-							<Setter TargetName="PartIcon" Property="Data" Value="M0.5,0.5 L9.75,0.5 9.75,4.1750002 3.132,4.1750002 3.132,8.417 0.5,8.417 z M0.59999998,0.59999998 L9.6500004,0.59999998 L9.6500004,1.6 L0.59999998,1.6 z M3.632,4.6750002 L3.632,5.5500001 11.882,5.5500001 11.882,4.6750002 z M3.132,4.175 L12.382,4.175 12.382,12.092 3.132,12.092 z M3.632,4.6750002 L11.882,4.6750002 11.882,5.5500001 3.632,5.5500001 z"/>
+                            <Setter TargetName="PartIcon" Property="Data" Value="M19 11h-8v6h8v-6zm4 8V4.98C23 3.88 22.1 3 21 3H3c-1.1 0-2 .88-2 1.98V19c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2zm-2 .02H3V4.97h18v14.05z"/>
 						</DataTrigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -153,7 +153,7 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type Button}">
 					<Grid x:Name="Minimize" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Background="Transparent">
-						<Path x:Name="PartIcon" Margin="14,10,14,3" HorizontalAlignment="Center" StrokeThickness="0" Stretch="UniformToFill"  Data="M0.6,0.6 L9.65,0.6 L9.65,1.6 L0.6,1.6 z">
+                        <Path x:Name="PartIcon" Margin="14,10,14,3" HorizontalAlignment="Center" StrokeThickness="0" Stretch="UniformToFill"  Data="M19 13H5v-2h14v2z">
 							<Path.Fill>
 								<SolidColorBrush Color="{StaticResource PathButtonFillColor}" />
 							</Path.Fill>
@@ -611,8 +611,8 @@
                     <VisualState x:Name="Indeterminate" />
                 </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
-            <Path x:Name="Arrow" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z"
-                  RenderTransformOrigin="0.5,0.5">
+            <Path x:Name="Arrow" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                  RenderTransformOrigin="0.5,0.5" Stretch="Uniform">
                 <Path.Fill>
                     <SolidColorBrush Color="{StaticResource ArrowFillColor}" />
                 </Path.Fill>
