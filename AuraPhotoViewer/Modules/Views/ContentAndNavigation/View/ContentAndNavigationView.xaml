@@ -43,10 +43,10 @@
                 </Image>
             </Border>
             <DockPanel Style="{StaticResource NavigationButtonPanel}">
-                <cc:AuraCircleIconButton AuraIconType="ImageLeft" Width="60" DockPanel.Dock="Left" Command="{Binding ImageLeftCommand}" 
+                <cc:AuraCircleIconButton AuraIconType="NavigateBefore" Width="60" DockPanel.Dock="Left" Command="{Binding ImageLeftCommand}" 
                                          Visibility="{Binding ElementName=ZoomingPanningBorderBehavior, Path=IsZoomingOrPanning, Mode=OneWay,
                     Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource False}}"/>
-                <cc:AuraCircleIconButton AuraIconType="ImageRight" Width="60" DockPanel.Dock="Right" Command="{Binding ImageRightCommand}"
+                <cc:AuraCircleIconButton AuraIconType="NavigateNext" Width="60" DockPanel.Dock="Right" Command="{Binding ImageRightCommand}"
                                          Visibility="{Binding ElementName=ZoomingPanningBorderBehavior, Path=IsZoomingOrPanning, Mode=OneWay,
                     Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource False}}" />
                 <Border DockPanel.Dock="Top" HorizontalAlignment="Center">
