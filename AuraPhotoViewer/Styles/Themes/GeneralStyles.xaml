@@ -646,23 +646,36 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="20" />
-                                <ColumnDefinition Width="*" x:Name="Header" />
-                            </Grid.ColumnDefinitions>
-                            <ToggleButton OverridesDefaultStyle="True" Template="{StaticResource ExpanderToggleButton}"
-                                              IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
-                                <ToggleButton.Background>
-                                    <SolidColorBrush Color="{StaticResource WindowColor}" />
-                                </ToggleButton.Background>
-                            </ToggleButton>
-                            <Path Grid.Column="1" VerticalAlignment="Center" MaxHeight="1" Stretch="UniformToFill"  Data="M19 13H5v-2h14v2z">
-                                <Path.Fill>
-                                    <SolidColorBrush Color="{StaticResource ArrowFillColor}" />
-                                </Path.Fill>
-                            </Path>
-                        </Grid>
+                        <Border x:Name="Border" BorderThickness="0,0,0,1" Padding="5">
+                            <Border.BorderBrush>
+                                <SolidColorBrush Color="{StaticResource ExpanderToggleBorderBrush}" />
+                            </Border.BorderBrush>
+                            <Border.Background>
+                                <SolidColorBrush Color="{StaticResource WindowColor}" />
+                            </Border.Background>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                    <Path Stretch="Uniform"  
+                                          Data="M22 16V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2zm-11-4l2.03 2.71L16 11l4 5H8l3-4zM2 6v14c0 1.1.9 2 2 2h14v-2H4V6H2z">
+                                        <Path.Fill>
+                                            <SolidColorBrush Color="{StaticResource ArrowFillColor}" />
+                                        </Path.Fill>
+                                    </Path>
+                                    <ContentPresenter TextBlock.FontFamily="Geneva" TextBlock.FontWeight="DemiBold" Margin="4" ContentSource="Header" RecognizesAccessKey="True" />
+                                </StackPanel>
+                                <ToggleButton x:Name="ExpanderToggleButton" Grid.Column="1" OverridesDefaultStyle="True" Template="{StaticResource ExpanderToggleButton}"
+                                                  IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                              HorizontalAlignment="Right" VerticalAlignment="Center" ToolTip="Show the Gallery">
+                                    <ToggleButton.Background>
+                                        <SolidColorBrush Color="{StaticResource WindowColor}" />
+                                    </ToggleButton.Background>
+                                </ToggleButton>
+                            </Grid>
+                        </Border>
                         <Border x:Name="Content" Grid.Row="1" BorderThickness="0" Height="0">
                             <Border.BorderBrush>
                                 <SolidColorBrush Color="{StaticResource ExpanderToggleBorderBrush}" />
@@ -672,7 +685,12 @@
                             </Border.Background>
                             <ContentPresenter Margin="4" />
                         </Border>
-                    </Grid>                   
+                    </Grid>
+                    <ControlTemplate.Triggers> 
+                        <Trigger Property="IsExpanded" Value="True">
+                            <Setter TargetName="ExpanderToggleButton" Property="ToolTip" Value="Collapse the Gallery" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
