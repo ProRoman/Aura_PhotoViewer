@@ -193,17 +193,14 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="ListView">
-					<Border Name="Border" BorderThickness="0">
-						<Border.Background>
+					<Grid Name="Border">
+                        <Grid.Background>
 							<SolidColorBrush Color="{StaticResource WindowColor}" />
-						</Border.Background>
-						<Border.BorderBrush>
-							<SolidColorBrush Color="{StaticResource ControlBorderBrush}" />
-						</Border.BorderBrush>
+                        </Grid.Background>
 						<ScrollViewer Style="{DynamicResource ScrollViewerStyle}">
 							<ItemsPresenter />
 						</ScrollViewer>
-					</Border>
+					</Grid>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsEnabled" Value="false">
 							<Setter TargetName="Border" Property="Background">
