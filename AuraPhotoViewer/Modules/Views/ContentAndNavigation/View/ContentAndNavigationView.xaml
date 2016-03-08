@@ -65,7 +65,7 @@
             <Label Content="Saving..." Style="{StaticResource SavingImageLabel}" Visibility="{Binding IsImageSaving, Mode=OneWay,
                     Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource True}}" />
         </Grid>
-        <Expander ExpandDirection="Up" Grid.Row="1" Header="Thumbnail Panel" Margin="3" IsExpanded="True">
+        <Expander Header="Gallery" ExpandDirection="Up" Grid.Row="1" Margin="3" IsExpanded="True">
             <!--Set ListView height for Virtualization-->
             <ListView Style="{StaticResource ThumbnailListView}" 
                       ItemContainerStyle="{StaticResource ThumbnailListViewItem}" 

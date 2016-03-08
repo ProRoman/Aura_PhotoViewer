@@ -153,7 +153,7 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type Button}">
 					<Grid x:Name="Minimize" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Background="Transparent">
-                        <Path x:Name="PartIcon" Margin="14,10,14,3" HorizontalAlignment="Center" StrokeThickness="0" Stretch="UniformToFill"  Data="M19 13H5v-2h14v2z">
+                        <Path x:Name="PartIcon" Margin="14,10,14,3" HorizontalAlignment="Center" Stretch="UniformToFill"  Data="M19 13H5v-2h14v2z">
 							<Path.Fill>
 								<SolidColorBrush Color="{StaticResource PathButtonFillColor}" />
 							</Path.Fill>
@@ -193,17 +193,14 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="ListView">
-					<Border Name="Border" BorderThickness="1">
-						<Border.Background>
+					<Grid Name="Border">
+                        <Grid.Background>
 							<SolidColorBrush Color="{StaticResource WindowColor}" />
-						</Border.Background>
-						<Border.BorderBrush>
-							<SolidColorBrush Color="{StaticResource ControlBorderBrush}" />
-						</Border.BorderBrush>
+                        </Grid.Background>
 						<ScrollViewer Style="{DynamicResource ScrollViewerStyle}">
 							<ItemsPresenter />
 						</ScrollViewer>
-					</Border>
+					</Grid>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsEnabled" Value="false">
 							<Setter TargetName="Border" Property="Background">
@@ -557,22 +554,15 @@
     -->
     
     <ControlTemplate x:Key="ExpanderToggleButton" TargetType="{x:Type ToggleButton}">
-        <Border x:Name="Border" BorderThickness="0,0,1,0">
-            <Border.Background>
+        <Grid x:Name="Border">
+            <Grid.Background>
                 <SolidColorBrush Color="{StaticResource WindowColor}" />
-            </Border.Background>
-            <Border.BorderBrush>
-                <SolidColorBrush Color="{StaticResource ExpanderToggleBorderBrush}" />
-            </Border.BorderBrush>
+            </Grid.Background>
             <VisualStateManager.VisualStateGroups>
                 <VisualStateGroup x:Name="CommonStates">
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="MouseOver">
                         <Storyboard>
-                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
-                                          Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
-                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource PressedFillColor}" />
-                            </ColorAnimationUsingKeyFrames>
                             <ColorAnimationUsingKeyFrames Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)">
                                 <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ArrowMouseOverColor}" />
                             </ColorAnimationUsingKeyFrames>
@@ -580,10 +570,6 @@
                     </VisualState>
                     <VisualState x:Name="Pressed">
                         <Storyboard>
-                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
-                                          Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
-                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource PressedFillColor}" />
-                            </ColorAnimationUsingKeyFrames>
                             <ColorAnimationUsingKeyFrames Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)">
                                 <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ArrowMouseOverColor}" />
                             </ColorAnimationUsingKeyFrames>
@@ -611,7 +597,7 @@
                     <VisualState x:Name="Indeterminate" />
                 </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
-            <Path x:Name="Arrow" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+            <Path x:Name="Arrow" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 12l-4-4h8l-4 4z"
                   RenderTransformOrigin="0.5,0.5" Stretch="Uniform">
                 <Path.Fill>
                     <SolidColorBrush Color="{StaticResource ArrowFillColor}" />
@@ -625,7 +611,7 @@
                     </TransformGroup>
                 </Path.RenderTransform>
             </Path>
-        </Border>
+        </Grid>
     </ControlTemplate>
 
     <Style x:Key="{x:Type Expander}"  TargetType="{x:Type Expander}">      
@@ -657,7 +643,7 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Border x:Name="Border" Grid.Row="0" BorderThickness="1">
+                        <Border x:Name="Border" BorderThickness="0,0,0,1" Padding="5">
                             <Border.BorderBrush>
                                 <SolidColorBrush Color="{StaticResource ExpanderToggleBorderBrush}" />
                             </Border.BorderBrush>
@@ -666,19 +652,28 @@
                             </Border.Background>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <ToggleButton OverridesDefaultStyle="True" Template="{StaticResource ExpanderToggleButton}"
-                                              IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                    <Path Stretch="Uniform"  
+                                          Data="M22 16V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2zm-11-4l2.03 2.71L16 11l4 5H8l3-4zM2 6v14c0 1.1.9 2 2 2h14v-2H4V6H2z">
+                                        <Path.Fill>
+                                            <SolidColorBrush Color="{StaticResource ArrowFillColor}" />
+                                        </Path.Fill>
+                                    </Path>
+                                    <ContentPresenter TextBlock.FontFamily="Geneva" TextBlock.FontWeight="DemiBold" Margin="4" ContentSource="Header" RecognizesAccessKey="True" />
+                                </StackPanel>
+                                <ToggleButton x:Name="ExpanderToggleButton" Grid.Column="1" OverridesDefaultStyle="True" Template="{StaticResource ExpanderToggleButton}"
+                                                  IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                              HorizontalAlignment="Right" VerticalAlignment="Center" ToolTip="Show the Gallery">
                                     <ToggleButton.Background>
                                         <SolidColorBrush Color="{StaticResource WindowColor}" />
                                     </ToggleButton.Background>
                                 </ToggleButton>
-                                <ContentPresenter Grid.Column="1" Margin="4" ContentSource="Header" RecognizesAccessKey="True" />
                             </Grid>
                         </Border>
-                        <Border x:Name="Content" Grid.Row="1" BorderThickness="1,0,1,1" Height="0">
+                        <Border x:Name="Content" Grid.Row="1" BorderThickness="0" Height="0">
                             <Border.BorderBrush>
                                 <SolidColorBrush Color="{StaticResource ExpanderToggleBorderBrush}" />
                             </Border.BorderBrush>
@@ -687,7 +682,12 @@
                             </Border.Background>
                             <ContentPresenter Margin="4" />
                         </Border>
-                    </Grid>                   
+                    </Grid>
+                    <ControlTemplate.Triggers> 
+                        <Trigger Property="IsExpanded" Value="True">
+                            <Setter TargetName="ExpanderToggleButton" Property="ToolTip" Value="Collapse the Gallery" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
