@@ -158,7 +158,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
                 IsImageSaving = false;
                 _thumbnailCollection.RemoveAt(imgPos);
                 // delay to reclaim the deleted image memory
-                await Task.Delay(1);
+                await Task.Delay(2);
                 _thumbnailCollection.Insert(imgPos, new Thumbnail { ImageUri = img.ImageUri });
                 Thumbnail selectedThumbnail =
                     _thumbnailCollection.First<Thumbnail>(thumbnail => thumbnail.ImageUri == img.ImageUri);
