@@ -39,6 +39,7 @@ namespace AuraPhotoViewer.Styles.Behaviors
             _parentScroll = AssociatedObject.Parent as ScrollViewer;
             if (_parentScroll != null)
             {
+                _parentScroll.ScrollChanged += OnScrollChanged;
                 _parentGrid = VisualTreeHelper.GetParent(_parentScroll) as Grid;
             }
             if (_parentGrid != null)
@@ -56,6 +57,7 @@ namespace AuraPhotoViewer.Styles.Behaviors
         protected override void OnDetaching()
         {
             base.OnDetaching();
+            _parentScroll.ScrollChanged -= OnScrollChanged;
             if (_parentGrid != null)
             {
                 _parentGrid.MouseWheel -= OnMouseWheel;
@@ -66,6 +68,24 @@ namespace AuraPhotoViewer.Styles.Behaviors
             }
             //Application.Current.MainWindow.StateChanged -= MainWindowOnStateChanged;
             AssociatedObject.TargetUpdated -= ResetTransforms;
+        }
+
+        private void OnScrollChanged(object sender, ScrollChangedEventArgs scrollChangedEventArgs)
+        {
+            if (scrollChangedEventArgs.ExtentHeightChange != 0 || scrollChangedEventArgs.ExtentWidthChange != 0)
+            {
+                Point mousePos = Mouse.GetPosition(_parentScroll);
+                double offsetX = scrollChangedEventArgs.HorizontalOffset + mousePos.X;
+                double offsetY = scrollChangedEventArgs.VerticalOffset + mousePos.Y;
+                double oldExtentWidth = scrollChangedEventArgs.ExtentWidth - scrollChangedEventArgs.ExtentWidthChange;
+                double oldExtentHeight = scrollChangedEventArgs.ExtentHeight - scrollChangedEventArgs.ExtentHeightChange;
+                double relx = offsetX/oldExtentWidth;
+                double rely = offsetY/oldExtentHeight;
+                offsetX = Math.Max(relx * scrollChangedEventArgs.ExtentWidth - mousePos.X, 0);
+                offsetY = Math.Max(rely * scrollChangedEventArgs.ExtentHeight - mousePos.Y, 0);
+                _parentScroll.ScrollToHorizontalOffset(offsetX);
+                _parentScroll.ScrollToVerticalOffset(offsetY);
+            }
         }
 
         private void ResetTransforms(object sender, DataTransferEventArgs e)
@@ -80,9 +100,23 @@ namespace AuraPhotoViewer.Styles.Behaviors
             scale.ScaleY = 1;
             rotate.Angle = 0;
             IsImageTransforming = false;
-            /*if (_parentScroll.ScrollableHeight > 0 || _parentScroll.ScrollableWidth > 0)
+            ResetScrollViewer();
+        }
+
+        private void ResetScrollViewer()
+        {
+            _parentScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
+            _parentScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
+            AssociatedObject.Stretch = Stretch.None;
+            if (AssociatedObject.Source == null)
             {
-            }*/
+                return;
+            }
+            if (AssociatedObject.Source.Height > _parentScroll.ViewportHeight ||
+                AssociatedObject.Source.Width > _parentScroll.ViewportWidth)
+            {
+                AssociatedObject.Stretch = Stretch.Uniform;
+            }
         }
 
         private bool CheckScaleLimit(double zoom, ScaleTransform scale)
@@ -92,10 +126,13 @@ namespace AuraPhotoViewer.Styles.Behaviors
 
         private void OnMouseWheel(object sender, MouseWheelEventArgs mouseWheelEventArgs)
         {
+            _parentScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
+            _parentScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
             double zoom = mouseWheelEventArgs.Delta > 0 ? .2 : -.2;
             ScaleTransform scale = (ScaleTransform)((TransformGroup)AssociatedObject.LayoutTransform).Children[0];
             if (CheckScaleLimit(zoom, scale))
             {
+                ResetScrollViewer();
                 return;
             }
             scale.ScaleX += zoom;
