@@ -13,6 +13,7 @@ namespace AuraPhotoViewer.Services.ImageProviders
         private readonly List<string> _supportedImageExtensions = new List<string>
         {
             ".jpg",
+            ".jpeg",
             ".png",
             ".bmp",
             ".tiff",

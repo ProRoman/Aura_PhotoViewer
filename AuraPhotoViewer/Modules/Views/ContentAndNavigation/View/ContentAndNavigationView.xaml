@@ -24,40 +24,38 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Grid>
-            <Border ClipToBounds="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5">
-                <Image VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5" Source="{Binding SelectedImage.ImageUri, Mode=OneWay, NotifyOnTargetUpdated=True, Converter={StaticResource UriToBitmapOriginalSizeConverter}}" Stretch="Uniform">
-                    <Image.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform />
-                            <TranslateTransform />
-                        </TransformGroup>
-                    </Image.RenderTransform>
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
+                <Image VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Source="{Binding SelectedImage.ImageUri, Mode=OneWay, NotifyOnTargetUpdated=True, Converter={StaticResource UriToBitmapOriginalSizeConverter}}"
+                       Stretch="None">
+                    <!--LayoutTransform is done before the layout pass and can notify the ScrollViewer of the new size.-->
                     <Image.LayoutTransform>
                         <TransformGroup>
+                            <ScaleTransform />
                             <RotateTransform Angle="{Binding SelectedImage.Angle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         </TransformGroup>
                     </Image.LayoutTransform>
                     <i:Interaction.Behaviors>
-                        <behaviors:ZoomingPanningBorderBehavior x:Name="ZoomingPanningBorderBehavior" />
+                        <behaviors:ImageTransformBehavior x:Name="ImageTransformBehavior" />
                     </i:Interaction.Behaviors>
                 </Image>
-            </Border>
+            </ScrollViewer>
             <DockPanel Style="{StaticResource NavigationButtonPanel}">
                 <cc:AuraCircleIconButton AuraIconType="NavigateBefore" Width="60" DockPanel.Dock="Left" Command="{Binding ImageLeftCommand}" 
-                                         Visibility="{Binding ElementName=ZoomingPanningBorderBehavior, Path=IsZoomingOrPanning, Mode=OneWay,
+                                         Visibility="{Binding ElementName=ImageTransformBehavior, Path=IsImageTransforming, Mode=OneWay,
                     Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource False}}"/>
                 <cc:AuraCircleIconButton AuraIconType="NavigateNext" Width="60" DockPanel.Dock="Right" Command="{Binding ImageRightCommand}"
-                                         Visibility="{Binding ElementName=ZoomingPanningBorderBehavior, Path=IsZoomingOrPanning, Mode=OneWay,
+                                         Visibility="{Binding ElementName=ImageTransformBehavior, Path=IsImageTransforming, Mode=OneWay,
                     Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource False}}" />
                 <Border DockPanel.Dock="Top" HorizontalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
-                        <cc:AuraCircleIconButton Tag="CounterClockwiseRotateButton" AuraIconType="CounterClockwiseRotate" Width="60" HorizontalAlignment="Left" Command="{Binding ClockwiseRotateCommand}"
-                                                 Visibility="{Binding ElementName=ZoomingPanningBorderBehavior, 
-                            Path=IsZoomingOrPanning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, 
+                        <cc:AuraCircleIconButton Tag="CounterClockwiseRotateButton" AuraIconType="CounterClockwiseRotate" Width="60" HorizontalAlignment="Left"
+                                                 Visibility="{Binding ElementName=ImageTransformBehavior, 
+                            Path=IsImageTransforming, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, 
                             ConverterParameter={StaticResource False}}" />
-                        <cc:AuraCircleIconButton Tag="ClockwiseRotateButton" AuraIconType="ClockwiseRotate" Width="60" HorizontalAlignment="Left" Command="{Binding ClockwiseRotateCommand}"
-                                                 Visibility="{Binding ElementName=ZoomingPanningBorderBehavior, 
-                            Path=IsZoomingOrPanning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, 
+                        <cc:AuraCircleIconButton Tag="ClockwiseRotateButton" AuraIconType="ClockwiseRotate" Width="60" HorizontalAlignment="Left"
+                                                 Visibility="{Binding ElementName=ImageTransformBehavior, 
+                            Path=IsImageTransforming, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, 
                             ConverterParameter={StaticResource False}}" />                        
                     </StackPanel>
                 </Border>
