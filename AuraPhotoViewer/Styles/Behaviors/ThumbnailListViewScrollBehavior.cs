@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,10 +16,18 @@ namespace AuraPhotoViewer.Styles.Behaviors
             base.OnAttached();
             AssociatedObject.PreviewMouseWheel += OnPreviewMouseWheel;
             AssociatedObject.SelectionChanged += OnSelectionChanged;
-            AssociatedObject.PreviewMouseLeftButtonDown += AssociatedObjectOnPreviewMouseLeftButtonDown;
+            AssociatedObject.PreviewMouseLeftButtonDown += OnPreviewMouseLeftButtonDown;
         }
 
-        private void AssociatedObjectOnPreviewMouseLeftButtonDown(object sender,
+        protected override void OnDetaching()
+        {
+            base.OnDetaching();
+            AssociatedObject.PreviewMouseWheel -= OnPreviewMouseWheel;
+            AssociatedObject.SelectionChanged -= OnSelectionChanged;
+            AssociatedObject.PreviewMouseLeftButtonDown -= OnPreviewMouseLeftButtonDown;
+        }
+
+        private void OnPreviewMouseLeftButtonDown(object sender,
             MouseButtonEventArgs mouseButtonEventArgs)
         {
             if (((FrameworkElement)mouseButtonEventArgs.OriginalSource).Name == "Arrow")
@@ -27,11 +36,11 @@ namespace AuraPhotoViewer.Styles.Behaviors
             }
             Point p = mouseButtonEventArgs.GetPosition(AssociatedObject);
             VisualTreeHelper.HitTest(AssociatedObject, null,
-                new HitTestResultCallback(MyHitTestResult),
+                ListViewHitTestResult,
                 new PointHitTestParameters(p));
         }
 
-        public HitTestResultBehavior MyHitTestResult(HitTestResult result)
+        public HitTestResultBehavior ListViewHitTestResult(HitTestResult result)
         {
             Image image = result.VisualHit as Image;
 
@@ -65,14 +74,6 @@ namespace AuraPhotoViewer.Styles.Behaviors
                 return FindParent<T>(parentObject);
         }
     
-        protected override void OnDetaching()
-        {
-            base.OnDetaching();
-            AssociatedObject.PreviewMouseWheel -= OnPreviewMouseWheel;
-            AssociatedObject.SelectionChanged -= OnSelectionChanged;
-            AssociatedObject.PreviewMouseLeftButtonDown -= AssociatedObjectOnPreviewMouseLeftButtonDown;
-        }
-
         private void OnPreviewMouseWheel(object sender, MouseWheelEventArgs mouseWheelEventArgs)
         {
             ListView lv = sender as ListView;
@@ -95,6 +96,7 @@ namespace AuraPhotoViewer.Styles.Behaviors
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListView lv = sender as ListView;
+            Debug.Assert(lv != null, "lv != null");
             lv.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                     new Action(() =>
                     {
