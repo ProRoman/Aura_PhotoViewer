@@ -12,7 +12,9 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/AuraPhotoViewer.Styles;component/Themes/GeneralStyles.xaml" />                
+                <ResourceDictionary Source="pack://application:,,,/AuraPhotoViewer.Styles;component/Themes/GeneralStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/AuraPhotoViewer.Styles;component/Themes/AuraCircleIconButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/AuraPhotoViewer.Styles;component/Themes/ControlsStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <s:Boolean x:Key="True">True</s:Boolean>
             <s:Boolean x:Key="False">False</s:Boolean>

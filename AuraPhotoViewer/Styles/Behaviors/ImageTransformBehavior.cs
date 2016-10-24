@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -7,7 +6,6 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
-using System.Windows.Threading;
 
 namespace AuraPhotoViewer.Styles.Behaviors
 {
@@ -168,8 +166,6 @@ namespace AuraPhotoViewer.Styles.Behaviors
             {
                 _parentScroll.ScrollToVerticalOffset(_startVerticalOffset + offsetY);
             }
-            Debug.WriteLine("Sender " + sender.GetType());
-            Debug.WriteLine("OnMouseMove " + offsetX + " " + offsetY);
             mouseEventArgs.Handled = true;
         }
 

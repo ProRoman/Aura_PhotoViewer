@@ -15,14 +15,62 @@ namespace AuraPhotoViewer.Styles.Behaviors
             base.OnAttached();
             AssociatedObject.PreviewMouseWheel += OnPreviewMouseWheel;
             AssociatedObject.SelectionChanged += OnSelectionChanged;
-
+            AssociatedObject.PreviewMouseLeftButtonDown += AssociatedObjectOnPreviewMouseLeftButtonDown;
         }
 
+        private void AssociatedObjectOnPreviewMouseLeftButtonDown(object sender,
+            MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            if (((FrameworkElement)mouseButtonEventArgs.OriginalSource).Name == "Arrow")
+            {
+                return;
+            }
+            Point p = mouseButtonEventArgs.GetPosition(AssociatedObject);
+            VisualTreeHelper.HitTest(AssociatedObject, null,
+                new HitTestResultCallback(MyHitTestResult),
+                new PointHitTestParameters(p));
+        }
+
+        public HitTestResultBehavior MyHitTestResult(HitTestResult result)
+        {
+            Image image = result.VisualHit as Image;
+
+            if (image != null)
+            {
+                ListViewItem lvItem = FindParent<ListViewItem>(image);
+                if (lvItem != null)
+                {
+                    AssociatedObject.SelectedItem = AssociatedObject.ItemContainerGenerator.ItemFromContainer(lvItem);
+                    return HitTestResultBehavior.Stop;
+                }
+                return HitTestResultBehavior.Continue;
+            }
+            else
+                return HitTestResultBehavior.Continue;
+        }
+
+        private static T FindParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            //get parent item
+            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+
+            //we've reached the end of the tree
+            if (parentObject == null) return null;
+
+            //check if the parent matches the type we're looking for
+            T parent = parentObject as T;
+            if (parent != null)
+                return parent;
+            else
+                return FindParent<T>(parentObject);
+        }
+    
         protected override void OnDetaching()
         {
             base.OnDetaching();
             AssociatedObject.PreviewMouseWheel -= OnPreviewMouseWheel;
             AssociatedObject.SelectionChanged -= OnSelectionChanged;
+            AssociatedObject.PreviewMouseLeftButtonDown -= AssociatedObjectOnPreviewMouseLeftButtonDown;
         }
 
         private void OnPreviewMouseWheel(object sender, MouseWheelEventArgs mouseWheelEventArgs)
