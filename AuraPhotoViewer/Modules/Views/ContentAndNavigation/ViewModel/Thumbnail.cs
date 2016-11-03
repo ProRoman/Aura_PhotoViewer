@@ -9,6 +9,8 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
 
         private string _imageUri;
 
+        private string _fileName;
+
         #endregion
 
         #region Presentation properties
@@ -19,6 +21,16 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
             set
             {
                 _imageUri = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string FileName
+        {
+            get { return _fileName; }
+            set
+            {
+                _fileName = value;
                 OnPropertyChanged();
             }
         }

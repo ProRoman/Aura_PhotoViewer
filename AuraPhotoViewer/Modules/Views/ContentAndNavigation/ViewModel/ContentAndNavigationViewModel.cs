@@ -120,9 +120,10 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
                 Log.Info("Images load");
                 await
                     _imageProvider.LoadImagesAsync(Path.GetDirectoryName(imagePath),
-                        new Progress<string>(image => _thumbnailCollection.Add(new Thumbnail {ImageUri = image})));
+                        new Progress<string>(image => _thumbnailCollection.Add(
+                            new Thumbnail {ImageUri = image, FileName = Path.GetFileName(image)})));
                 Thumbnail selectedThumbnail =
-                    _thumbnailCollection.First<Thumbnail>(thumbnail => thumbnail.ImageUri == imagePath);
+                    _thumbnailCollection.First(thumbnail => thumbnail.ImageUri == imagePath);
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
                     new Action(() =>
                     {
@@ -161,7 +162,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
                 await Task.Delay(2);
                 _thumbnailCollection.Insert(imgPos, new Thumbnail { ImageUri = img.ImageUri });
                 Thumbnail selectedThumbnail =
-                    _thumbnailCollection.First<Thumbnail>(thumbnail => thumbnail.ImageUri == img.ImageUri);
+                    _thumbnailCollection.First(thumbnail => thumbnail.ImageUri == img.ImageUri);
                 ThumbnailCollection.View.MoveCurrentTo(selectedThumbnail);
             }
         }

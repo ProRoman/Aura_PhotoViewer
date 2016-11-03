@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -6,6 +7,7 @@ using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
 using System.Windows.Threading;
+using AuraPhotoViewer.Styles.CustomControls;
 
 namespace AuraPhotoViewer.Styles.Behaviors
 {
@@ -30,50 +32,24 @@ namespace AuraPhotoViewer.Styles.Behaviors
         private void OnPreviewMouseLeftButtonDown(object sender,
             MouseButtonEventArgs mouseButtonEventArgs)
         {
-            if (((FrameworkElement)mouseButtonEventArgs.OriginalSource).Name == "Arrow")
-            {
-                return;
-            }
-            Point p = mouseButtonEventArgs.GetPosition(AssociatedObject);
-            VisualTreeHelper.HitTest(AssociatedObject, null,
-                ListViewHitTestResult,
-                new PointHitTestParameters(p));
-        }
+            ListView lv = sender as ListView;
+            DependencyObject scroll = FindVisualChild<ScrollViewer>(lv);
+            ScrollViewer scrollViewer = (ScrollViewer) scroll;
+            DependencyObject button = FindVisualChilds<AuraCircleIconButton>(lv).Find(b => b.IsMouseOver);
+            if (button == null || scroll == null) return;
+            AuraCircleIconButton scrollButton = (AuraCircleIconButton)button;
 
-        public HitTestResultBehavior ListViewHitTestResult(HitTestResult result)
-        {
-            Image image = result.VisualHit as Image;
-
-            if (image != null)
+            if (scrollButton.Name == "NavigateBefore")
             {
-                ListViewItem lvItem = FindParent<ListViewItem>(image);
-                if (lvItem != null)
-                {
-                    AssociatedObject.SelectedItem = AssociatedObject.ItemContainerGenerator.ItemFromContainer(lvItem);
-                    return HitTestResultBehavior.Stop;
-                }
-                return HitTestResultBehavior.Continue;
+                scrollViewer.LineLeft();
             }
             else
-                return HitTestResultBehavior.Continue;
+            {
+                scrollViewer.LineRight();
+            }
+            mouseButtonEventArgs.Handled = true;
         }
-
-        private static T FindParent<T>(DependencyObject child) where T : DependencyObject
-        {
-            //get parent item
-            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
-
-            //we've reached the end of the tree
-            if (parentObject == null) return null;
-
-            //check if the parent matches the type we're looking for
-            T parent = parentObject as T;
-            if (parent != null)
-                return parent;
-            else
-                return FindParent<T>(parentObject);
-        }
-    
+        
         private void OnPreviewMouseWheel(object sender, MouseWheelEventArgs mouseWheelEventArgs)
         {
             ListView lv = sender as ListView;
@@ -107,14 +83,31 @@ namespace AuraPhotoViewer.Styles.Behaviors
                     }));
         }
 
+        private static T FindParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            //get parent item
+            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+
+            //we've reached the end of the tree
+            if (parentObject == null) return null;
+
+            //check if the parent matches the type we're looking for
+            T parent = parentObject as T;
+            if (parent != null)
+                return parent;
+            else
+                return FindParent<T>(parentObject);
+        }
+
         private T FindVisualChild<T>(DependencyObject obj) where T : DependencyObject
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(obj, i);
-                if (child != null && child is T)
+                T visualChild = child as T;
+                if (visualChild != null)
                 {
-                    return (T)child;
+                    return visualChild;
                 }
                 T childOfChild = FindVisualChild<T>(child);
                 if (childOfChild != null)
@@ -123,6 +116,26 @@ namespace AuraPhotoViewer.Styles.Behaviors
                 }
             }
             return null;
+        }
+
+        private List<T> FindVisualChilds<T>(DependencyObject obj) where T : DependencyObject
+        {
+            List<T> visualChilds = new List<T>();
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
+                T visualChild = child as T;
+                if (visualChild != null)
+                {
+                    visualChilds.Add(visualChild);
+                }
+                List<T> childOfChild = FindVisualChilds<T>(child);
+                if (childOfChild != null)
+                {
+                    visualChilds.AddRange(childOfChild);
+                }
+            }
+            return visualChilds;
         }
     }
 }
