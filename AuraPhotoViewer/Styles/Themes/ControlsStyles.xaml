@@ -628,7 +628,7 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Border x:Name="Border" BorderThickness="0,0,0,1" Padding="5">
+                        <Border x:Name="Border" BorderThickness="1,1,1,0" CornerRadius="2" Padding="5">
                             <Border.BorderBrush>
                                 <SolidColorBrush Color="{StaticResource MiddleGray}" />
                             </Border.BorderBrush>
