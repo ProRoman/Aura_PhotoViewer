@@ -31,6 +31,8 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
         private IImageProvider _imageProvider;
 
         private ObservableCollection<Thumbnail> _thumbnailCollection;
+
+        private string _thumbnailsHeader;
                 
         private Thumbnail _selectedThumbnail;
 
@@ -61,6 +63,19 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
         #region Presentation properties
 
         public CollectionViewSource ThumbnailCollection { get; set; }
+
+        public string ThumbnailsHeader
+        {
+            get
+            {
+                return _thumbnailsHeader;
+            }
+            set
+            {
+                _thumbnailsHeader = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Thumbnail SelectedThumbnail
         {
@@ -120,9 +135,11 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
                 Log.Info("Images load");
                 await
                     _imageProvider.LoadImagesAsync(Path.GetDirectoryName(imagePath),
-                        new Progress<string>(image => _thumbnailCollection.Add(new Thumbnail {ImageUri = image})));
+                        new Progress<string>(image => _thumbnailCollection.Add(
+                            new Thumbnail {ImageUri = image, FileName = Path.GetFileName(image)})));
+                ThumbnailsHeader = String.Format("Gallery in {0}, {1} images", Path.GetDirectoryName(imagePath), _thumbnailCollection.Count);
                 Thumbnail selectedThumbnail =
-                    _thumbnailCollection.First<Thumbnail>(thumbnail => thumbnail.ImageUri == imagePath);
+                    _thumbnailCollection.First(thumbnail => thumbnail.ImageUri == imagePath);
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
                     new Action(() =>
                     {
@@ -161,7 +178,7 @@ namespace AuraPhotoViewer.Modules.Views.ContentAndNavigation.ViewModel
                 await Task.Delay(2);
                 _thumbnailCollection.Insert(imgPos, new Thumbnail { ImageUri = img.ImageUri });
                 Thumbnail selectedThumbnail =
-                    _thumbnailCollection.First<Thumbnail>(thumbnail => thumbnail.ImageUri == img.ImageUri);
+                    _thumbnailCollection.First(thumbnail => thumbnail.ImageUri == img.ImageUri);
                 ThumbnailCollection.View.MoveCurrentTo(selectedThumbnail);
             }
         }

@@ -196,24 +196,6 @@ namespace AuraPhotoViewer.Styles.Behaviors
                 {                    
                 }));
         }*/
-
-        private T FindVisualChild<T>(DependencyObject obj) where T : DependencyObject
-        {
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
-            {
-                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
-                T visualChild = child as T;
-                if (visualChild != null)
-                {
-                    return visualChild;
-                }
-                T childOfChild = FindVisualChild<T>(child);
-                if (childOfChild != null)
-                {
-                    return childOfChild;
-                }
-            }
-            return null;
-        }
+        
     }
 }

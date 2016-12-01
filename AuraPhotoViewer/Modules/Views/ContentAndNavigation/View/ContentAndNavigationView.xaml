@@ -13,7 +13,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/AuraPhotoViewer.Styles;component/Themes/GeneralStyles.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/AuraPhotoViewer.Styles;component/Themes/AuraCircleIconButton.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/AuraPhotoViewer.Styles;component/Themes/ControlsStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <s:Boolean x:Key="True">True</s:Boolean>
@@ -25,8 +24,8 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <Grid>
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
+        <Grid Margin="4">
+            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
                 <Image VerticalAlignment="Center" HorizontalAlignment="Center"
                        Source="{Binding SelectedImage.ImageUri, Mode=OneWay, NotifyOnTargetUpdated=True, Converter={StaticResource UriToBitmapOriginalSizeConverter}}"
                        Stretch="None">
@@ -65,7 +64,7 @@
             <Label Content="Saving..." Style="{StaticResource SavingImageLabel}" Visibility="{Binding IsImageSaving, Mode=OneWay,
                     Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource True}}" />
         </Grid>
-        <Expander Header="Gallery" ExpandDirection="Up" Grid.Row="1" Margin="3" IsExpanded="True">
+        <Expander Header="{Binding ThumbnailsHeader, Mode=OneWay}" ExpandDirection="Up" Grid.Row="1" Margin="3" IsExpanded="True">
             <!--Set ListView height for Virtualization-->
             <ListView Style="{StaticResource ThumbnailListView}" 
                       ItemContainerStyle="{StaticResource ThumbnailListViewItem}" 
